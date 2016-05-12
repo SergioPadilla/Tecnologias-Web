@@ -41,7 +41,7 @@ img#logo {
 }
 
 p#fecha {
-    font-size: xx-large;
+    font-size: 40px;
     position: absolute;
     left: 45%;
     top: 30%;
@@ -51,8 +51,8 @@ p#fecha {
 iframe#hora {
     float: right;
     position: absolute;
-    right: 10%;
-    top: 34%;
+    right: 5%;
+    top: 29%;
 }
 
 ul.autores {
