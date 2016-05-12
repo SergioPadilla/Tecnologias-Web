@@ -15,7 +15,9 @@
     </div>
 
     <div class="cuerpo">
-        
+        <div id="titulo">
+            <h1>Título</h1>
+        </div>
     </div>
 
     <div class="pie">

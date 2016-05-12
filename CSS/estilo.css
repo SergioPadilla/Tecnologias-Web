@@ -43,7 +43,7 @@ img#logo {
 p#fecha {
     font-size: 40px;
     position: absolute;
-    left: 45%;
+    left: 42%;
     top: 30%;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -59,7 +59,7 @@ ul.autores {
     padding-top: 22px;
     float: left;
     position: absolute;
-    left: 45%;
+    left: 42%;
     font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #666;
     text-decoration: none;
@@ -68,4 +68,13 @@ ul.autores {
 ul.autores li {
     list-style: none;
     margin: 0 0px 0 0;
+}
+
+div#titulo {
+    text-align: center;
+}
+
+#titulo h1 {
+    margin-top: 10px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
