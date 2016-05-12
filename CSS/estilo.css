@@ -1,0 +1,43 @@
+body {
+    background-color: white;
+    color: black;
+    margin: 0%;
+}
+
+.cabecera {
+    background-color: black;
+    color: white;
+    height: 15%;
+    text-align: center;
+    width: 100%;
+    position: relative;
+}
+
+.pie {
+    background-color: black;
+    color: white;
+    height: 5%;
+}
+
+.cabecera_division {
+    width: 33%;
+    float: left;
+    height: 100%;
+}
+
+.cuerpo {
+    height: 80%;
+}
+
+#logo {
+    height: 100%;
+    width: 30%;
+}
+
+#fecha {
+    font-size: xx-large;
+}
+
+#hora {
+    margin-top: 10%;
+}
