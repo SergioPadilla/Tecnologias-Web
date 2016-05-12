@@ -4,11 +4,11 @@
 </Head>
 
 <Body>
-    <div class="head">
+    <div class="cabecera">
         <h1>Título</h1>
     </div>
 
-    <div class="body">
+    <div class="cuerpo">
 
     </div>
 
