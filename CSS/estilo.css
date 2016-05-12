@@ -16,7 +16,7 @@ body {
 .pie {
     background-color: black;
     color: white;
-    height: 5%;
+    height: 10%;
 }
 
 .cabecera_division {
@@ -26,7 +26,7 @@ body {
 }
 
 .cuerpo {
-    height: 80%;
+    height: 75%;
 }
 
 #logo {
@@ -40,4 +40,19 @@ body {
 
 #hora {
     margin-top: 10%;
+}
+
+ul.autores {
+    padding: 0px 0;
+    float: left;
+    position: absolute;
+    left: 45%;
+    font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #666;
+    text-decoration: none;
+}
+
+ul.autores li {
+    list-style: none;
+    margin: 0 0px 0 0;
 }

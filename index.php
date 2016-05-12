@@ -25,6 +25,9 @@
     </div>
 
     <div class="pie">
-
+        <ul class="autores">
+            <li>&copy; Sergio Padilla López</li>
+            <li>&copy; Javier Álvarez Castillo</li>
+        </ul>
     </div>
 </Body>
