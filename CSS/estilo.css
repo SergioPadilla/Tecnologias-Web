@@ -1,7 +1,11 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
 body {
     background-color: white;
     color: black;
-    margin: 0%;
 }
 
 .cabecera {
@@ -29,21 +33,30 @@ body {
     height: 75%;
 }
 
-#logo {
+img#logo {
     height: 100%;
-    width: 30%;
+    padding: 0px;
+    margin-left: 42px;
+    float: left;
 }
 
-#fecha {
+p#fecha {
     font-size: xx-large;
+    position: absolute;
+    left: 45%;
+    top: 30%;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-#hora {
-    margin-top: 10%;
+iframe#hora {
+    float: right;
+    position: absolute;
+    right: 10%;
+    top: 34%;
 }
 
 ul.autores {
-    padding: 0px 0;
+    padding-top: 22px;
     float: left;
     position: absolute;
     left: 45%;
