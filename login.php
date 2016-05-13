@@ -8,8 +8,8 @@ require_once('libreria.php');
 $mensaje="";
 if($_SERVER['REQUEST_METHOD']=='POST'){
     $ser="localhost";
-    $usu="root";
-    $pass="";
+    $usu="ejercicio_pw";
+    $pass="pass_ejercicio_pw";
     $base="20077113E";
 
     $conexion=new Servidor_Base_Datos($ser,$usu,$pass,$base);
