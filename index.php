@@ -6,6 +6,7 @@
 </Head>
 
 <Body>
+    <!-- Cabecera -->
     <div class="cabecera">
             <img id="logo" src="imagenes/logo.png" ALT="rowhard" align="middle">
             <p id="fecha">
@@ -14,12 +15,14 @@
         <iframe id="hora" src="http://free.timeanddate.com/clock/i5700uuq/n2322/tles4/fn15/fs39/fcfff/tct/pct/th1" frameborder="0" width="141" height="47" allowTransparency="true"></iframe>
     </div>
 
+    <!-- Cuerpo central de la web -->
     <div class="cuerpo">
         <div id="titulo">
             <h1>Título</h1>
         </div>
     </div>
 
+    <!-- Pie -->
     <div class="pie">
         <ul class="autores">
             <li>&copy; Sergio Padilla López</li>
