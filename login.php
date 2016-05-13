@@ -9,7 +9,7 @@ $mensaje="";
 if($_SERVER['REQUEST_METHOD']=='POST'){
     $ser="localhost";
     $usu="root";
-    $pass="javilon35";
+    $pass="";
     $base="20077113E";
 
     $conexion=new Servidor_Base_Datos($ser,$usu,$pass,$base);
