@@ -3,14 +3,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-require_once('libreria.php');
+require_once('Configuracion/config.php');
+require_once('PHP/libreria.php');
 
 $mensaje="";
 if($_SERVER['REQUEST_METHOD']=='POST'){
-    $ser="localhost";
-    $usu="ejercicio_pw";
-    $pass="pass_ejercicio_pw";
-    $base="20077113E";
+    $ser=nombre_servidor;
+    $usu=usuario_bd;
+    $pass=pass_bd;
+    $base=nombre_bd;
 
     $conexion=new Servidor_Base_Datos($ser,$usu,$pass,$base);
     $sql='SELECT * FROM usuarios WHERE nick="' . $_POST['user'] . '" AND password ="' . $_POST['password'] . '"';
