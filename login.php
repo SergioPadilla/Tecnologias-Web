@@ -94,6 +94,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
                            ?>
                     > Recuérdame
                 </label>
+                <a id="registro" href="index.php"> Crear cuenta </a> <!-- Opcion para registrarse -->
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Aceptar</button>
         </form>
