@@ -8,10 +8,10 @@ require_once('PHP/libreria.php');
 
 $mensaje="";
 if($_SERVER['REQUEST_METHOD']=='POST'){
-    $ser=nombre_servidor;
-    $usu=usuario_bd;
-    $pass=pass_bd;
-    $base=nombre_bd;
+    $ser=NOMBRE_SERVIDOR;
+    $usu=USUARIO_BD;
+    $pass=PASS_BD;
+    $base=NOMBRE_BD;
 
     $conexion=new Servidor_Base_Datos($ser,$usu,$pass,$base);
     $nick = $_POST['nick'];
