@@ -1,5 +1,6 @@
 <!DOCTYPE>
 <Head>
+    <?php require_once ("Configuracion/config.php") ?>
     <title>ROWHARD</title>
     <link rel="stylesheet" type="text/css" href="CSS/estilo.css">
     <script src="JS/ejercicio.js"></script>
@@ -18,7 +19,13 @@
     <!-- Cuerpo central de la web -->
     <div class="cuerpo">
         <div id="titulo">
-            <h1>Título</h1>
+            <h1><?php echo TITULO_INDEX ?></h1>
+        </div>
+
+        <div class="tablas">
+            <?php
+
+            ?>
         </div>
     </div>
 

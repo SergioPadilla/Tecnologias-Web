@@ -41,3 +41,9 @@ function validarDNI(dni) {
         return false;
     }
 }
+
+function mostrar_usuarios() {
+    $.post( "administracion.php", { action: "mostrar_usuarios"} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
