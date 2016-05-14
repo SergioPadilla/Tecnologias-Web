@@ -49,6 +49,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     }
     else{
         $usuario=$_POST['user'];
+        echo $sql;
         $mensaje='Datos incorrectos, inténtelo de nuevo.';
     }
 }
@@ -59,46 +60,39 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="description" content="Inicio de sesión para usuarios">
+    <meta name="description" content="Registro de usuarios">
     <meta name="author" content="Sergio Padilla López">
     <meta name="author" content="Javier Álvarez Castillo">
     <link rel="icon" href="imagenes/logo.png">
 
-    <title>Iniciar Sesión</title>
+    <title>Registro</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/signin.css" rel="stylesheet">
+
+    <!-- importamos funciones javascript -->
+    <script src="JS/ejercicio.js"></script>
 </head>
 
 <body>
-    <!-- Contenedor principal -->
-    <div class="container">
+<!-- Contenedor principal -->
+<div class="container">
 
-        <form class="form-signin" method="post" action="login.php" >
-            <h2 class="form-signin-heading">Inicio Sesión</h2>
-            <input name = "user" type="text" id="inputEmail" class="form-control" placeholder="Usuario"
-                   required autofocus maxlength="20" value="<?php echo $_COOKIE['remember_me']; ?>">
-            <input name = "password" type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required maxlength="20">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="remember"
-                           <?php
-                           if(isset($_COOKIE['remember_me']))
-                                echo 'checked="checked"';
-                           else
-                                echo '';
-                           ?>
-                    > Recuérdame
-                </label>
-                <a id="registro" href="index.php"> Crear cuenta </a> <!-- Opcion para registrarse -->
-            </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Aceptar</button>
+    <form name="form_registro" class="form-signin" method="post" action="login.php" onsubmit="return validarRegistro()">
+        <h2 class="form-signin-heading">Registro</h2>
+        <input name = "nick" type="text" id="inputEmail" class="form-control" placeholder="Nick" required autofocus maxlength="20">
+        <input name = "nombre" type="text" class="form-control" placeholder="Nombre" required maxlength="100">
+        <input name = "apellidos" type="text" class="form-control" placeholder="Apellidos" required maxlength="100">
+        <input name = "dni" type="text" class="form-control" placeholder="DNI" required maxlength="9">
+        <input name = "password" type="password" class="form-control" placeholder="Contraseña" required maxlength="20">
+        <input name = "password2" type="password" id="inputPassword" class="form-control" placeholder="Repite contraseña" required maxlength="20">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Aceptar</button>
 
-            <label id="mensaje_error" class="form-signin"><?php echo $mensaje ?></label> <!-- Para mostrar mensajes de error -->
-        </form>
-    </div>
+        <label id="mensaje_error" class="form-signin"><?php echo $mensaje ?></label> <!-- Para mostrar mensajes de error -->
+    </form>
+</div>
 </body>
 </html>
