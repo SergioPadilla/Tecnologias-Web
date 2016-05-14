@@ -18,14 +18,39 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $conexion->consulta($sql);
 
     if($conexion->numero_filas()!=0){
+        /**
+         * Control de sesión si pincha en "recuerdame"
+         */
+        if($_POST['remember']) {
+            echo '<p> dentro del if</p>';
+            $year = time() + 31536000;
+            setcookie('remember_me', $_POST['user'], $year, "/");
+        }
+        elseif(!$_POST['remember']) {
+            echo '<p> dentro del else</p>';
+            if(isset($_COOKIE['remember_me'])) {
+                echo '<p> dentro del elseif</p>';
+                $past = time() - 100;
+                setcookie(remember_me, gone, $past);
+            }
+        }
+
+        // Guarda sesión y accede a la siguiente página
         $_SESSION["user"]=$_POST['user'];
         $_SESSION["autenticado"]="si";
-        echo ("<script>location.href='administracion.php'</script>");
+        $fila = $conexion->extraer_registro();
+        $rol = $fila["rol"];
+        $_SESSION["rol"]=$rol;
+
+        if($rol != 3)
+            echo "<script>location.href='administracion.php'</script>";
+        else
+            echo "<label>$rol</label>";
     }
     else{
         $usuario=$_POST['user'];
         echo $sql;
-        $mensaje='<br><p style="color:blue"><b>Datos incorrectos, intentelo de nuevo.</b></p>';
+        $mensaje='<br><p style="color:red"><b>Datos incorrectos, intentelo de nuevo.</b></p>';
     }
 }
 ?>
@@ -34,51 +59,45 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>Signin Template for Bootstrap</title>
+    <meta name="description" content="Inicio de sesión para usuarios">
+    <meta name="author" content="Sergio Padilla López">
+    <meta name="author" content="Javier Álvarez Castillo">
+    <link rel="icon" href="imagenes/logo.png">
+
+    <title>Iniciar Sesión</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
     <!-- Custom styles for this template -->
     <link href="css/signin.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 
 <body>
+    <!-- Contenedor principal -->
+    <div class="container">
 
-<div class="container">
-
-    <form class="form-signin" method="post" action="login.php" >
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input name = "user" type="text" id="inputEmail" class="form-control" placeholder="User" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input name = "password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
-    <?php echo $mensaje ?>
-</div> <!-- /container -->
-
-
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+        <form class="form-signin" method="post" action="login.php" >
+            <h2 class="form-signin-heading">Inicio Sesión</h2>
+            <input name = "user" type="text" id="inputEmail" class="form-control" placeholder="Usuario"
+                   required autofocus maxlength="20" value="<?php echo $_COOKIE['remember_me']; ?>">
+            <input name = "password" type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required maxlength="20">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="remember"
+                           <?php
+                           if(isset($_COOKIE['remember_me']))
+                                echo 'checked="checked"';
+                           else
+                                echo '';
+                           ?>
+                    > Recuérdame
+                </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Aceptar</button>
+        </form>
+        <?php echo $mensaje ?>
+    </div>
 </body>
 </html>
