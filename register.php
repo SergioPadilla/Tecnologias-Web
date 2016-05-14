@@ -14,44 +14,19 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $base=nombre_bd;
 
     $conexion=new Servidor_Base_Datos($ser,$usu,$pass,$base);
-    $sql='SELECT * FROM usuarios WHERE nick="' . $_POST['user'] . '" AND password ="' . $_POST['password'] . '"';
-    $conexion->consulta($sql);
+    $nick = $_POST['nick'];
+    $password = $_POST['password'];
+    $nombre = $_POST['nombre'];
+    $dni = $_POST['dni'];
+    $apellidos = $_POST['apellidos'];
 
-    if($conexion->numero_filas()!=0){
-        /**
-         * Control de sesión si pincha en "recuerdame"
-         */
-        if($_POST['remember']) {
-            echo '<p> dentro del if</p>';
-            $year = time() + 31536000;
-            setcookie('remember_me', $_POST['user'], $year, "/");
-        }
-        elseif(!$_POST['remember']) {
-            echo '<p> dentro del else</p>';
-            if(isset($_COOKIE['remember_me'])) {
-                echo '<p> dentro del elseif</p>';
-                $past = time() - 100;
-                setcookie(remember_me, gone, $past);
-            }
-        }
+    $sql="INSERT INTO usuarios (nick, password, nombre, apellidos, dni, rol) VALUES ('".$nick."','".$password."','".$nombre."','".$apellidos."','".$dni."',1)";
+    $exito = $conexion->ejecuta($sql);
 
-        // Guarda sesión y accede a la siguiente página
-        $_SESSION["user"]=$_POST['user'];
-        $_SESSION["autenticado"]="si";
-        $fila = $conexion->extraer_registro();
-        $rol = $fila["rol"];
-        $_SESSION["rol"]=$rol;
-
-        if($rol != 3)
-            echo "<script>location.href='administracion.php'</script>";
-        else
-            echo "<label>$rol</label>";
-    }
-    else{
-        $usuario=$_POST['user'];
-        echo $sql;
-        $mensaje='Datos incorrectos, inténtelo de nuevo.';
-    }
+    if($exito)
+        echo "<script>location.href='login.php'</script>";
+    else
+        $mensaje = "usuario ya existe";
 }
 ?>
 
@@ -81,7 +56,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 <!-- Contenedor principal -->
 <div class="container">
 
-    <form name="form_registro" class="form-signin" method="post" action="login.php" onsubmit="return validarRegistro()">
+    <form name="form_registro" class="form-signin" method="post" action="register.php" onsubmit="return validarRegistro()">
         <h2 class="form-signin-heading">Registro</h2>
         <input name = "nick" type="text" id="inputEmail" class="form-control" placeholder="Nick" required autofocus maxlength="20">
         <input name = "nombre" type="text" class="form-control" placeholder="Nombre" required maxlength="100">

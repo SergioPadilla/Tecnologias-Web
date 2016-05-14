@@ -23,6 +23,10 @@ class Servidor_Base_Datos{
         $this->resultado=mysqli_query($this->descriptor,$consulta);
     }
 
+    public function ejecuta($consulta){
+        return mysqli_query($this->descriptor,$consulta);
+    }
+
     public function extraer_registro(){
         if($fila=mysqli_fetch_array($this->resultado,MYSQLI_ASSOC)){
             return $fila;
@@ -49,4 +53,9 @@ class Servidor_Base_Datos{
 /********************************************************************************************/
 /*			Fin Clase para controlar la base de datos SQL*/
 /********************************************************************************************/
+
+function getNicks(){
+    return "probando";
+}
+
 ?>

@@ -11,9 +11,7 @@ function validarRegistro() {
     var pass = document.forms["form_registro"]["password"].value;
     var pass2 = document.forms["form_registro"]["password2"].value;
     var dni = document.forms["form_registro"]["dni"].value;
-
-    $.post("PHP/");
-
+    
     if(pass != pass2){
         document.getElementById("mensaje_error").innerHTML = "Las contraseñas no coinciden";
         return false;
