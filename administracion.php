@@ -6,34 +6,21 @@ if($_SESSION["autenticado"]!="si"){
     exit();
 }
 else {
-    $ser=nombre_servidor;
-    $usu=usuario_bd;
-    $pass=pass_bd;
-    $base=nombre_bd;
+    $ser=NOMBRE_SERVIDOR;
+    $usu=USUARIO_BD;
+    $pass=PASS_BD;
+    $base=NOMBRE_BD;
 
     $conexion = new Servidor_Base_Datos($ser,$usu,$pass,$base);
-    $sql = 'SELECT rol FROM usuarios WHERE nick = "' . $_SESSION["user"] . '"';
-    $conexion->consulta($sql);
-
-    if($conexion->numero_filas()!=0){
-        $query = $conexion->extraer_registro();
-        $rol = $query["rol"];
-    }
+    $rol = $_SESSION["rol"];
 }
 
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
     switch($action) {
         case 'mostrar_usuarios' :
-            $ser=nombre_servidor;
-            $usu=usuario_bd;
-            $pass=pass_bd;
-            $base=nombre_bd;
-
-            $conexion = new Servidor_Base_Datos($ser,$usu,$pass,$base);
             echo mostrar_usuarios($conexion);
             break;
-        // ...etc...
     }
 }
 ?>

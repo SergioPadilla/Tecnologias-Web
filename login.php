@@ -22,14 +22,11 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
          * Control de sesión si pincha en "recuerdame"
          */
         if($_POST['remember']) {
-            echo '<p> dentro del if</p>';
             $year = time() + 31536000;
             setcookie('remember_me', $_POST['user'], $year, "/");
         }
         elseif(!$_POST['remember']) {
-            echo '<p> dentro del else</p>';
             if(isset($_COOKIE['remember_me'])) {
-                echo '<p> dentro del elseif</p>';
                 $past = time() - 100;
                 setcookie(remember_me, gone, $past);
             }
@@ -45,7 +42,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         if($rol != 3)
             echo "<script>location.href='administracion.php'</script>";
         else
-            echo "<label>$rol</label>";
+            echo "<script>location.href='administracion.php'</script>";
     }
     else{
         $usuario=$_POST['user'];
