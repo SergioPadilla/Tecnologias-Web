@@ -128,4 +128,10 @@ function mostrarColas(){
         echo $cadena;
     }
 }
+
+function mostrar_perfil($conexion) {
+    /**
+     * Muestra el perfil del usuario
+     */
+}
 ?>
