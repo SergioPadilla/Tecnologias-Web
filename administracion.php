@@ -1,7 +1,7 @@
 <?php session_start();
 require_once('Configuracion/config.php');
 require_once('PHP/libreria.php');
-if($_SESSION["autenticado"]!="si"){
+if($_SESSION[AUTENTICADO] != "si"){
     echo("<script>location.href='login.php'</script>");
     exit();
 }
@@ -12,7 +12,7 @@ else {
     $base=NOMBRE_BD;
 
     $conexion = new Servidor_Base_Datos($ser,$usu,$pass,$base);
-    $rol = $_SESSION["rol"];
+    $rol = $_SESSION[ROL];
 }
 
 if(isset($_POST['action']) && !empty($_POST['action'])) {

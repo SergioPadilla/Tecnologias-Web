@@ -6,6 +6,8 @@
 require_once('Configuracion/config.php');
 require_once('PHP/libreria.php');
 
+$_SESSION[AUTENTICADO] = 'no';
+
 $mensaje="";
 if($_SERVER['REQUEST_METHOD']=='POST'){
     $ser=NOMBRE_SERVIDOR;
@@ -33,16 +35,16 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         }
 
         // Guarda sesión y accede a la siguiente página
-        $_SESSION["user"]=$_POST['user'];
-        $_SESSION["autenticado"]="si";
+        $_SESSION[USUARIO]=$_POST['user'];
+        $_SESSION[AUTENTICADO]="si";
         $fila = $conexion->extraer_registro();
         $rol = $fila["rol"];
-        $_SESSION["rol"]=$rol;
+        $_SESSION[ROL]=$rol;
 
         if($rol != 3)
             echo "<script>location.href='administracion.php'</script>";
         else
-            echo "<script>location.href='administracion.php'</script>";
+            echo "<script>location.href='cliente.php'</script>";
     }
     else{
         $usuario=$_POST['user'];
