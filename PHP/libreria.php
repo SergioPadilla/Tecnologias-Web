@@ -1,4 +1,5 @@
 <?php
+    require_once ("Configuracion/config.php");
 /********************************************************************************************/
 /*			Clase para controlar la base de datos MySQL*/
 /********************************************************************************************/
@@ -54,10 +55,6 @@ class Servidor_Base_Datos{
 /*			Fin Clase para controlar la base de datos SQL*/
 /********************************************************************************************/
 
-function getNicks(){
-    return "probando";
-}
-
 function mostrar_usuarios($conexion) {
     $cadena = "<h2 class=\"sub-header\">Usuarios</h2>";
     $cadena .= "<div class=\"table-responsive\">";
@@ -77,7 +74,8 @@ function mostrar_usuarios($conexion) {
 
     $sql = 'SELECT * FROM usuarios';
     $conexion->consulta($sql);
-    if($conexion->numero_filas()!=0){
+
+    if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
             $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
@@ -90,5 +88,44 @@ function mostrar_usuarios($conexion) {
     $cadena .= "</div>";
 
     echo $cadena;
+}
+
+function mostrarColas(){
+    $ser=NOMBRE_SERVIDOR;
+    $usu=USUARIO_BD;
+    $pass=PASS_BD;
+    $base=NOMBRE_BD;
+
+    $conexion=new Servidor_Base_Datos($ser,$usu,$pass,$base);
+    $sql='SELECT * FROM colas WHERE estado=2 ORDER BY prioridad,id';
+    $conexion->consulta($sql);
+
+    if($conexion->numero_filas() != 0){
+        $cadena = "<div class=\"table-responsive\">";
+        $cadena .= "<table id=\"columns_index\" class=\"table table-striped\">";
+        $cadena .= "<colgroup>";
+        $cadena .= "<col width='50%'>";
+        $cadena .= "<col width='50%'>";
+        $cadena .= "</colgroup>";
+        $cadena .= "<thead>";
+        $cadena .= "<tr>";
+        $cadena .= "<th>Código Usuario</th>";
+        $cadena .= "<th>Recurso</th>";
+        $cadena .= "</tr>";
+        $cadena .= "</thead>";
+        $cadena .= "<tbody>";
+
+        while($reg=$conexion->extraer_registro()) {
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$reg["id"]."</td><td>".$reg["codigo"]."</td>";
+            $cadena .= "</tr>\n";
+        }
+
+        $cadena .= "</tbody>";
+        $cadena .= "</table>";
+        $cadena .= "</div>";
+
+        echo $cadena;
+    }
 }
 ?>

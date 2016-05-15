@@ -72,9 +72,29 @@ ul.autores li {
 
 div#titulo {
     text-align: center;
+    margin-bottom: 30px;
 }
 
 #titulo h1 {
-    margin-top: 10px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: rgba(0, 0, 0, 0.14);
+    margin: 0px;
+    padding: 20px;
+}
+
+.tablas {
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.table th {
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+}
+
+.table #columns_index {
+    table-layout: fixed;
 }
