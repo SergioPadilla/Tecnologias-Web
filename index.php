@@ -24,7 +24,7 @@
 
         <div class="tablas">
             <?php
-
+                
             ?>
         </div>
     </div>
