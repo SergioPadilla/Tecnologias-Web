@@ -3,14 +3,14 @@ session_start();
 require_once('Configuracion/config.php');
 require_once('PHP/libreria.php');
 
-//if($_SESSION[AUTENTICADO] != "si"){
-//    /**
-//     * Evitamos que entren directamente sin estar logueados
-//     */
-//    echo("<script>location.href='login.php'</script>");
-//    exit();
-//}
-//else {
+if($_SESSION[AUTENTICADO] != "si"){
+    /**
+     * Evitamos que entren directamente sin estar logueados
+     */
+    echo("<script>location.href='login.php'</script>");
+    exit();
+}
+else {
     /**
      * Establecemos la conexion con la base de datos
      */
@@ -20,13 +20,13 @@ require_once('PHP/libreria.php');
     $base=NOMBRE_BD;
 
     $conexion = new Servidor_Base_Datos($ser,$usu,$pass,$base);
-//    $rol = $_SESSION[ROL];
-//    if($rol != 3){
-//        // Si el rol es 1 o 2 => pagina de administración
-//        echo("<script>location.href='administracion.php'</script>");
-//        exit();
-//    }
-//}
+    $rol = $_SESSION[ROL];
+    if($rol != 3){
+        // Si el rol es 1 o 2 => pagina de administración
+        echo("<script>location.href='administracion.php'</script>");
+        exit();
+    }
+}
 
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
@@ -57,10 +57,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css" rel="stylesheet">
 
-    <!-- Jquery y funciones js
+    <!-- Jquery y funciones js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script type="text/javascript" src="js/ejercicio.js"></script>
-    -->
 </head>
 
 <body>
@@ -100,6 +99,8 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
             </ul>
         </div>
+
+        <div id = "tabla" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     </div>
 </div>
 

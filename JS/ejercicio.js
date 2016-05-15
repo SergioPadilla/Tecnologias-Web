@@ -48,7 +48,7 @@ function mostrar_usuarios() {
     });
 }
 
-function mostrar_usuarios() {
+function mostrar_perfil() {
     $.post( "cliente.php", { action: "mostrar_perfil"} ,function( data ) {
         $( "#tabla" ).html(data); //Hay que cargar bien los datos, ya no es una tabla
     });

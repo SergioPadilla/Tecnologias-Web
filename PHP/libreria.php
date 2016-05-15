@@ -133,5 +133,37 @@ function mostrar_perfil($conexion) {
     /**
      * Muestra el perfil del usuario
      */
+    $cadena = "<h2 class=\"sub-header\">Usuarios</h2>";
+    $cadena .= "<div class=\"table-responsive\">";
+    $cadena .= "<table class=\"table table-striped\">";
+    $cadena .= "<thead>";
+    $cadena .= "<tr>";
+    $cadena .= "<th>Nick</th>";
+    $cadena .= "<th>Password</th>";
+    $cadena .= "<th>Nombre</th>";
+    $cadena .= "<th>Apellidos</th>";
+    $cadena .= "<th>DNI</th>";
+    $cadena .= "<th>Rol</th>";
+    $cadena .= "<th>Opciones</th>";
+    $cadena .= "</tr>";
+    $cadena .= "</thead>";
+    $cadena .= "<tbody>";
+
+    $sql = 'SELECT * FROM usuarios WHERE nick="'. $_SESSION[USUARIO].'"';
+    $conexion->consulta($sql);
+
+    if($conexion->numero_filas() != 0){
+        while($reg=$conexion->extraer_registro()) {
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "</tr>\n";
+        }
+    }
+    $cadena .= "</tbody>";
+    $cadena .= "</table>";
+    $cadena .= "<p id=\"prueba\"></p>";
+    $cadena .= "</div>";
+
+    echo $cadena;
 }
 ?>
