@@ -166,4 +166,39 @@ function mostrar_perfil($conexion) {
 
     echo $cadena;
 }
+
+function mostrar_recursos($conexion) {
+    /**
+     * Muestra el perfil del usuario
+     */
+    $cadena = "<h2 class=\"sub-header\">Recursos</h2>";
+    $cadena .= "<div class=\"table-responsive\">";
+    $cadena .= "<table class=\"table table-striped\">";
+    $cadena .= "<thead>";
+    $cadena .= "<tr>";
+    $cadena .= "<th>Nombre</th>";
+    $cadena .= "<th>Descripción</th>";
+    $cadena .= "<th>Lugar</th>";
+    $cadena .= "<th>Hora de comienzo</th>";
+    $cadena .= "</tr>";
+    $cadena .= "</thead>";
+    $cadena .= "<tbody>";
+
+    $sql = 'SELECT * FROM recursos';
+    $conexion->consulta($sql);
+
+    if($conexion->numero_filas() != 0){
+        while($reg=$conexion->extraer_registro()) {
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "</tr>\n";
+        }
+    }
+    $cadena .= "</tbody>";
+    $cadena .= "</table>";
+    $cadena .= "<p id=\"prueba\"></p>";
+    $cadena .= "</div>";
+
+    echo $cadena;
+}
 ?>

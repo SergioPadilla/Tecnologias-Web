@@ -34,6 +34,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'mostrar_perfil' :
             echo mostrar_perfil($conexion);
             break;
+        case 'mostrar_recursos' :
+            echo mostrar_recursos($conexion);
+            break;
     }
 }
 ?>
@@ -66,6 +69,16 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 </head>
 
 <body>
+<script>
+    $(function() {
+        $('.nav li a').click(function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            $this.closest('ul').children('li').removeClass('active');
+            $this.parent().addClass('active');
+        });
+    });
+</script>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
@@ -95,13 +108,15 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <!-- Cargamos las opciones para un usuario básico. -->
-                <li class=\"active\"><a href=\"#\">Recursos<span class=\"sr-only\">(current)</span></a></li>;
-                <li><a href="#">Colas</a></li>
-
+                <li id='recursos' class='active' onclick="mostrar_recursos()"><a href='#'>Recursos<span class='sr-only'>(current)</span></a></li>
+                <li id="colas"><a href="#">Colas</a></li>
             </ul>
         </div>
 
         <div id = "tabla" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <?php
+                mostrar_recursos($conexion);
+            ?>
     </div>
 </div>
 
