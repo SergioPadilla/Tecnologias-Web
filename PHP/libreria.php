@@ -133,7 +133,7 @@ function mostrar_perfil($conexion) {
     /**
      * Muestra el perfil del usuario
      */
-    $cadena = "<h2 class=\"sub-header\">Usuarios</h2>";
+    $cadena = "<h2 class=\"sub-header\">Perfil</h2>";
     $cadena .= "<div class=\"table-responsive\">";
     $cadena .= "<table class=\"table table-striped\">";
     $cadena .= "<thead>";

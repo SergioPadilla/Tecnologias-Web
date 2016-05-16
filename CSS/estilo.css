@@ -8,6 +8,14 @@ body {
     color: black;
 }
 
+td {
+    text-align: center;
+}
+
+th {
+    text-align: center;
+}
+
 .cabecera {
     background-color: black;
     color: white;
@@ -85,14 +93,6 @@ div#titulo {
 .tablas {
     margin-left: 30%;
     margin-right: 30%;
-}
-
-.table th {
-    text-align: center;
-}
-
-.table td {
-    text-align: center;
 }
 
 .table #columns_index {

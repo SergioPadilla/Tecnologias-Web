@@ -60,6 +60,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     <!-- Jquery y funciones js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script type="text/javascript" src="js/ejercicio.js"></script>
+
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="CSS/estilo.css">
 </head>
 
 <body>
@@ -92,9 +95,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <!-- Cargamos las opciones para un usuario básico. -->
-                <?php
-                    echo "<li class=\"active\"><a href=\"#\">Recursos<span class=\"sr-only\">(current)</span></a></li>";
-                ?>
+                <li class=\"active\"><a href=\"#\">Recursos<span class=\"sr-only\">(current)</span></a></li>;
                 <li><a href="#">Colas</a></li>
 
             </ul>
