@@ -56,6 +56,13 @@ function editar_usuario(usuario) {
 }
 
 function editar_usuario2(json_array) {
-    var j = JSON.stringify(json_array);
-    alert(j);
+    var e = "" + json_array;
+    alert (e);
+
+}
+
+function mostrar_perfil() {
+    $.post( "cliente.php", { action: "mostrar_perfil"} ,function( data ) {
+        $( "#tabla" ).html(data); //Hay que cargar bien los datos, ya no es una tabla
+    });
 }

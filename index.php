@@ -1,9 +1,13 @@
 <!DOCTYPE>
 <Head>
     <?php require_once ("Configuracion/config.php") ?>
+    <?php require_once ("PHP/libreria.php") ?>
     <title>ROWHARD</title>
     <link rel="stylesheet" type="text/css" href="CSS/estilo.css">
     <script src="JS/ejercicio.js"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="CSS/bootstrap.min.css" rel="stylesheet">
 </Head>
 
 <Body>
@@ -24,7 +28,7 @@
 
         <div class="tablas">
             <?php
-                
+                mostrarColas();
             ?>
         </div>
     </div>

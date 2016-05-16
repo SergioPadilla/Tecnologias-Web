@@ -1,4 +1,5 @@
 <?php
+    require_once ("Configuracion/config.php");
 /********************************************************************************************/
 /*			Clase para controlar la base de datos MySQL*/
 /********************************************************************************************/
@@ -54,10 +55,6 @@ class Servidor_Base_Datos{
 /*			Fin Clase para controlar la base de datos SQL*/
 /********************************************************************************************/
 
-function getNicks(){
-    return "probando";
-}
-
 function mostrar_usuarios($conexion) {
     $cadena = "<h2 class=\"sub-header\">Usuarios</h2>";
     $cadena .= "<div class=\"table-responsive\">";
@@ -77,7 +74,87 @@ function mostrar_usuarios($conexion) {
 
     $sql = 'SELECT * FROM usuarios';
     $conexion->consulta($sql);
-    if($conexion->numero_filas()!=0){
+
+    if($conexion->numero_filas() != 0){
+        while($reg=$conexion->extraer_registro()) {
+            $json_array = json_encode($reg);
+            
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span id=\"glyphicon\" onclick=\"  editar_usuario2($json_array) \" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "</tr>\n";
+        }
+    }
+    $cadena .= "</tbody>";
+    $cadena .= "</table>";
+    $cadena .= "<p id=\"prueba\"></p>";
+    $cadena .= "</div>";
+
+    echo $cadena;
+}
+
+function mostrarColas(){
+    $ser=NOMBRE_SERVIDOR;
+    $usu=USUARIO_BD;
+    $pass=PASS_BD;
+    $base=NOMBRE_BD;
+
+    $conexion=new Servidor_Base_Datos($ser,$usu,$pass,$base);
+    $sql='SELECT * FROM colas WHERE estado=2 ORDER BY prioridad,id';
+    $conexion->consulta($sql);
+
+    if($conexion->numero_filas() != 0){
+        $cadena = "<div class=\"table-responsive\">";
+        $cadena .= "<table id=\"columns_index\" class=\"table table-striped\">";
+        $cadena .= "<colgroup>";
+        $cadena .= "<col width='50%'>";
+        $cadena .= "<col width='50%'>";
+        $cadena .= "</colgroup>";
+        $cadena .= "<thead>";
+        $cadena .= "<tr>";
+        $cadena .= "<th>Código Usuario</th>";
+        $cadena .= "<th>Recurso</th>";
+        $cadena .= "</tr>";
+        $cadena .= "</thead>";
+        $cadena .= "<tbody>";
+
+        while($reg=$conexion->extraer_registro()) {
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$reg["id"]."</td><td>".$reg["codigo"]."</td>";
+            $cadena .= "</tr>\n";
+        }
+
+        $cadena .= "</tbody>";
+        $cadena .= "</table>";
+        $cadena .= "</div>";
+
+        echo $cadena;
+    }
+}
+
+function mostrar_perfil($conexion) {
+    /**
+     * Muestra el perfil del usuario
+     */
+    $cadena = "<h2 class=\"sub-header\">Usuarios</h2>";
+    $cadena .= "<div class=\"table-responsive\">";
+    $cadena .= "<table class=\"table table-striped\">";
+    $cadena .= "<thead>";
+    $cadena .= "<tr>";
+    $cadena .= "<th>Nick</th>";
+    $cadena .= "<th>Password</th>";
+    $cadena .= "<th>Nombre</th>";
+    $cadena .= "<th>Apellidos</th>";
+    $cadena .= "<th>DNI</th>";
+    $cadena .= "<th>Rol</th>";
+    $cadena .= "<th>Opciones</th>";
+    $cadena .= "</tr>";
+    $cadena .= "</thead>";
+    $cadena .= "<tbody>";
+
+    $sql = 'SELECT * FROM usuarios WHERE nick="'. $_SESSION[USUARIO].'"';
+    $conexion->consulta($sql);
+
+    if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
             $json_array = json_encode($reg);
             $cadena .= "<tr>";

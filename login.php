@@ -7,6 +7,8 @@ require_once('Configuracion/config.php');
 require_once('PHP/libreria.php');
 
 $_COOKIE['remember_me']=""; // mirar cookies
+$_SESSION[AUTENTICADO] = 'no';
+
 $mensaje="";
 if($_SERVER['REQUEST_METHOD']=='POST'){
     $ser=NOMBRE_SERVIDOR;
@@ -34,16 +36,16 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         }
 
         // Guarda sesión y accede a la siguiente página
-        $_SESSION["user"]=$_POST['user'];
-        $_SESSION["autenticado"]="si";
+        $_SESSION[USUARIO]=$_POST['user'];
+        $_SESSION[AUTENTICADO]="si";
         $fila = $conexion->extraer_registro();
         $rol = $fila["rol"];
-        $_SESSION["rol"]=$rol;
+        $_SESSION[ROL]=$rol;
 
         if($rol != 3)
             echo "<script>location.href='administracion.php'</script>";
         else
-            echo "<script>location.href='administracion.php'</script>";
+            echo "<script>location.href='cliente.php'</script>";
     }
     else{
         $usuario=$_POST['user'];
@@ -65,10 +67,10 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     <title>Iniciar Sesión</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="CSS/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/signin.css" rel="stylesheet">
+    <link href="CSS/signin.css" rel="stylesheet">
 </head>
 
 <body>
@@ -91,7 +93,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
                            ?>
                     > Recuérdame
                 </label>
-                <a id="registro" href="index.php"> Crear cuenta </a> <!-- Opcion para registrarse -->
+                <a id="registro" href="register.php"> Crear cuenta </a> <!-- Opcion para registrarse -->
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Aceptar</button>
 

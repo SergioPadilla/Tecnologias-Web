@@ -1,11 +1,19 @@
-<?php session_start();
+<?php
+session_start();
 require_once('Configuracion/config.php');
 require_once('PHP/libreria.php');
+
 if($_SESSION[AUTENTICADO] != "si"){
+    /**
+     * Evitamos que entren directamente sin estar logueados
+     */
     echo("<script>location.href='login.php'</script>");
     exit();
 }
 else {
+    /**
+     * Establecemos la conexion con la base de datos
+     */
     $ser=NOMBRE_SERVIDOR;
     $usu=USUARIO_BD;
     $pass=PASS_BD;
@@ -13,22 +21,18 @@ else {
 
     $conexion = new Servidor_Base_Datos($ser,$usu,$pass,$base);
     $rol = $_SESSION[ROL];
+    if($rol != 3){
+        // Si el rol es 1 o 2 => pagina de administración
+        echo("<script>location.href='administracion.php'</script>");
+        exit();
+    }
 }
-if (isset($_POST['usuario']) && !empty($_POST['usuario'])) {
-    
-}
+
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
-
-    if(isset($_POST['usuario']) && !empty($_POST['usuario'])) {
-        $usuario = $_POST['usuario'];
-    }
     switch($action) {
-        case 'mostrar_usuarios' :
-            mostrar_usuarios($conexion);
-            break;
-        case 'editar_usuario' :
-            editar_usuario();
+        case 'mostrar_perfil' :
+            echo mostrar_perfil($conexion);
             break;
     }
 }
@@ -45,20 +49,17 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     <meta name="author" content="">
     <link rel="icon" href="imagenes/logo.png">
 
-    <title>Administración</title>
+    <title><?php echo TITULO_VENTANA?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="CSS/bootstrap.min.css" rel="stylesheet">
 
-    <link href="CSS/estilo.css" rel="stylesheet">
-
     <!-- Custom styles for this template -->
     <link href="CSS/dashboard.css" rel="stylesheet">
 
+    <!-- Jquery y funciones js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script type="text/javascript" src="JS/ejercicio.js"></script>
-   
-
 </head>
 
 <body>
@@ -76,11 +77,11 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a onclick="mostrar_usuarios();" href="#">Perfil</a></li>
+                <li><a onclick="mostrar_perfil();" href="#">Perfil</a></li>
                 <li><a href="login.php">Cerrar sesión</a></li>
             </ul>
             <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Búsqueda...">
+                <input type="text" class="form-control" placeholder="Buscar...">
             </form>
         </div>
     </div>
@@ -90,26 +91,16 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <!-- Hay que consultar los permisos del usuario que ha accedido y ver las opciones del menú según permisos. -->
+                <!-- Cargamos las opciones para un usuario básico. -->
                 <?php
-                if ($rol == "1") {
-                    echo "<li class=\"active\"><a href=\"#\">Usuarios <span class=\"sr-only\">(current)</span></a></li>";
-                    echo "<li><a href=\"#\">Características</a></li>";
-                }
+                    echo "<li class=\"active\"><a href=\"#\">Recursos<span class=\"sr-only\">(current)</span></a></li>";
                 ?>
-                <li><a href="#">Recursos</a></li>
                 <li><a href="#">Colas</a></li>
 
             </ul>
         </div>
+
         <div id = "tabla" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <?php
-                if ($rol == 1)
-                    mostrar_usuarios($conexion);
-            ?>
-
-
-        </div>
     </div>
 </div>
 
