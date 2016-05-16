@@ -60,3 +60,10 @@ function mostrar_recursos() {
         $( "#tabla" ).html(data);
     });
 }
+
+function mostrar_colas() {
+    $( "#tabla" ).clear();
+    $.post( "cliente.php", { action: "mostrar_colas"} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}

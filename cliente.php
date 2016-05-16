@@ -37,6 +37,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'mostrar_recursos' :
             echo mostrar_recursos($conexion);
             break;
+        case 'mostrar_colas' :
+            echo mostrar_colas($conexion);
+            break;
     }
 }
 ?>
@@ -109,7 +112,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             <ul class="nav nav-sidebar">
                 <!-- Cargamos las opciones para un usuario básico. -->
                 <li id='recursos' class='active' onclick="mostrar_recursos()"><a href='#'>Recursos<span class='sr-only'>(current)</span></a></li>
-                <li id="colas"><a href="#">Colas</a></li>
+                <li id="colas" onclick="mostrar_colas()"><a href="#">Colas</a></li>
             </ul>
         </div>
 

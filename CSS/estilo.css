@@ -98,3 +98,7 @@ div#titulo {
 .table #columns_index {
     table-layout: fixed;
 }
+
+.button {
+    padding: 5px;
+}
