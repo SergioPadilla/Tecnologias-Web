@@ -68,15 +68,15 @@ function mostrar_perfil() {
 }
 
 function mostrar_recursos() {
-    $( "#tabla" ).clear();
     $.post( "cliente.php", { action: "mostrar_recursos"} ,function( data ) {
         $( "#tabla" ).html(data);
     });
 }
 
 function mostrar_colas() {
-    $( "#tabla" ).clear();
+    $('.nav li').removeClass("active");
     $.post( "cliente.php", { action: "mostrar_colas"} ,function( data ) {
         $( "#tabla" ).html(data);
     });
+    document.getElementById('colas').className = 'active';
 }

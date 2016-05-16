@@ -72,6 +72,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 </head>
 
 <body>
+<!--  
 <script>
     $(function() {
         $('.nav li a').click(function(e) {
@@ -82,6 +83,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         });
     });
 </script>
+-->
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
@@ -111,15 +113,12 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <!-- Cargamos las opciones para un usuario básico. -->
-                <li id='recursos' class='active' onclick="mostrar_recursos()"><a href='#'>Recursos<span class='sr-only'>(current)</span></a></li>
+                <li id='recursos' class="active" onclick="mostrar_recursos()"><a href='#'>Recursos<span class='sr-only'>(current)</span></a></li>
                 <li id="colas" onclick="mostrar_colas()"><a href="#">Colas</a></li>
             </ul>
         </div>
 
         <div id = "tabla" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <?php
-                mostrar_recursos($conexion);
-            ?>
     </div>
 </div>
 
