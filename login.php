@@ -6,6 +6,7 @@
 require_once('Configuracion/config.php');
 require_once('PHP/libreria.php');
 
+$_COOKIE['remember_me']=""; // mirar cookies
 $_SESSION[AUTENTICADO] = 'no';
 
 $mensaje="";
@@ -66,10 +67,10 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     <title>Iniciar Sesión</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="CSS/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/signin.css" rel="stylesheet">
+    <link href="CSS/signin.css" rel="stylesheet">
 </head>
 
 <body>

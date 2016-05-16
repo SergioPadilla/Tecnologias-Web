@@ -14,12 +14,21 @@ else {
     $conexion = new Servidor_Base_Datos($ser,$usu,$pass,$base);
     $rol = $_SESSION[ROL];
 }
-
+if (isset($_POST['usuario']) && !empty($_POST['usuario'])) {
+    
+}
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
+
+    if(isset($_POST['usuario']) && !empty($_POST['usuario'])) {
+        $usuario = $_POST['usuario'];
+    }
     switch($action) {
         case 'mostrar_usuarios' :
-            echo mostrar_usuarios($conexion);
+            mostrar_usuarios($conexion);
+            break;
+        case 'editar_usuario' :
+            editar_usuario();
             break;
     }
 }
@@ -39,13 +48,15 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     <title>Administración</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="CSS/bootstrap.min.css" rel="stylesheet">
+
+    <link href="CSS/estilo.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="CSS/dashboard.css" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-    <script type="text/javascript" src="js/ejercicio.js"></script>
+    <script type="text/javascript" src="JS/ejercicio.js"></script>
    
 
 </head>
@@ -94,7 +105,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         <div id = "tabla" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <?php
                 if ($rol == 1)
-                    echo mostrar_usuarios($conexion);
+                    mostrar_usuarios($conexion);
             ?>
 
 

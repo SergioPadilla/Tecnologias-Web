@@ -41,14 +41,14 @@ th {
     height: 75%;
 }
 
-img#logo {
+img #logo {
     height: 100%;
     padding: 0px;
     margin-left: 42px;
     float: left;
 }
 
-p#fecha {
+p #fecha {
     font-size: 40px;
     position: absolute;
     left: 42%;
@@ -56,14 +56,14 @@ p#fecha {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-iframe#hora {
+iframe #hora {
     float: right;
     position: absolute;
     right: 5%;
     top: 29%;
 }
 
-ul.autores {
+ul .autores {
     padding-top: 22px;
     float: left;
     position: absolute;
@@ -73,21 +73,22 @@ ul.autores {
     text-decoration: none;
 }
 
-ul.autores li {
+ul .autores li {
     list-style: none;
     margin: 0 0px 0 0;
 }
 
-div#titulo {
+div #titulo {
     text-align: center;
     margin-bottom: 30px;
 }
 
 #titulo h1 {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: rgba(0, 0, 0, 0.14);
-    margin: 0px;
-    padding: 20px;
+}
+
+#glyphicon {
+    cursor: pointer;
 }
 
 .tablas {

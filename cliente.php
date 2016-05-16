@@ -58,14 +58,14 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     <title><?php echo TITULO_VENTANA?></title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="CSS/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="CSS/dashboard.css" rel="stylesheet">
 
     <!-- Jquery y funciones js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-    <script type="text/javascript" src="js/ejercicio.js"></script>
+    <script type="text/javascript" src="JS/ejercicio.js"></script>
 
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="CSS/estilo.css">

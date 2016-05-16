@@ -7,7 +7,7 @@
     <script src="JS/ejercicio.js"></script>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="CSS/bootstrap.min.css" rel="stylesheet">
 </Head>
 
 <Body>

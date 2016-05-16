@@ -43,10 +43,10 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     <title>Registro</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="CSS/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/signin.css" rel="stylesheet">
+    <link href="CSS/signin.css" rel="stylesheet">
 
     <!-- importamos funciones javascript -->
     <script src="JS/ejercicio.js"></script>

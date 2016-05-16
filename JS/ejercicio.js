@@ -48,6 +48,19 @@ function mostrar_usuarios() {
     });
 }
 
+function editar_usuario(usuario) {
+    var user = JSON.parse(usuario);
+    $.post( "administracion.php", { action: "editar_usuario", usuario:user} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function editar_usuario2(json_array) {
+    var e = "" + json_array;
+    alert (e);
+
+}
+
 function mostrar_perfil() {
     $.post( "cliente.php", { action: "mostrar_perfil"} ,function( data ) {
         $( "#tabla" ).html(data);
