@@ -78,3 +78,7 @@ div#titulo {
     margin-top: 10px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+#glyphicon {
+    cursor: pointer;
+}

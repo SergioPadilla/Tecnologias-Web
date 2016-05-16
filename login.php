@@ -6,6 +6,7 @@
 require_once('Configuracion/config.php');
 require_once('PHP/libreria.php');
 
+$_COOKIE['remember_me']=""; // mirar cookies
 $mensaje="";
 if($_SERVER['REQUEST_METHOD']=='POST'){
     $ser=NOMBRE_SERVIDOR;

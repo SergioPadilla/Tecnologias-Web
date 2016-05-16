@@ -79,8 +79,9 @@ function mostrar_usuarios($conexion) {
     $conexion->consulta($sql);
     if($conexion->numero_filas()!=0){
         while($reg=$conexion->extraer_registro()) {
+            $json_array = json_encode($reg);
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span onclick=\"   editar_usuario2('$json_array')    \" id=\"glyphicon\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }
@@ -91,4 +92,15 @@ function mostrar_usuarios($conexion) {
 
     echo $cadena;
 }
+
+function editar_usuario() {
+    echo "EEEEEEEEEEEEEEEEE";
+
+}
+
+function editar_usuario3($usuario) {
+    $fila = json_decode($usuario);
+    echo $fila['nick'];
+}
+
 ?>

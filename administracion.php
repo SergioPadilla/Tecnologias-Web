@@ -14,12 +14,21 @@ else {
     $conexion = new Servidor_Base_Datos($ser,$usu,$pass,$base);
     $rol = $_SESSION["rol"];
 }
-
+if (isset($_POST['usuario']) && !empty($_POST['usuario'])) {
+    
+}
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
+
+    if(isset($_POST['usuario']) && !empty($_POST['usuario'])) {
+        $usuario = $_POST['usuario'];
+    }
     switch($action) {
         case 'mostrar_usuarios' :
-            echo mostrar_usuarios($conexion);
+            mostrar_usuarios($conexion);
+            break;
+        case 'editar_usuario' :
+            editar_usuario();
             break;
     }
 }
@@ -40,6 +49,8 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="css/estilo.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css" rel="stylesheet">

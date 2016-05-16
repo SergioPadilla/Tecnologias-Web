@@ -47,3 +47,15 @@ function mostrar_usuarios() {
         $( "#tabla" ).html(data);
     });
 }
+
+function editar_usuario(usuario) {
+    var user = JSON.parse(usuario);
+    $.post( "administracion.php", { action: "editar_usuario", usuario:user} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function editar_usuario2(json_array) {
+    var j = JSON.stringify(json_array);
+    alert(j);
+}
