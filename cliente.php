@@ -21,7 +21,7 @@ else {
 
     $conexion = new Servidor_Base_Datos($ser,$usu,$pass,$base);
     $rol = $_SESSION[ROL];
-    if($rol != 3){
+    if($rol != 1){
         // Si el rol es 1 o 2 => pagina de administración
         echo("<script>location.href='administracion.php'</script>");
         exit();
@@ -114,7 +114,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             <ul class="nav nav-sidebar">
                 <!-- Cargamos las opciones para un usuario básico. -->
                 <li id='recursos' class="active" onclick="mostrar_recursos()"><a href='#'>Recursos<span class='sr-only'>(current)</span></a></li>
-                <li id="colas" onclick="mostrar_colas()"><a href="#">Colas</a></li>
+                <li id="colas" class="no-active" onclick="mostrar_colas()"><a href="#">Colas</a></li>
             </ul>
         </div>
 

@@ -55,42 +55,7 @@ class Servidor_Base_Datos{
 /*			Fin Clase para controlar la base de datos SQL*/
 /********************************************************************************************/
 
-function mostrar_usuarios($conexion) {
-    $cadena = "<h2 class=\"sub-header\">Usuarios</h2>";
-    $cadena .= "<div class=\"table-responsive\">";
-    $cadena .= "<table class=\"table table-striped\">";
-    $cadena .= "<thead>";
-    $cadena .= "<tr>";
-    $cadena .= "<th>Nick</th>";
-    $cadena .= "<th>Password</th>";
-    $cadena .= "<th>Nombre</th>";
-    $cadena .= "<th>Apellidos</th>";
-    $cadena .= "<th>DNI</th>";
-    $cadena .= "<th>Rol</th>";
-    $cadena .= "<th>Opciones</th>";
-    $cadena .= "</tr>";
-    $cadena .= "</thead>";
-    $cadena .= "<tbody>";
 
-    $sql = 'SELECT * FROM usuarios';
-    $conexion->consulta($sql);
-
-    if($conexion->numero_filas() != 0){
-        while($reg=$conexion->extraer_registro()) {
-            $json_array = json_encode($reg);
-            
-            $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span id=\"glyphicon\" onclick=\"  editar_usuario2($json_array) \" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
-            $cadena .= "</tr>\n";
-        }
-    }
-    $cadena .= "</tbody>";
-    $cadena .= "</table>";
-    $cadena .= "<p id=\"prueba\"></p>";
-    $cadena .= "</div>";
-
-    echo $cadena;
-}
 
 function mostrarColas(){
     $ser=NOMBRE_SERVIDOR;
@@ -169,40 +134,6 @@ function mostrar_perfil($conexion) {
     echo $cadena;
 }
 
-function mostrar_recursos($conexion) {
-    /**
-     * Muestra los recursos disponibles para el usuario
-     */
-    $cadena = "<h2 class=\"sub-header\">Recursos</h2>";
-    $cadena .= "<div class=\"table-responsive\">";
-    $cadena .= "<table class=\"table table-striped\">";
-    $cadena .= "<thead>";
-    $cadena .= "<tr>";
-    $cadena .= "<th>Nombre</th>";
-    $cadena .= "<th>Descripción</th>";
-    $cadena .= "<th>Lugar</th>";
-    $cadena .= "<th>Hora de comienzo</th>";
-    $cadena .= "</tr>";
-    $cadena .= "</thead>";
-    $cadena .= "<tbody>";
-
-    $sql = 'SELECT * FROM recursos ORDER BY hora_comienzo';
-    $conexion->consulta($sql);
-
-    if($conexion->numero_filas() != 0){
-        while($reg=$conexion->extraer_registro()) {
-            $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><button class='button'>Solicitar turno</button></td>";
-            $cadena .= "</tr>\n";
-        }
-    }
-    $cadena .= "</tbody>";
-    $cadena .= "</table>";
-    $cadena .= "<p id=\"prueba\"></p>";
-    $cadena .= "</div>";
-
-    echo $cadena;
-}
 
 function mostrar_colas($conexion) {
     /**
@@ -243,13 +174,402 @@ function mostrar_colas($conexion) {
 
 }
 
-function editar_usuario() {
-    echo "EEEEEEEEEEEEEEEEE";
 
+/*
+ * Gestión usuarios
+ */
+
+function mostrar_usuarios($conexion) {
+    $cadena = "<h2 class=\"sub-header\">Usuarios</h2>";
+    $cadena .= "<div class=\"table-responsive\">";
+    $cadena .= "<table class=\"table table-striped\">";
+    $cadena .= "<thead>";
+    $cadena .= "<tr>";
+    $cadena .= "<th>Nick</th>";
+    $cadena .= "<th>Password</th>";
+    $cadena .= "<th>Nombre</th>";
+    $cadena .= "<th>Apellidos</th>";
+    $cadena .= "<th>DNI</th>";
+    $cadena .= "<th>Rol</th>";
+    $cadena .= "<th>Opciones</th>";
+    $cadena .= "</tr>";
+    $cadena .= "</thead>";
+    $cadena .= "<tbody>";
+
+    $sql = 'SELECT * FROM usuarios';
+    $conexion->consulta($sql);
+
+    if($conexion->numero_filas() != 0){
+        while($reg=$conexion->extraer_registro()) {
+            $json_array = json_encode($reg);
+
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span  onclick=\"  editar_usuario('".$reg["nick"]."'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span onclick=\"  eliminar_usuario('".$reg["nick"]."'); \"  id=\"glyphicon\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "</tr>\n";
+        }
+    }
+    $cadena .= "</tbody>";
+    $cadena .= "</table>";
+    $cadena .= "<p id=\"prueba\"></p>";
+    $cadena .= "</div>";
+
+    echo $cadena;
 }
 
-function editar_usuario3($usuario) {
-    $fila = json_decode($usuario);
-    echo $fila['nick'];
+
+function editar_usuario($conexion, $usuario) {
+    /**
+     * Muestra los recursos disponibles para el usuario
+     */
+    $sql = "SELECT * FROM usuarios WHERE nick = \"" . $usuario . "\" ";
+    $conexion->consulta($sql);
+    if($conexion->numero_filas() != 0){
+        $reg=$conexion->extraer_registro();
+    }
+    // si se va a usar este metodo en el cliente hay que cambiar el action
+
+    $cadena = "<form class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Nick</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_nick\" class=\"form-control\" placeholder=\"Nick\" value=\"". $reg['nick'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Password</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_password\" class=\"form-control\" placeholder=\"Password\" value=\"". $reg['password'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Nombre</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_nombre\" class=\"form-control\" placeholder=\"Nombre\" value=\"". $reg['nombre'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Apellidos</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_apellidos\" class=\"form-control\" placeholder=\"Apellidos\" value=\"". $reg['apellidos'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">DNI</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_dni\" class=\"form-control\" placeholder=\"DNI\" value=\"". $reg['dni'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Rol</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_rol\" class=\"form-control\" placeholder=\"Rol\" value=\"". $reg['rol'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Editar</button>";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "</form>";
+
+    echo $cadena;
 }
+
+function update_usuarios($conexion, $nick, $password, $nombre, $apellidos, $dni, $rol) {
+    $sql = "UPDATE usuarios
+            SET password=\"" . $password . "\", nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\", rol=\"" . $rol . "\"
+            WHERE nick=\"" . $nick . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Editado con éxito.\")</script>";
+}
+
+function eliminar_usuario($conexion, $nick) {
+    $sql = "DELETE FROM usuarios
+            WHERE nick=\"" . $nick . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Eliminado con éxito.\")</script>";
+}
+
+/*
+ * Gestión permisos
+ */
+
+function mostrar_permisos($conexion) {
+    $cadena = "<h2 class=\"sub-header\">Permisos</h2>";
+    $cadena .= "<div class=\"table-responsive\">";
+    $cadena .= "<table class=\"table table-striped\">";
+    $cadena .= "<thead>";
+    $cadena .= "<tr>";
+    $cadena .= "<th>Permiso</th>";
+    $cadena .= "<th>Descripción</th>";
+    $cadena .= "<th>Opciones</th>";
+    $cadena .= "</tr>";
+    $cadena .= "</thead>";
+    $cadena .= "<tbody>";
+
+    $sql = 'SELECT * FROM permisos';
+    $conexion->consulta($sql);
+
+    if($conexion->numero_filas() != 0){
+        while($reg=$conexion->extraer_registro()) {
+
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$reg["permiso"]."</td><td>".$reg["descripcion"]."</td><td><span  onclick=\"  editar_permiso('".$reg["permiso"]."'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span onclick=\"  eliminar_permiso('".$reg["permiso"]."'); \"  id=\"glyphicon\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "</tr>\n";
+        }
+    }
+    $cadena .= "</tbody>";
+    $cadena .= "</table>";
+    $cadena .= "</div>";
+
+    echo $cadena;
+}
+
+
+function editar_permiso($conexion, $permiso) {
+    /**
+     * Muestra los recursos disponibles para el usuario
+     */
+    $sql = "SELECT * FROM permisos WHERE permiso = \"" . $permiso . "\" ";
+    $conexion->consulta($sql);
+    if($conexion->numero_filas() != 0){
+        $reg=$conexion->extraer_registro();
+    }
+    // si se va a usar este metodo en el cliente hay que cambiar el action
+
+    $cadena = "<form class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Permiso</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_permiso\" class=\"form-control\" placeholder=\"Permiso\" value=\"". $reg['permiso'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Descripción</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_permiso_descripcion\" class=\"form-control\" placeholder=\"Descripción\" value=\"". $reg['descripcion'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Editar</button>";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "</form>";
+
+    echo $cadena;
+}
+
+function update_permisos($conexion, $permiso, $descripcion) {
+    $sql = "UPDATE permisos
+            SET descripcion=\"" . $descripcion . "\"
+            WHERE permiso=\"" . $permiso . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Editado con éxito.\")</script>";
+}
+
+function eliminar_permiso($conexion, $permiso) {
+    $sql = "DELETE FROM permisos
+            WHERE permiso=\"" . $permiso . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Eliminado con éxito.\")</script>";
+}
+
+
+/*
+ * Gestión roles
+ */
+
+function mostrar_roles($conexion) {
+    $cadena = "<h2 class=\"sub-header\">Roles</h2>";
+    $cadena .= "<div class=\"table-responsive\">";
+    $cadena .= "<table class=\"table table-striped\">";
+    $cadena .= "<thead>";
+    $cadena .= "<tr>";
+    $cadena .= "<th>Rol</th>";
+    $cadena .= "<th>Descripción</th>";
+    $cadena .= "<th>Opciones</th>";
+    $cadena .= "</tr>";
+    $cadena .= "</thead>";
+    $cadena .= "<tbody>";
+
+    $sql = 'SELECT * FROM roles';
+    $conexion->consulta($sql);
+
+    if($conexion->numero_filas() != 0){
+        while($reg=$conexion->extraer_registro()) {
+
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$reg["rol"]."</td><td>".$reg["descripcion"]."</td><td><span  onclick=\"  editar_rol('".$reg["rol"]."'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span onclick=\"  eliminar_rol('".$reg["rol"]."'); \"  id=\"glyphicon\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "</tr>\n";
+        }
+    }
+    $cadena .= "</tbody>";
+    $cadena .= "</table>";
+    $cadena .= "</div>";
+
+    echo $cadena;
+}
+
+
+function editar_rol($conexion, $rol) {
+    /**
+     * Muestra los recursos disponibles para el usuario
+     */
+    $sql = "SELECT * FROM roles WHERE rol = \"" . $rol . "\" ";
+    $conexion->consulta($sql);
+    if($conexion->numero_filas() != 0){
+        $reg=$conexion->extraer_registro();
+    }
+    // si se va a usar este metodo en el cliente hay que cambiar el action
+
+    $cadena = "<form class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Rol</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_rol\" class=\"form-control\" placeholder=\"Rol\" value=\"". $reg['rol'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Descripción</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_rol_descripcion\" class=\"form-control\" placeholder=\"Descripción\" value=\"". $reg['descripcion'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Editar</button>";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "</form>";
+
+    echo $cadena;
+}
+
+function update_roles($conexion, $rol, $descripcion) {
+    $sql = "UPDATE roles
+            SET descripcion=\"" . $descripcion . "\"
+            WHERE rol=\"" . $rol . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Editado con éxito.\")</script>";
+}
+
+function eliminar_rol($conexion, $rol) {
+    $sql = "DELETE FROM roles
+            WHERE rol=\"" . $rol . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Eliminado con éxito.\")</script>";
+}
+
+/*
+    Gestión recursos
+*/
+
+function mostrar_recursos($conexion) {
+    /**
+     * Muestra los recursos disponibles para el usuario
+     */
+    $cadena = "<h2 class=\"sub-header\">Recursos</h2>";
+    $cadena .= "<div class=\"table-responsive\">";
+    $cadena .= "<table class=\"table table-striped\">";
+    $cadena .= "<thead>";
+    $cadena .= "<tr>";
+    $cadena .= "<th>Nombre</th>";
+    $cadena .= "<th>Descripción</th>";
+    $cadena .= "<th>Lugar</th>";
+    $cadena .= "<th>Hora de comienzo</th>";
+    $cadena .= "</tr>";
+    $cadena .= "</thead>";
+    $cadena .= "<tbody>";
+
+    $sql = 'SELECT * FROM recursos ORDER BY hora_comienzo';
+    $conexion->consulta($sql);
+
+    if($conexion->numero_filas() != 0){
+        while($reg=$conexion->extraer_registro()) {
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><button class='button'>Solicitar turno</button></td>";
+            $cadena .= "</tr>\n";
+        }
+    }
+    $cadena .= "</tbody>";
+    $cadena .= "</table>";
+    $cadena .= "</div>";
+
+    echo $cadena;
+}
+
+function editar_recurso($conexion, $recurso) {
+    /**
+     * Muestra los recursos disponibles para el usuario
+     */
+    $sql = "SELECT * FROM recursos WHERE codigo = \"" . $recurso . "\" ";
+    $conexion->consulta($sql);
+    if($conexion->numero_filas() != 0){
+        $reg=$conexion->extraer_registro();
+    }
+    // si se va a usar este metodo en el cliente hay que cambiar el action
+
+    $cadena = "<form class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Código</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_recurso_codigo\" class=\"form-control\" placeholder=\"Código\" value=\"". $reg['codigo'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Nombre</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_recurso_nombre\" class=\"form-control\" placeholder=\"Nombre\" value=\"". $reg['nombre'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Descripción</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_recurso_descripcion\" class=\"form-control\" placeholder=\"Descripción\" value=\"". $reg['descripcion'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Lugar</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_recurso_lugar\" class=\"form-control\" placeholder=\"Lugar\" value=\"". $reg['lugar'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Hora de comienzo</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_recurso_hora\" class=\"form-control\" placeholder=\"Hora de comienzo\" value=\"". $reg['hora_comienzo'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Nick</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_recurso_nick\" class=\"form-control\" placeholder=\"Nick\" value=\"". $reg['nick'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Editar</button>";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "</form>";
+
+    echo $cadena;
+}
+
+function update_recursos($conexion, $codigo, $nombre, $descripcion, $lugar, $hora, $nick) {
+    $sql = "UPDATE recursos
+            SET nombre=\"" . $nombre . "\", descripcion=\"" . $descripcion . "\", lugar=\"" . $lugar . "\", hora_comienzo=\"" . $hora . "\", nick=\"" . $nick . "\"
+            WHERE codigo=\"" . $codigo . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Editado con éxito.\")</script>";
+}
+
+function eliminar_recurso($conexion, $recurso) {
+    $sql = "DELETE FROM recursos
+            WHERE codigo=\"" . $recurso . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Eliminado con éxito.\")</script>";
+}
+
 ?>

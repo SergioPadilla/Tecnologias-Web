@@ -103,3 +103,14 @@ div #titulo {
 .button {
     padding: 5px;
 }
+
+.nav-tabs > li > a:hover {
+    border-color: #eee #eee #ddd;
+}
+.nav-tabs > li.active-no > a,
+.nav-tabs > li.active-no > a:hover,
+.nav-tabs > li.active-no > a:focus {
+    cursor: default;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}

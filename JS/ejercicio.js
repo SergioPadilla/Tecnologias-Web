@@ -42,24 +42,114 @@ function validarDNI(dni) {
     }
 }
 
+// Gestión usuarios
+
 function mostrar_usuarios() {
     $.post( "administracion.php", { action: "mostrar_usuarios"} ,function( data ) {
+        $("#tabla").html("");
         $( "#tabla" ).html(data);
     });
 }
 
 function editar_usuario(usuario) {
-    var user = JSON.parse(usuario);
-    $.post( "administracion.php", { action: "editar_usuario", usuario:user} ,function( data ) {
+    $.post( "administracion.php", { action: "editar_usuario", usuario:usuario} ,function( data ) {
+        $("#tabla").html("");
+        $("#tabla").html(data);
+    });
+}
+
+function eliminar_usuario(usuario) {
+    var borrar = confirm("¿Desea eliminar el usuario: "+ usuario + "?");
+    if (borrar) {
+        $.post( "administracion.php", { action: "eliminar_usuario", usuario:usuario} ,function( data ) {
+            $("#tabla").html("");
+            $( "#tabla" ).html(data);
+        });
+    }
+}
+
+// Gestión permisos
+
+function mostrar_permisos() {
+    $.post( "administracion.php", { action: "mostrar_permisos"} ,function( data ) {
+        $("#tabla").html("");
         $( "#tabla" ).html(data);
     });
 }
 
-function editar_usuario2(json_array) {
-    var e = "" + json_array;
-    alert (e);
-
+function editar_permiso(permiso) {
+    $.post( "administracion.php", { action: "editar_permiso", permiso:permiso} ,function( data ) {
+        $("#tabla").html("");
+        $("#tabla").html(data);
+    });
 }
+
+function eliminar_permiso(permiso) {
+    var borrar = confirm("¿Desea eliminar el permiso: "+ permiso + "?");
+    if (borrar) {
+        $.post( "administracion.php", { action: "eliminar_permiso", permiso:permiso} ,function( data ) {
+            $("#tabla").html("");
+            $( "#tabla" ).html(data);
+        });
+    }
+}
+
+//
+
+// Gestión roles
+
+function mostrar_roles() {
+    $.post( "administracion.php", { action: "mostrar_roles"} ,function( data ) {
+        $("#tabla").html("");
+        $( "#tabla" ).html(data);
+    });
+}
+
+function editar_rol(rol) {
+    $.post( "administracion.php", { action: "editar_rol", rol:rol} ,function( data ) {
+        $("#tabla").html("");
+        $("#tabla").html(data);
+    });
+}
+
+function eliminar_rol(rol) {
+    var borrar = confirm("¿Desea eliminar el rol: "+ rol + "?");
+    if (borrar) {
+        $.post( "administracion.php", { action: "eliminar_rol", rol:rol} ,function( data ) {
+            $("#tabla").html("");
+            $( "#tabla" ).html(data);
+        });
+    }
+}
+
+//
+
+// Gestión recursos
+
+function mostrar_recursos() {
+    $.post( "cliente.php", { action: "mostrar_recursos"} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function editar_recurso(recurso) {
+    $.post( "administracion.php", { action: "editar_recurso", recurso:recurso} ,function( data ) {
+        $("#tabla").html("");
+        $("#tabla").html(data);
+    });
+}
+
+function eliminar_recurso(recurso) {
+    var borrar = confirm("¿Desea eliminar el recurso: "+ recurso + "?");
+    if (borrar) {
+        $.post( "administracion.php", { action: "eliminar_recurso", recurso:recurso} ,function( data ) {
+            $("#tabla").html("");
+            $( "#tabla" ).html(data);
+        });
+    }
+}
+
+//
 
 function mostrar_perfil() {
     $.post( "cliente.php", { action: "mostrar_perfil"} ,function( data ) {
@@ -67,11 +157,7 @@ function mostrar_perfil() {
     });
 }
 
-function mostrar_recursos() {
-    $.post( "cliente.php", { action: "mostrar_recursos"} ,function( data ) {
-        $( "#tabla" ).html(data);
-    });
-}
+
 
 function mostrar_colas() {
     $('.nav li').removeClass("active");
