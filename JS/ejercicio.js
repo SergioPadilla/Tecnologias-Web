@@ -126,8 +126,8 @@ function eliminar_rol(rol) {
 
 // Gestión recursos
 
-function mostrar_recursos() {
-    $.post( "cliente.php", { action: "mostrar_recursos"} ,function( data ) {
+function mostrar_recursos_admin() {
+    $.post( "administracion.php", { action: "mostrar_recursos_admin"} ,function( data ) {
         $( "#tabla" ).html(data);
     });
 }
@@ -150,6 +150,12 @@ function eliminar_recurso(recurso) {
 }
 
 //
+
+function mostrar_recursos() {
+    $.post( "cliente.php", { action: "mostrar_recursos"} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
 
 function mostrar_perfil() {
     $.post( "cliente.php", { action: "mostrar_perfil"} ,function( data ) {

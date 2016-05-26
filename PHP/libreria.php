@@ -175,6 +175,41 @@ function mostrar_colas($conexion) {
 }
 
 
+function mostrar_recursos($conexion) {
+    /**
+     * Muestra los recursos disponibles para el usuario
+     */
+    $cadena = "<h2 class=\"sub-header\">Recursos</h2>";
+    $cadena .= "<div class=\"table-responsive\">";
+    $cadena .= "<table class=\"table table-striped\">";
+    $cadena .= "<thead>";
+    $cadena .= "<tr>";
+    $cadena .= "<th>Nombre</th>";
+    $cadena .= "<th>Descripción</th>";
+    $cadena .= "<th>Lugar</th>";
+    $cadena .= "<th>Hora de comienzo</th>";
+    $cadena .= "</tr>";
+    $cadena .= "</thead>";
+    $cadena .= "<tbody>";
+
+    $sql = 'SELECT * FROM recursos ORDER BY hora_comienzo';
+    $conexion->consulta($sql);
+
+    if($conexion->numero_filas() != 0){
+        while($reg=$conexion->extraer_registro()) {
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><button class='button'>Solicitar turno</button></td>";
+            $cadena .= "</tr>\n";
+        }
+    }
+    $cadena .= "</tbody>";
+    $cadena .= "</table>";
+    $cadena .= "</div>";
+
+    echo $cadena;
+}
+
+
 /*
  * Gestión usuarios
  */
@@ -461,11 +496,11 @@ function eliminar_rol($conexion, $rol) {
     echo "<script>alert(\"Eliminado con éxito.\")</script>";
 }
 
-/*
+/**
     Gestión recursos
 */
 
-function mostrar_recursos($conexion) {
+function mostrar_recursos_admin($conexion) {
     /**
      * Muestra los recursos disponibles para el usuario
      */
@@ -478,17 +513,17 @@ function mostrar_recursos($conexion) {
     $cadena .= "<th>Descripción</th>";
     $cadena .= "<th>Lugar</th>";
     $cadena .= "<th>Hora de comienzo</th>";
+    $cadena .= "<th>Opciones</th>";
     $cadena .= "</tr>";
     $cadena .= "</thead>";
     $cadena .= "<tbody>";
 
-    $sql = 'SELECT * FROM recursos ORDER BY hora_comienzo';
+    $sql = 'SELECT * FROM recursos';
     $conexion->consulta($sql);
-
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><button class='button'>Solicitar turno</button></td>";
+            $cadena .= "<td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><span  onclick=\"  editar_recurso('" . $reg["codigo"] . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span onclick=\"  eliminar_recurso('".$reg["codigo"]."'); \"  id=\"glyphicon\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }

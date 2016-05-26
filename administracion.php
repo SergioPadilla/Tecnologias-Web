@@ -73,8 +73,8 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             eliminar_rol($conexion, $rol_post);
             mostrar_roles($conexion);
             break;
-        case 'mostrar_recursos' :
-            mostrar_recursos($conexion);
+        case 'mostrar_recursos_admin' :
+            mostrar_recursos_admin($conexion);
             break;
         case 'editar_recurso' :
             editar_recurso($conexion, $recurso);
@@ -151,16 +151,16 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
                     echo "<li onclick='mostrar_roles()'><a href=\"#\">Roles</a></li>";
                 }
                 ?>
-                <li onclick='mostrar_recursos()'><a href="#">Recursos</a></li>
-                <li><a href="#">Colas</a></li>
+                <li onclick='mostrar_recursos_admin()'><a href="#">Recursos</a></li>
 
+                <?php
+                if ($rol == "2")
+                    echo "<li><a href=\"#\">Colas</a></li>";
+                ?>
             </ul>
         </div>
         <div id = "tabla" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <?php
-                if ($rol == 1)
-                    //mostrar_usuarios($conexion);
-            ?>
+
 
 
         </div>
