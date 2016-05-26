@@ -28,6 +28,10 @@ else {
     }
 }
 
+if (isset($_POST['editar_nick']) && !empty($_POST['editar_nick'])) {
+    update_usuarios($conexion, $_POST['editar_nick'], $_POST['editar_password'], $_POST['editar_nombre'], $_POST['editar_apellidos'], $_POST['editar_dni']);
+}
+
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
     switch($action) {
@@ -39,6 +43,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             break;
         case 'mostrar_colas' :
             echo mostrar_colas($conexion);
+            break;
+        case 'editar_perfil' :
+            echo editar_perfil($conexion, $_SESSION[usuario]);
             break;
     }
 }
@@ -113,7 +120,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <!-- Cargamos las opciones para un usuario básico. -->
-                <li id='recursos' class="active" onclick="mostrar_recursos()"><a href='#'>Recursos<span class='sr-only'>(current)</span></a></li>
+                <li id='recursos' onclick="mostrar_recursos()"><a href='#'>Recursos<span class='sr-only'>(current)</span></a></li>
                 <li id="colas" onclick="mostrar_colas()"><a href="#">Colas</a></li>
             </ul>
         </div>

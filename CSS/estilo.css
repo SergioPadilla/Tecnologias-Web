@@ -16,6 +16,10 @@ th {
     text-align: center;
 }
 
+.table th {
+    text-align: center;
+}
+
 .cabecera {
     background-color: black;
     color: white;
@@ -41,14 +45,14 @@ th {
     height: 75%;
 }
 
-img #logo {
+#logo {
     height: 100%;
     padding: 0px;
     margin-left: 42px;
     float: left;
 }
 
-p #fecha {
+#fecha {
     font-size: 40px;
     position: absolute;
     left: 42%;
@@ -56,14 +60,14 @@ p #fecha {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-iframe #hora {
+#hora {
     float: right;
     position: absolute;
     right: 5%;
     top: 29%;
 }
 
-ul .autores {
+ul.autores {
     padding-top: 22px;
     float: left;
     position: absolute;
@@ -73,12 +77,12 @@ ul .autores {
     text-decoration: none;
 }
 
-ul .autores li {
+ul.autores li {
     list-style: none;
     margin: 0 0px 0 0;
 }
 
-div #titulo {
+div#titulo {
     text-align: center;
     margin-bottom: 30px;
 }
@@ -102,4 +106,8 @@ div #titulo {
 
 .button {
     padding: 5px;
+}
+
+label#mensaje_error {
+    color: red;
 }

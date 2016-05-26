@@ -20,6 +20,19 @@ function validarRegistro() {
     }
 }
 
+function validarEditarPerfil() {
+    var pass = document.forms["form_editar_perfil"]["editar_password"].value;
+    var pass2 = document.forms["form_editar_perfil"]["editar_password_2"].value;
+    var dni = document.forms["form_editar_perfil"]["editar_dni"].value;
+
+    if(pass != pass2){
+        document.getElementById("mensaje_error").innerHTML = "Las contraseñas no coinciden";
+        return false;
+    } else {
+        return validarDNI(dni);
+    }
+}
+
 function validarDNI(dni) {
     var numero;
     var letr;
@@ -48,19 +61,6 @@ function mostrar_usuarios() {
     });
 }
 
-function editar_usuario(usuario) {
-    var user = JSON.parse(usuario);
-    $.post( "administracion.php", { action: "editar_usuario", usuario:user} ,function( data ) {
-        $( "#tabla" ).html(data);
-    });
-}
-
-function editar_usuario2(json_array) {
-    var e = "" + json_array;
-    alert (e);
-
-}
-
 function mostrar_perfil() {
     $.post( "cliente.php", { action: "mostrar_perfil"} ,function( data ) {
         $( "#tabla" ).html(data);
@@ -78,5 +78,10 @@ function mostrar_colas() {
     $.post( "cliente.php", { action: "mostrar_colas"} ,function( data ) {
         $( "#tabla" ).html(data);
     });
-    document.getElementById('colas').className = 'active';
+}
+
+function editar_perfil() {
+    $.post( "cliente.php", { action: "editar_perfil"} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
 }

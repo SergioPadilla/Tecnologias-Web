@@ -80,7 +80,7 @@ function mostrar_usuarios($conexion) {
             $json_array = json_encode($reg);
             
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span id=\"glyphicon\" onclick=\"  editar_usuario2($json_array) \" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span id=\"glyphicon\" onclick='editar_usuario(\"$json_array\")' class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }
@@ -157,7 +157,7 @@ function mostrar_perfil($conexion) {
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span onclick='editar_perfil()' class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }
@@ -243,13 +243,67 @@ function mostrar_colas($conexion) {
 
 }
 
-function editar_usuario() {
-    echo "EEEEEEEEEEEEEEEEE";
+function editar_perfil($conexion, $usuario) {
+    /**
+     * Muestra un formulario que permite editar los datos del usuario
+     * 
+     * in:
+     *   $usuario: nick del usuario
+     */
+    $mensaje="";
+    $sql = "SELECT * FROM usuarios WHERE nick = \"" . $usuario . "\" ";
+    $conexion->consulta($sql);
+    if($conexion->numero_filas() != 0) {
+        $reg = $conexion->extraer_registro();
 
-}
+        $cadena = "<form name=\"form_editar_perfil\" class=\"form-horizontal\" action=\"cliente.php\" method=\"post\" onsubmit=\"return validarEditarPerfil()\">";
+        $cadena .= "<div class=\"form-group\">";
+        $cadena .= "<label class=\"col-sm-2 control-label\">Nick</label>";
+        $cadena .= "<div class=\"col-sm-10\">";
+        $cadena .= "<input name=\"editar_nick\" class=\"form-control\" placeholder=\"Nick\" value=\"" . $reg['nick'] . "\" maxlength=\"20\">";
+        $cadena .= "</div>";
+        $cadena .= "</div>";
+        $cadena .= "<div class=\"form-group\">";
+        $cadena .= "<label class=\"col-sm-2 control-label\">Contraseña</label>";
+        $cadena .= "<div class=\"col-sm-10\">";
+        $cadena .= "<input name=\"editar_password\" class=\"form-control\" placeholder=\"Contraseña\" value=\"" . $reg['password'] . "\" maxlength=\"20\">";
+        $cadena .= "</div>";
+        $cadena .= "</div>";
+        $cadena .= "<div class=\"form-group\">";
+        $cadena .= "<label class=\"col-sm-2 control-label\">Repite contraseña</label>";
+        $cadena .= "<div class=\"col-sm-10\">";
+        $cadena .= "<input name=\"editar_password_2\" class=\"form-control\" placeholder=\"Contraseña\" value=\"" . $reg['password'] . "\" maxlength=\"20\">";
+        $cadena .= "</div>";
+        $cadena .= "</div>";
+        $cadena .= "<div class=\"form-group\">";
+        $cadena .= "<label class=\"col-sm-2 control-label\">Nombre</label>";
+        $cadena .= "<div class=\"col-sm-10\">";
+        $cadena .= "<input name=\"editar_nombre\" class=\"form-control\" placeholder=\"Nombre\" value=\"" . $reg['nombre'] . "\">";
+        $cadena .= "</div>";
+        $cadena .= "</div>";
+        $cadena .= "<div class=\"form-group\">";
+        $cadena .= "<label class=\"col-sm-2 control-label\">Apellidos</label>";
+        $cadena .= "<div class=\"col-sm-10\">";
+        $cadena .= "<input name=\"editar_apellidos\" class=\"form-control\" placeholder=\"Apellidos\" value=\"" . $reg['apellidos'] . "\">";
+        $cadena .= "</div>";
+        $cadena .= "</div>";
+        $cadena .= "<div class=\"form-group\">";
+        $cadena .= "<label class=\"col-sm-2 control-label\">DNI</label>";
+        $cadena .= "<div class=\"col-sm-10\">";
+        $cadena .= "<input name=\"editar_dni\" class=\"form-control\" placeholder=\"DNI\" value=\"" . $reg['dni'] . "\">";
+        $cadena .= "</div>";
+        $cadena .= "</div>";
+        $cadena .= "<div class=\"form-group\">";
+        $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+        $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Editar</button>";
+        $cadena .= "</div>";
+        $cadena .= "</div>";
 
-function editar_usuario3($usuario) {
-    $fila = json_decode($usuario);
-    echo $fila['nick'];
+        $cadena .= "<label id=\"mensaje_error\">". $mensaje ."</label>"; // Para mostrar mensajes de error
+        $cadena .= "</form>";
+
+        echo $cadena;
+
+    }
 }
 ?>
