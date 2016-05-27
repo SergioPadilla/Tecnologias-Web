@@ -191,8 +191,9 @@ function mostrar_recursos($conexion) {
 
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
+            $codigo = $reg["codigo"];
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><button class='button'>Solicitar turno</button></td>";
+            $cadena .= "<td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><button onclick='solicitar_turno(\"$codigo\");' class='button'>Solicitar turno</button></td>";
             $cadena .= "</tr>\n";
         }
     }
@@ -305,5 +306,15 @@ function editar_perfil($conexion, $usuario) {
         echo $cadena;
 
     }
+}
+
+function solicitar_turno($conexion, $codigo_recurso, $nick) {
+    $sql="INSERT INTO colas (codigo, nick) VALUES ('".$codigo_recurso."','".$nick."')";
+    $exito = $conexion->ejecuta($sql);
+
+    if($exito)
+        echo "<script>alert(\"Registro realizado con exito.\")</script>";
+    else
+        echo "<script>alert(\"No puedes apuntarte a este recurso.\")</script>";
 }
 ?>

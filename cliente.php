@@ -47,6 +47,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'editar_perfil' :
             echo editar_perfil($conexion, $_SESSION[usuario]);
             break;
+        case 'solicitar_turno' :
+            echo solicitar_turno($conexion, $_POST[codigo_recurso], $_SESSION[usuario]);
+            break;
     }
 }
 ?>

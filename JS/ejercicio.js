@@ -85,3 +85,9 @@ function editar_perfil() {
         $( "#tabla" ).html(data);
     });
 }
+
+function solicitar_turno(codigo_recurso) {
+    $.post( "cliente.php", { action: "solicitar_turno", codigo_recurso: codigo_recurso} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
