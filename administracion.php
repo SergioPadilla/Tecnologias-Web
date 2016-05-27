@@ -14,8 +14,17 @@ else {
     $conexion = new Servidor_Base_Datos($ser,$usu,$pass,$base);
     $rol = $_SESSION[ROL];
 }
-if (isset($_POST['usuario']) && !empty($_POST['usuario'])) {
-    
+if (isset($_POST['editar_nick']) && !empty($_POST['editar_nick'])) {
+    update_usuarios($conexion, $_POST['editar_nick'], $_POST['editar_password'], $_POST['editar_nombre'], $_POST['editar_apellidos'], $_POST['editar_dni'], $_POST['editar_rol']);
+}
+if(isset($_POST['editar_permiso']) && !empty($_POST['editar_permiso'])) {
+    update_permisos($conexion, $_POST['editar_permiso'], $_POST['editar_permiso_descripcion']);
+}
+if(isset($_POST['editar_rol']) && !empty($_POST['editar_rol'])) {
+    update_roles($conexion, $_POST['editar_rol'], $_POST['editar_rol_descripcion']);
+}
+if (isset($_POST['editar_recurso_codigo']) && !empty($_POST['editar_recurso_codigo'])) {
+    update_recursos($conexion, $_POST['editar_recurso_codigo'], $_POST['editar_recurso_nombre'], $_POST['editar_recurso_descripcion'], $_POST['editar_recurso_lugar'], $_POST['editar_recurso_hora'], $_POST['editar_recurso_nick']);
 }
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
@@ -23,12 +32,56 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     if(isset($_POST['usuario']) && !empty($_POST['usuario'])) {
         $usuario = $_POST['usuario'];
     }
+    if(isset($_POST['permiso']) && !empty($_POST['permiso'])) {
+        $permiso = $_POST['permiso'];
+    }
+    if(isset($_POST['rol']) && !empty($_POST['rol'])) {
+        $rol_post = $_POST['rol'];
+    }
+    if(isset($_POST['recurso']) && !empty($_POST['recurso'])) {
+        $recurso = $_POST['recurso'];
+    }
+
     switch($action) {
         case 'mostrar_usuarios' :
             mostrar_usuarios($conexion);
             break;
         case 'editar_usuario' :
-            editar_usuario();
+            editar_usuario($conexion, $usuario);
+            break;
+        case 'eliminar_usuario' :
+            eliminar_usuario($conexion, $usuario);
+            mostrar_usuarios($conexion);
+            break;
+        case 'mostrar_permisos' :
+            mostrar_permisos($conexion);
+            break;
+        case 'editar_permiso' :
+            editar_permiso($conexion, $permiso);
+            break;
+        case 'eliminar_permiso' :
+            eliminar_permiso($conexion, $permiso);
+            mostrar_permisos($conexion);
+            break;
+        case 'mostrar_roles' :
+            mostrar_roles($conexion);
+            break;
+        case 'editar_rol' :
+            editar_rol($conexion, $rol_post);
+            break;
+        case 'eliminar_rol' :
+            eliminar_rol($conexion, $rol_post);
+            mostrar_roles($conexion);
+            break;
+        case 'mostrar_recursos_admin' :
+            mostrar_recursos_admin($conexion);
+            break;
+        case 'editar_recurso' :
+            editar_recurso($conexion, $recurso);
+            break;
+        case 'eliminar_recurso' :
+            eliminar_recurso($conexion, $recurso);
+            mostrar_recursos($conexion);
             break;
     }
 }
@@ -76,7 +129,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a onclick="mostrar_usuarios();" href="#">Perfil</a></li>
+                <li><a href="#">Perfil</a></li>
                 <li><a href="login.php">Cerrar sesión</a></li>
             </ul>
             <form class="navbar-form navbar-right">
@@ -93,20 +146,21 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
                 <!-- Hay que consultar los permisos del usuario que ha accedido y ver las opciones del menú según permisos. -->
                 <?php
                 if ($rol == "1") {
-                    echo "<li class=\"active\"><a href=\"#\">Usuarios <span class=\"sr-only\">(current)</span></a></li>";
-                    echo "<li><a href=\"#\">Características</a></li>";
+                    echo "<li onclick='mostrar_usuarios()'><a href=\"#\">Usuarios </a></li>";
+                    echo "<li onclick='mostrar_permisos()'><a href=\"#\">Permisos</a></li>";
+                    echo "<li onclick='mostrar_roles()'><a href=\"#\">Roles</a></li>";
                 }
                 ?>
-                <li><a href="#">Recursos</a></li>
-                <li><a href="#">Colas</a></li>
+                <li onclick='mostrar_recursos_admin()'><a href="#">Recursos</a></li>
 
+                <?php
+                if ($rol == "2")
+                    echo "<li><a href=\"#\">Colas</a></li>";
+                ?>
             </ul>
         </div>
         <div id = "tabla" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <?php
-                if ($rol == 1)
-                    mostrar_usuarios($conexion);
-            ?>
+
 
 
         </div>

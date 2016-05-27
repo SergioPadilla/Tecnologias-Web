@@ -111,3 +111,14 @@ div#titulo {
 label#mensaje_error {
     color: red;
 }
+
+.nav-tabs > li > a:hover {
+    border-color: #eee #eee #ddd;
+}
+.nav-tabs > li.active-no > a,
+.nav-tabs > li.active-no > a:hover,
+.nav-tabs > li.active-no > a:focus {
+    cursor: default;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
