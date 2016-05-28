@@ -96,8 +96,8 @@ div#titulo {
 }
 
 .tablas {
-    margin-left: 30%;
-    margin-right: 30%;
+    margin-left: 20%;
+    margin-right: 20%;
 }
 
 .table #columns_index {
@@ -110,6 +110,11 @@ div#titulo {
 
 label#mensaje_error {
     color: red;
+}
+
+#mensaje_informativo {
+    color: blue;
+    text-align: center;
 }
 
 .nav-tabs > li > a:hover {

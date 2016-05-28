@@ -31,6 +31,9 @@
                 mostrarColas();
             ?>
         </div>
+        <div id="mensaje_informativo">
+            MENSAJE INFORMATIVO
+        </div>
     </div>
 
     <!-- Pie -->

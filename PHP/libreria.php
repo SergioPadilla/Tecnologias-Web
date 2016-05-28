@@ -62,27 +62,31 @@ function mostrarColas(){
     $base=NOMBRE_BD;
 
     $conexion=new Servidor_Base_Datos($ser,$usu,$pass,$base);
-    $sql='SELECT * FROM colas WHERE estado=2 ORDER BY prioridad,id';
+    $sql='SELECT * FROM colas c, recursos r WHERE r.codigo = c.codigo_recurso AND c.estado=2 ORDER BY c.prioridad,c.id';
     $conexion->consulta($sql);
 
     if($conexion->numero_filas() != 0){
         $cadena = "<div class=\"table-responsive\">";
         $cadena .= "<table id=\"columns_index\" class=\"table table-striped\">";
         $cadena .= "<colgroup>";
-        $cadena .= "<col width='50%'>";
-        $cadena .= "<col width='50%'>";
+        $cadena .= "<col width='25%'>";
+        $cadena .= "<col width='25%'>";
+        $cadena .= "<col width='25%'>";
+        $cadena .= "<col width='25%'>";
         $cadena .= "</colgroup>";
         $cadena .= "<thead>";
         $cadena .= "<tr>";
-        $cadena .= "<th>Código Usuario</th>";
-        $cadena .= "<th>Recurso</th>";
+        $cadena .= "<th>Usuario</th>";
+        $cadena .= "<th>Nombre</th>";
+        $cadena .= "<th>Lugar</th>";
+        $cadena .= "<th>Hora</th>";
         $cadena .= "</tr>";
         $cadena .= "</thead>";
         $cadena .= "<tbody>";
 
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["id"]."</td><td>".$reg["codigo"]."</td>";
+            $cadena .= "<td>".$reg["codigo_usuario"]."</td><td>".$reg["nombre"]."</td><td>".$reg["lugar"]."</td>";
             $cadena .= "</tr>\n";
         }
 
