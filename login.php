@@ -16,8 +16,9 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $pass=PASS_BD;
     $base=NOMBRE_BD;
 
+    $password = md5($_POST['password']);
     $conexion=new Servidor_Base_Datos($ser,$usu,$pass,$base);
-    $sql='SELECT * FROM usuarios WHERE nick="' . $_POST['user'] . '" AND password ="' . $_POST['password'] . '"';
+    $sql='SELECT * FROM usuarios WHERE nick="' . $_POST['user'] . '" AND password ="' . $password . '"';
     $conexion->consulta($sql);
 
     if($conexion->numero_filas()!=0){

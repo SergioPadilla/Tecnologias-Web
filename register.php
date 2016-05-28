@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 
     $conexion=new Servidor_Base_Datos($ser,$usu,$pass,$base);
     $nick = $_POST['nick'];
-    $password = $_POST['password'];
+    $password = md5($_POST['password']);
     $nombre = $_POST['nombre'];
     $dni = $_POST['dni'];
     $apellidos = $_POST['apellidos'];
