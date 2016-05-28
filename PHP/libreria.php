@@ -306,8 +306,9 @@ function editar_usuario($conexion, $usuario) {
 }
 
 function update_usuarios($conexion, $nick, $password, $nombre, $apellidos, $dni, $rol) {
+    $passwordmd5 = md5($password);
     $sql = "UPDATE usuarios
-            SET password=\"" . $password . "\", nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\", rol=\"" . $rol . "\"
+            SET password=\"" . $passwordmd5 . "\", nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\", rol=\"" . $rol . "\"
             WHERE nick=\"" . $nick . "\"";
     $conexion->consulta($sql);
     echo "<script>alert(\"Editado con éxito.\")</script>";
