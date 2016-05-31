@@ -292,8 +292,12 @@ function mostrar_usuarios($conexion) {
 
 function editar_usuario($conexion, $usuario) {
     /**
-     * Muestra un formulario para editar los datos de un usuario
+     * Muestra un formulario que permite editar los datos del usuario
+     *
+     * in:
+     *   $usuario: nick del usuario
      */
+    $mensaje="";
     $sql = "SELECT * FROM usuarios WHERE nick = \"" . $usuario . "\" ";
     $conexion->consulta($sql);
     if($conexion->numero_filas() != 0){
