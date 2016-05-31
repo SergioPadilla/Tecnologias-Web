@@ -111,7 +111,6 @@ function mostrar_perfil($conexion) {
     $cadena .= "<thead>";
     $cadena .= "<tr>";
     $cadena .= "<th>Nick</th>";
-    $cadena .= "<th>Password</th>";
     $cadena .= "<th>Nombre</th>";
     $cadena .= "<th>Apellidos</th>";
     $cadena .= "<th>DNI</th>";
@@ -127,7 +126,7 @@ function mostrar_perfil($conexion) {
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span onclick='editar_perfil()' class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span onclick='editar_perfil()' class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }
@@ -149,7 +148,6 @@ function mostrar_perfil_administracion($conexion) {
     $cadena .= "<thead>";
     $cadena .= "<tr>";
     $cadena .= "<th>Nick</th>";
-    $cadena .= "<th>Password</th>";
     $cadena .= "<th>Nombre</th>";
     $cadena .= "<th>Apellidos</th>";
     $cadena .= "<th>DNI</th>";
@@ -165,7 +163,7 @@ function mostrar_perfil_administracion($conexion) {
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span onclick='editar_perfil_administracion()' class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span onclick='editar_perfil_administracion()' class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }
