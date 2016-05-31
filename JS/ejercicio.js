@@ -209,3 +209,9 @@ function solicitar_turno(codigo_recurso) {
         $( "#tabla" ).html(data);
     });
 }
+
+function crear_recurso() {
+    $.post( "administracion.php", { action: "crear_recurso"}, function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}

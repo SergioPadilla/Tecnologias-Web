@@ -30,9 +30,13 @@ if(isset($_POST['editar_permiso']) && !empty($_POST['editar_permiso'])) {
 if(isset($_POST['editar_rol']) && !empty($_POST['editar_rol'])) {
     update_roles($conexion, $_POST['editar_rol'], $_POST['editar_rol_descripcion']);
 }
-if (isset($_POST['editar_recurso_codigo']) && !empty($_POST['editar_recurso_codigo'])) {
-    update_recursos($conexion, $_POST['editar_recurso_codigo'], $_POST['editar_recurso_nombre'], $_POST['editar_recurso_descripcion'], $_POST['editar_recurso_lugar'], $_POST['editar_recurso_hora'], $_POST['editar_recurso_nick']);
+if (isset($_POST['editar_recurso_nombre']) && !empty($_POST['editar_recurso_nombre'])) {
+    update_recursos($conexion, $_POST['editar_recurso_nombre'], $_POST['editar_recurso_descripcion'], $_POST['editar_recurso_lugar'], $_POST['editar_recurso_hora'], $_POST['editar_recurso_nick']);
 }
+if (isset($_POST['crear_recurso_nombre'])) {
+    crear_recurso($conexion, $_POST['crear_recurso_nombre'], $_POST['crear_recurso_descripcion'], $_POST['crear_recurso_lugar'], $_POST['crear_recurso_hora'], $_SESSION[USUARIO]);
+}
+
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
 
@@ -85,6 +89,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'eliminar_recurso' :
             eliminar_recurso($conexion, $recurso);
             mostrar_recursos($conexion);
+            break;
+        case 'crear_recurso' :
+            echo crear_recurso_form();
             break;
     }
 }
