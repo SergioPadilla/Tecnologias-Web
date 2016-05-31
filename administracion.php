@@ -1,4 +1,5 @@
-<?php session_start();
+<?php 
+session_start();
 require_once('Configuracion/config.php');
 require_once('PHP/libreria.php');
 if($_SESSION[AUTENTICADO] != "si"){
@@ -13,6 +14,12 @@ else {
 
     $conexion = new Servidor_Base_Datos($ser,$usu,$pass,$base);
     $rol = $_SESSION[ROL];
+
+    if($rol == "3"){
+        // Ningún usuario básico puede entrar a administración
+        echo("<script>location.href='cliente.php'</script>");
+        exit();
+    }
 }
 if (isset($_POST['editar_nick']) && !empty($_POST['editar_nick'])) {
     update_usuarios($conexion, $_POST['editar_nick'], $_POST['editar_password'], $_POST['editar_nombre'], $_POST['editar_apellidos'], $_POST['editar_dni'], $_POST['editar_rol']);
@@ -43,6 +50,12 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     }
 
     switch($action) {
+        case 'mostrar_perfil' :
+            echo mostrar_perfil_administracion($conexion);
+            break;
+        case 'editar_perfil' :
+            echo editar_usuario($conexion, $_SESSION[usuario]);
+            break;
         case 'mostrar_usuarios' :
             mostrar_usuarios($conexion);
             break;
@@ -52,16 +65,6 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'eliminar_usuario' :
             eliminar_usuario($conexion, $usuario);
             mostrar_usuarios($conexion);
-            break;
-        case 'mostrar_permisos' :
-            mostrar_permisos($conexion);
-            break;
-        case 'editar_permiso' :
-            editar_permiso($conexion, $permiso);
-            break;
-        case 'eliminar_permiso' :
-            eliminar_permiso($conexion, $permiso);
-            mostrar_permisos($conexion);
             break;
         case 'mostrar_roles' :
             mostrar_roles($conexion);
@@ -129,7 +132,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Perfil</a></li>
+                <li><a onclick="mostrar_perfil_administracion();" href="#">Perfil</a></li>
                 <li><a href="login.php">Cerrar sesión</a></li>
             </ul>
             <form class="navbar-form navbar-right">

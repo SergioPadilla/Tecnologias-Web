@@ -1,7 +1,14 @@
 <!DOCTYPE>
 <Head>
-    <?php require_once ("Configuracion/config.php") ?>
-    <?php require_once ("PHP/libreria.php") ?>
+    <?php
+    require_once ("Configuracion/config.php");
+    require_once ("PHP/libreria.php");
+
+    $mensaje = "";
+    if (isset($_POST['actualizar_mensaje']) && !empty($_POST['actualizar_mensaje'])) {
+        $mensaje = $_POST['actualizar_mensaje'];
+    }
+    ?>
     <title>ROWHARD</title>
     <link rel="stylesheet" type="text/css" href="CSS/estilo.css">
     <script src="JS/ejercicio.js"></script>
@@ -32,7 +39,9 @@
             ?>
         </div>
         <div id="mensaje_informativo">
-            MENSAJE INFORMATIVO
+            <?php
+            $mensaje
+            ?>
         </div>
     </div>
 

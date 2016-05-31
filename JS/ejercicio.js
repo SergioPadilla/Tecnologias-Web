@@ -170,23 +170,36 @@ function mostrar_recursos() {
     });
 }
 
+/**
+ * Perfiles
+ */
 function mostrar_perfil() {
     $.post( "cliente.php", { action: "mostrar_perfil"} ,function( data ) {
         $( "#tabla" ).html(data);
     });
 }
 
-
-
-function mostrar_colas() {
-    $('.nav li').removeClass("active");
-    $.post( "cliente.php", { action: "mostrar_colas"} ,function( data ) {
+function mostrar_perfil_administracion() {
+    $.post( "administracion.php", { action: "mostrar_perfil"} ,function( data ) {
         $( "#tabla" ).html(data);
     });
 }
 
 function editar_perfil() {
     $.post( "cliente.php", { action: "editar_perfil"} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function editar_perfil_administracion() {
+    $.post( "administracion.php", { action: "editar_perfil"} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function mostrar_colas() {
+    $('.nav li').removeClass("active");
+    $.post( "cliente.php", { action: "mostrar_colas"} ,function( data ) {
         $( "#tabla" ).html(data);
     });
 }
