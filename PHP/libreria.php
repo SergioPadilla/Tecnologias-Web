@@ -86,7 +86,7 @@ function mostrarColas(){
 
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["codigo_usuario"]."</td><td>".$reg["nombre"]."</td><td>".$reg["lugar"]."</td>";
+            $cadena .= "<td>".$reg["codigo_usuario"]."</td><td>".$reg["nombre"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora"]."</td>";
             $cadena .= "</tr>\n";
         }
 
@@ -559,11 +559,30 @@ function editar_perfil($conexion, $usuario) {
 }
 
 function solicitar_turno($conexion, $codigo_recurso, $nick){
-    $sql = "INSERT INTO colas (codigo, nick) VALUES ('" . $codigo_recurso . "','" . $nick . "')";
+    /**
+     * Calculo el código de usuario formado por 4 primera letras del nombre de recurso + 4 últimos digitos de s DNI
+     */
+    $sql = 'SELECT nombre FROM recursos WHERE codigo="'.$codigo_recurso.'"';
+    $conexion->consulta($sql);
+    if($conexion->numero_filas() != 0) {
+        $reg = $conexion->extraer_registro();
+        $nombre = $reg["nombre"];
+        $codigo = substr($nombre,0,4);
+
+        $sql = 'SELECT dni FROM usuarios WHERE nick="'.$nick.'"';
+        $conexion->consulta($sql);
+        if($conexion->numero_filas() != 0) {
+            $reg = $conexion->extraer_registro();
+            $dni = $reg["dni"];
+            $codigo .= substr($dni,4);
+        }
+    }
+    $sql = "INSERT INTO colas (codigo_recurso, nick, codigo_usuario) VALUES ('" . $codigo_recurso . "','" . $nick . "','" . $codigo . "')";
     $exito = $conexion->ejecuta($sql);
 
-    if ($exito)
-        echo "<script>alert(\"Registro realizado con exito.\")</script>";
+    if ($exito) {
+        echo "<script>alert(\"Registro realizado con exito. Sú código es: ".$codigo." \")</script>";
+    }
     else
         echo "<script>alert(\"No puedes apuntarte a este recurso.\")</script>";
 

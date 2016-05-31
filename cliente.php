@@ -82,18 +82,6 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 </head>
 
 <body>
-<!--  
-<script>
-    $(function() {
-        $('.nav li a').click(function(e) {
-            e.preventDefault();
-            var $this = $(this);
-            $this.closest('ul').children('li').removeClass('active');
-            $this.parent().addClass('active');
-        });
-    });
-</script>
--->
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">

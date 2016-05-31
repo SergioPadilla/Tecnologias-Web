@@ -10,7 +10,7 @@
     <link href="CSS/bootstrap.min.css" rel="stylesheet">
 </Head>
 
-<Body onload="setInterval('location.reload()',1000)">
+<Body onload="setInterval('location.reload()',7000)">
     <!-- Cabecera -->
     <div class="cabecera">
             <img id="logo" src="imagenes/logo.png" ALT="rowhard" align="middle">
