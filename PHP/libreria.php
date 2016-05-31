@@ -218,7 +218,7 @@ function mostrar_colas($conexion) {
 
 function mostrar_recursos($conexion) {
     /**
-     * Muestra los recursos disponibles para el usuario
+     * Muestra los recursos disponibles para el usuario (cliente.php)
      */
     $cadena = "<h2 class=\"sub-header\">Recursos</h2>";
     $cadena .= "<div class=\"table-responsive\">";
@@ -570,7 +570,7 @@ function eliminar_rol($conexion, $rol) {
  * Gestión recursos
  */
 
-function mostrar_recursos_admin($conexion) {
+function mostrar_recursos_admin($conexion, $rol, $nick) {
     /**
      * Muestra todos los recursos disponibles
      */
@@ -584,17 +584,23 @@ function mostrar_recursos_admin($conexion) {
     $cadena .= "<th>Descripción</th>";
     $cadena .= "<th>Lugar</th>";
     $cadena .= "<th>Hora de comienzo</th>";
+    $cadena .= "<th>Creador</th>";
     $cadena .= "<th>Opciones</th>";
     $cadena .= "</tr>";
     $cadena .= "</thead>";
     $cadena .= "<tbody>";
 
-    $sql = 'SELECT * FROM recursos';
+    if($rol == "2") {
+        $sql = 'SELECT * FROM recursos WHERE nick ="'. $nick.'"';
+    }
+    else {
+        $sql = 'SELECT * FROM recursos';
+    }
     $conexion->consulta($sql);
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["codigo"]."</td><td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><span  onclick=\"  editar_recurso('" . $reg["codigo"] . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span onclick=\"  eliminar_recurso('".$reg["codigo"]."'); \"  id=\"glyphicon\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td>".$reg["codigo"]."</td><td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td>".$reg["nick"]."</td><td><span  onclick=\"  editar_recurso('" . $reg["codigo"] . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span onclick=\"  eliminar_recurso('".$reg["codigo"]."'); \"  id=\"glyphicon\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }

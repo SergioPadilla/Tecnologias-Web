@@ -84,7 +84,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             mostrar_roles($conexion);
             break;
         case 'mostrar_recursos_admin' :
-            mostrar_recursos_admin($conexion);
+            mostrar_recursos_admin($conexion, $rol, $_SESSION[USUARIO]);
             break;
         case 'editar_recurso' :
             editar_recurso($conexion, $recurso);
