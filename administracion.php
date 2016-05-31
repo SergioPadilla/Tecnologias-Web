@@ -104,6 +104,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'crear_usuario' :
             echo crear_usuario_form();
             break;
+        case 'pantalla_turnos' :
+            echo pantalla_turnos();
+            break;
     }
 }
 ?>
@@ -169,6 +172,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
                 }
                 ?>
                 <li onclick='mostrar_recursos_admin()'><a href="#">Recursos</a></li>
+                <li onclick='pantalla_turnos()'><a href="#">Pantalla de turnos</a></li>
 
                 <?php
                 if ($rol == "2")

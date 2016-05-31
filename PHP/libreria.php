@@ -863,4 +863,24 @@ function solicitar_turno($conexion, $codigo_recurso, $nick){
         echo "<script>alert(\"No puedes apuntarte a este recurso.\")</script>";
 
 }
+
+function pantalla_turnos(){
+    /**
+     * Muestra un formulario para cargar un mensaje en la pantalla de turnos
+     */
+    $cadena = "<h2 class=\"sub-header\">Escribe el mensaje para mostrar en la pantalla de turnos</h2>";
+    $cadena .= "<form name='form_pantalla_turnos' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\" onsubmit='cargar_mensaje_pantalla_turnos()'>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Mensaje</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"mensaje_pantalla_turnos\" class=\"form-control\" placeholder=\"Mensaje\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Enviar</button>";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "</form>";
+    
+    echo $cadena;
+}
 ?>

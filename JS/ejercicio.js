@@ -234,3 +234,22 @@ function crear_usuario() {
         $( "#tabla" ).html(data);
     });
 }
+
+function pantalla_turnos() {
+    $.post( "administracion.php", { action: "pantalla_turnos"}, function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function cargar_mensaje_pantalla_turnos() {
+    var mensaje = document.forms["form_pantalla_turnos"]["mensaje_pantalla_turnos"].value;
+    $.post( "index.php", { actualizar_mensaje: "PRUEBA"},function() {
+            alert( "success" );
+        })
+        .done(function() {
+            alert( "second success" );
+        })
+        .fail(function() {
+            alert( "error" );
+        })
+}
