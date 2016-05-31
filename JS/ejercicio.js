@@ -33,6 +33,19 @@ function validarEditarPerfil() {
     }
 }
 
+function validarCrearUsuario() {
+    var pass = document.forms["form_crear_usuario"]["crear_password"].value;
+    var pass2 = document.forms["form_crear_usuario"]["crear_password_2"].value;
+    var dni = document.forms["form_crear_usuario"]["crear_dni"].value;
+
+    if(pass != pass2){
+        document.getElementById("mensaje_error").innerHTML = "Las contraseñas no coinciden";
+        return false;
+    } else {
+        return validarDNI(dni);
+    }
+}
+
 function validarDNI(dni) {
     var numero;
     var letr;
@@ -212,6 +225,12 @@ function solicitar_turno(codigo_recurso) {
 
 function crear_recurso() {
     $.post( "administracion.php", { action: "crear_recurso"}, function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function crear_usuario() {
+    $.post( "administracion.php", { action: "crear_usuario"}, function( data ) {
         $( "#tabla" ).html(data);
     });
 }

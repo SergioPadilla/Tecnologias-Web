@@ -36,6 +36,9 @@ if (isset($_POST['editar_recurso_nombre']) && !empty($_POST['editar_recurso_nomb
 if (isset($_POST['crear_recurso_nombre'])) {
     crear_recurso($conexion, $_POST['crear_recurso_nombre'], $_POST['crear_recurso_descripcion'], $_POST['crear_recurso_lugar'], $_POST['crear_recurso_hora'], $_SESSION[USUARIO]);
 }
+if (isset($_POST['crear_nick'])) {
+    crear_usuario($conexion, $_POST['crear_nick'], $_POST['crear_password'], $_POST['crear_nombre'], $_POST['crear_apellidos'], $_POST['crear_dni'], $_POST['crear_rol']);
+}
 
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
@@ -92,6 +95,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             break;
         case 'crear_recurso' :
             echo crear_recurso_form();
+            break;
+        case 'crear_usuario' :
+            echo crear_usuario_form();
             break;
     }
 }

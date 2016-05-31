@@ -56,6 +56,9 @@ class Servidor_Base_Datos{
 /********************************************************************************************/
 
 function mostrarColas(){
+    /**
+     * Muestra una tabla con las colas a las que está apuntado un usuario
+     */
     $ser=NOMBRE_SERVIDOR;
     $usu=USUARIO_BD;
     $pass=PASS_BD;
@@ -256,6 +259,9 @@ function mostrar_recursos($conexion) {
  */
 
 function mostrar_usuarios($conexion) {
+    /**
+     * Muestra una tabla con todos los usuarios del sistema
+     */
     $cadena = "<h2 class=\"sub-header\">Usuarios</h2>";
     $cadena .= "<div class=\"table-responsive\">";
     $cadena .= "<table class=\"table table-striped\">";
@@ -285,6 +291,8 @@ function mostrar_usuarios($conexion) {
     $cadena .= "</table>";
     $cadena .= "<p id=\"prueba\"></p>";
     $cadena .= "</div>";
+
+    $cadena .= "<button class='crear_nuevo' onclick='crear_usuario()'>Crear nuevo usuario</button>";
 
     echo $cadena;
 }
@@ -359,6 +367,12 @@ function editar_usuario($conexion, $usuario) {
 }
 
 function update_usuarios($conexion, $nick, $password, $nombre, $apellidos, $dni, $rol) {
+    /**
+     * Modifica un usuario
+     *
+     * in:
+     *    Datos a modificar
+     */
     $passwordmd5 = md5($password);
     $sql = "UPDATE usuarios
             SET password=\"" . $passwordmd5 . "\", nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\", rol=\"" . $rol . "\"
@@ -368,10 +382,92 @@ function update_usuarios($conexion, $nick, $password, $nombre, $apellidos, $dni,
 }
 
 function eliminar_usuario($conexion, $nick) {
+    /**
+     * Función para eliminar usuario
+     *
+     * in:
+     *   $nick = nick del usuario a borrar
+     */
     $sql = "DELETE FROM usuarios
             WHERE nick=\"" . $nick . "\"";
     $conexion->consulta($sql);
     echo "<script>alert(\"Eliminado con éxito.\")</script>";
+}
+
+function crear_usuario_form() {
+    /**
+     * Muestra un formulario crear un usuario
+     */
+    $mensaje="";
+
+    $cadena = "<form name='form_crear_usuario' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\" onsubmit='return validarCrearUsuario()'>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Nick</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"crear_nick\" class=\"form-control\" placeholder=\"Nick\" maxlength=\"20\" required >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Contraseña</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"crear_password\" class=\"form-control\" placeholder=\"Contraseña\" maxlength=\"20\" required >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Repite contraseña</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"crear_password_2\" class=\"form-control\" placeholder=\"Contraseña\" required maxlength=\"20\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Nombre</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"crear_nombre\" class=\"form-control\" placeholder=\"Nombre\" required >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Apellidos</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"crear_apellidos\" class=\"form-control\" placeholder=\"Apellidos\" required >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">DNI</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"crear_dni\" class=\"form-control\" placeholder=\"DNI\" required >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Rol</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"crear_rol\" class=\"form-control\" placeholder=\"Rol\" required >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Crear</button>";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+
+    $cadena .= "<label id=\"mensaje_error\">". $mensaje ."</label>"; // Para mostrar mensajes de error
+    $cadena .= "</form>";
+
+    echo $cadena;
+}
+
+function crear_usuario($conexion, $nick, $password, $nombre, $apellidos, $dni, $rol){
+    /**
+     * Función para crear un usuario
+     */
+    $password_md5 = md5($password);
+    $sql = "INSERT INTO usuarios (nick, password, nombre, apellidos, dni, rol) VALUES ('" . $nick . "','" . $password_md5 . "','" . $nombre . "','" . $apellidos . "','" . $dni . "','" . $rol . "')";
+    $exito = $conexion->ejecuta($sql);
+
+    if ($exito) {
+        echo "<script>alert(\"Usuario creado con éxito\")</script>";
+    }
+    else
+        echo "<script>alert(\"Usuario ya existe\")</script>";
 }
 
 
@@ -380,6 +476,9 @@ function eliminar_usuario($conexion, $nick) {
  */
 
 function mostrar_roles($conexion) {
+    /**
+     * Muestra una tabla con todos los roles
+     */
     $cadena = "<h2 class=\"sub-header\">Roles</h2>";
     $cadena .= "<div class=\"table-responsive\">";
     $cadena .= "<table class=\"table table-striped\">";
@@ -445,6 +544,13 @@ function editar_rol($conexion, $rol) {
 }
 
 function update_roles($conexion, $rol, $descripcion) {
+    /**
+     * Función para modificar un rol
+     *
+     * in:
+     *    $rol = rol que modifica
+     *    $descripcion = nueva descripcion
+     */
     $sql = "UPDATE roles
             SET descripcion=\"" . $descripcion . "\"
             WHERE rol=\"" . $rol . "\"";
@@ -453,16 +559,194 @@ function update_roles($conexion, $rol, $descripcion) {
 }
 
 function eliminar_rol($conexion, $rol) {
+    /**
+     * Función para eliminar un rol
+     */
     $sql = "DELETE FROM roles
             WHERE rol=\"" . $rol . "\"";
     $conexion->consulta($sql);
     echo "<script>alert(\"Eliminado con éxito.\")</script>";
 }
 
+/**
+ * Gestión recursos
+ */
+
+function mostrar_recursos_admin($conexion) {
+    /**
+     * Muestra todos los recursos disponibles
+     */
+    $cadena = "<h2 class=\"sub-header\">Recursos</h2>";
+    $cadena .= "<div class=\"table-responsive\">";
+    $cadena .= "<table class=\"table table-striped\">";
+    $cadena .= "<thead>";
+    $cadena .= "<tr>";
+    $cadena .= "<th>Código</th>";
+    $cadena .= "<th>Nombre</th>";
+    $cadena .= "<th>Descripción</th>";
+    $cadena .= "<th>Lugar</th>";
+    $cadena .= "<th>Hora de comienzo</th>";
+    $cadena .= "<th>Opciones</th>";
+    $cadena .= "</tr>";
+    $cadena .= "</thead>";
+    $cadena .= "<tbody>";
+
+    $sql = 'SELECT * FROM recursos';
+    $conexion->consulta($sql);
+    if($conexion->numero_filas() != 0){
+        while($reg=$conexion->extraer_registro()) {
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$reg["codigo"]."</td><td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><span  onclick=\"  editar_recurso('" . $reg["codigo"] . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span onclick=\"  eliminar_recurso('".$reg["codigo"]."'); \"  id=\"glyphicon\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "</tr>\n";
+        }
+    }
+    $cadena .= "</tbody>";
+    $cadena .= "</table>";
+    $cadena .= "</div>";
+
+    $cadena .= "<button class='crear_nuevo' onclick='crear_recurso()'>Crear nuevo recurso</button>";
+
+    echo $cadena;
+}
+
+function editar_recurso($conexion, $recurso) {
+    /**
+     * Muestra un formulario para editar un recurso
+     */
+    $sql = "SELECT * FROM recursos WHERE codigo = \"" . $recurso . "\" ";
+    $conexion->consulta($sql);
+    if($conexion->numero_filas() != 0){
+        $reg=$conexion->extraer_registro();
+    }
+
+    $cadena = "<form class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Nombre</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_recurso_nombre\" class=\"form-control\" placeholder=\"Nombre\" value=\"". $reg['nombre'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Descripción</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_recurso_descripcion\" class=\"form-control\" placeholder=\"Descripción\" value=\"". $reg['descripcion'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Lugar</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_recurso_lugar\" class=\"form-control\" placeholder=\"Lugar\" value=\"". $reg['lugar'] ."\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Fecha y Hora de comienzo</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_recurso_hora\" class=\"form-control\" placeholder=\"Formato: YYYY-MM-DD hh-mm-ss\" value=\"". $reg['hora_comienzo'] ."\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Editar</button>";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "</form>";
+
+    echo $cadena;
+}
+
+function update_recursos($conexion, $codigo, $nombre, $descripcion, $lugar, $hora, $nick) {
+    /**
+     * Modifica un recuso
+     *
+     * in:
+     *    datos a modificar
+     */
+    $sql = "UPDATE recursos
+            SET nombre=\"" . $nombre . "\", descripcion=\"" . $descripcion . "\", lugar=\"" . $lugar . "\", hora_comienzo=\"" . $hora . "\", nick=\"" . $nick . "\"
+            WHERE codigo=\"" . $codigo . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Editado con éxito.\")</script>";
+}
+
+function eliminar_recurso($conexion, $recurso) {
+    /**
+     * Elimina recuso
+     *
+     * in:
+     *    $recurso = codigo de recurso
+     */
+    $sql = "DELETE FROM recursos
+            WHERE codigo=\"" . $recurso . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Eliminado con éxito.\")</script>";
+}
+
+function crear_recurso_form() {
+    /**
+     * Muestra un formulario para crear un recurso
+     */
+    $cadena = "<form class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Nombre</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"crear_recurso_nombre\" class=\"form-control\" placeholder=\"Nombre\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Descripción</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"crear_recurso_descripcion\" class=\"form-control\" placeholder=\"Descripción\" >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Lugar</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"crear_recurso_lugar\" class=\"form-control\" placeholder=\"Lugar\" >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Fecha y Hora de comienzo</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"crear_recurso_hora\" class=\"form-control\" placeholder=\"Formato: YYYY-MM-DD hh-mm-ss\" >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Crear</button>";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "</form>";
+
+    echo $cadena;
+}
+
+function crear_recurso($conexion, $nombre, $descripcion, $lugar, $hora, $nick) {
+    /**
+     * Función para crear un recurso
+     */
+    $sql = "INSERT INTO recursos (nombre, descripcion, lugar, hora_comienzo, nick) VALUES ('" . $nombre . "','" . $descripcion . "','" . $lugar . "','" . $hora . "','" . $nick . "')";
+    $exito = $conexion->ejecuta($sql);
+
+    if ($exito) {
+        $codigo = "";
+        $sql = "SELECT codigo FROM recursos WHERE nick = \"" . $nick . "\" AND nombre = \"" . $nombre . "\" AND descripcion = \"" . $descripcion . "\" AND lugar = \"" . $lugar . "\"";
+        $conexion->consulta($sql);
+        if($conexion->numero_filas() != 0){
+            $reg=$conexion->extraer_registro();
+            $codigo = $reg['codigo'];
+        }
+        echo "<script>alert(\"Registro realizado con exito. Sú código de recurso es: ".$codigo." \")</script>";
+    }
+    else
+        echo "<script>alert(\"Error al registrar el recurso\")</script>";
+}
+
+
+/**
+ *
+ */
 function editar_perfil($conexion, $usuario) {
     /**
      * Muestra un formulario que permite editar los datos del usuario
-     * 
+     *
      * in:
      *   $usuario: nick del usuario
      */
@@ -551,159 +835,5 @@ function solicitar_turno($conexion, $codigo_recurso, $nick){
     else
         echo "<script>alert(\"No puedes apuntarte a este recurso.\")</script>";
 
-}
-
-
-/**
- * Gestión recursos
- */
-
-function mostrar_recursos_admin($conexion) {
-    /**
-     * Muestra todos los recursos disponibles
-     */
-    $cadena = "<h2 class=\"sub-header\">Recursos</h2>";
-    $cadena .= "<div class=\"table-responsive\">";
-    $cadena .= "<table class=\"table table-striped\">";
-    $cadena .= "<thead>";
-    $cadena .= "<tr>";
-    $cadena .= "<th>Código</th>";
-    $cadena .= "<th>Nombre</th>";
-    $cadena .= "<th>Descripción</th>";
-    $cadena .= "<th>Lugar</th>";
-    $cadena .= "<th>Hora de comienzo</th>";
-    $cadena .= "<th>Opciones</th>";
-    $cadena .= "</tr>";
-    $cadena .= "</thead>";
-    $cadena .= "<tbody>";
-
-    $sql = 'SELECT * FROM recursos';
-    $conexion->consulta($sql);
-    if($conexion->numero_filas() != 0){
-        while($reg=$conexion->extraer_registro()) {
-            $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["codigo"]."</td><td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><span  onclick=\"  editar_recurso('" . $reg["codigo"] . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span onclick=\"  eliminar_recurso('".$reg["codigo"]."'); \"  id=\"glyphicon\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
-            $cadena .= "</tr>\n";
-        }
-    }
-    $cadena .= "</tbody>";
-    $cadena .= "</table>";
-    $cadena .= "</div>";
-
-    $cadena .= "<button id='crear_nuevo' onclick='crear_recurso()'>Crear nuevo recurso</button>";
-
-    echo $cadena;
-}
-
-function editar_recurso($conexion, $recurso) {
-    /**
-     * Muestra un formulario para editar un recurso
-     */
-    $sql = "SELECT * FROM recursos WHERE codigo = \"" . $recurso . "\" ";
-    $conexion->consulta($sql);
-    if($conexion->numero_filas() != 0){
-        $reg=$conexion->extraer_registro();
-    }
-
-    $cadena = "<form class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<label class=\"col-sm-2 control-label\">Nombre</label>";
-    $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"editar_recurso_nombre\" class=\"form-control\" placeholder=\"Nombre\" value=\"". $reg['nombre'] ."\">";
-    $cadena .= "</div>";
-    $cadena .= "</div>";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<label class=\"col-sm-2 control-label\">Descripción</label>";
-    $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"editar_recurso_descripcion\" class=\"form-control\" placeholder=\"Descripción\" value=\"". $reg['descripcion'] ."\">";
-    $cadena .= "</div>";
-    $cadena .= "</div>";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<label class=\"col-sm-2 control-label\">Lugar</label>";
-    $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"editar_recurso_lugar\" class=\"form-control\" placeholder=\"Lugar\" value=\"". $reg['lugar'] ."\">";
-    $cadena .= "</div>";
-    $cadena .= "</div>";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<label class=\"col-sm-2 control-label\">Fecha y Hora de comienzo</label>";
-    $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"editar_recurso_hora\" class=\"form-control\" placeholder=\"Formato: YYYY-MM-DD hh-mm-ss\" value=\"". $reg['hora_comienzo'] ."\">";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
-    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Editar</button>";
-    $cadena .= "</div>";
-    $cadena .= "</div>";
-    $cadena .= "</form>";
-
-    echo $cadena;
-}
-
-function update_recursos($conexion, $codigo, $nombre, $descripcion, $lugar, $hora, $nick) {
-    $sql = "UPDATE recursos
-            SET nombre=\"" . $nombre . "\", descripcion=\"" . $descripcion . "\", lugar=\"" . $lugar . "\", hora_comienzo=\"" . $hora . "\", nick=\"" . $nick . "\"
-            WHERE codigo=\"" . $codigo . "\"";
-    $conexion->consulta($sql);
-    echo "<script>alert(\"Editado con éxito.\")</script>";
-}
-
-function eliminar_recurso($conexion, $recurso) {
-    $sql = "DELETE FROM recursos
-            WHERE codigo=\"" . $recurso . "\"";
-    $conexion->consulta($sql);
-    echo "<script>alert(\"Eliminado con éxito.\")</script>";
-}
-
-function crear_recurso_form() {
-    $cadena = "<form class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<label class=\"col-sm-2 control-label\">Nombre</label>";
-    $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"crear_recurso_nombre\" class=\"form-control\" placeholder=\"Nombre\">";
-    $cadena .= "</div>";
-    $cadena .= "</div>";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<label class=\"col-sm-2 control-label\">Descripción</label>";
-    $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"crear_recurso_descripcion\" class=\"form-control\" placeholder=\"Descripción\" >";
-    $cadena .= "</div>";
-    $cadena .= "</div>";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<label class=\"col-sm-2 control-label\">Lugar</label>";
-    $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"crear_recurso_lugar\" class=\"form-control\" placeholder=\"Lugar\" >";
-    $cadena .= "</div>";
-    $cadena .= "</div>";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<label class=\"col-sm-2 control-label\">Fecha y Hora de comienzo</label>";
-    $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"crear_recurso_hora\" class=\"form-control\" placeholder=\"Formato: YYYY-MM-DD hh-mm-ss\" >";
-    $cadena .= "</div>";
-    $cadena .= "</div>";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
-    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Crear</button>";
-    $cadena .= "</div>";
-    $cadena .= "</div>";
-    $cadena .= "</form>";
-
-    echo $cadena;
-}
-
-function crear_recurso($conexion, $nombre, $descripcion, $lugar, $hora, $nick) {
-    $sql = "INSERT INTO recursos (nombre, descripcion, lugar, hora_comienzo, nick) VALUES ('" . $nombre . "','" . $descripcion . "','" . $lugar . "','" . $hora . "','" . $nick . "')";
-    $exito = $conexion->ejecuta($sql);
-
-    if ($exito) {
-        $codigo = "";
-        $sql = "SELECT codigo FROM recursos WHERE nick = \"" . $nick . "\" AND nombre = \"" . $nombre . "\" AND descripcion = \"" . $descripcion . "\" AND lugar = \"" . $lugar . "\"";
-        $conexion->consulta($sql);
-        if($conexion->numero_filas() != 0){
-            $reg=$conexion->extraer_registro();
-            $codigo = $reg['codigo'];
-        }
-        echo "<script>alert(\"Registro realizado con exito. Sú código de recurso es: ".$codigo." \")</script>";
-    }
-    else
-        echo "<script>alert(\"Error al registrar el recurso\")</script>";
 }
 ?>
