@@ -99,9 +99,6 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
                 <li><a onclick="mostrar_perfil();" href="#">Perfil</a></li>
                 <li><a href="login.php">Cerrar sesión</a></li>
             </ul>
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Buscar...">
-            </form>
         </div>
     </div>
 </nav>

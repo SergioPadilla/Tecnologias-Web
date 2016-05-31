@@ -135,9 +135,6 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
                 <li><a onclick="mostrar_perfil_administracion();" href="#">Perfil</a></li>
                 <li><a href="login.php">Cerrar sesión</a></li>
             </ul>
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Búsqueda...">
-            </form>
         </div>
     </div>
 </nav>
@@ -150,7 +147,6 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
                 <?php
                 if ($rol == "1") {
                     echo "<li onclick='mostrar_usuarios()'><a href=\"#\">Usuarios </a></li>";
-                    echo "<li onclick='mostrar_permisos()'><a href=\"#\">Permisos</a></li>";
                     echo "<li onclick='mostrar_roles()'><a href=\"#\">Roles</a></li>";
                 }
                 ?>
@@ -163,8 +159,6 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             </ul>
         </div>
         <div id = "tabla" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
-
 
         </div>
     </div>

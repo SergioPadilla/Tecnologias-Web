@@ -262,7 +262,6 @@ function mostrar_usuarios($conexion) {
     $cadena .= "<thead>";
     $cadena .= "<tr>";
     $cadena .= "<th>Nick</th>";
-    $cadena .= "<th>Password</th>";
     $cadena .= "<th>Nombre</th>";
     $cadena .= "<th>Apellidos</th>";
     $cadena .= "<th>DNI</th>";
@@ -278,7 +277,7 @@ function mostrar_usuarios($conexion) {
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["password"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span  onclick=\"  editar_usuario('".$reg["nick"]."'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span onclick=\"  eliminar_usuario('".$reg["nick"]."'); \"  id=\"glyphicon\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span  onclick=\"  editar_usuario('".$reg["nick"]."'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span onclick=\"  eliminar_usuario('".$reg["nick"]."'); \"  id=\"glyphicon\" class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }
@@ -339,6 +338,12 @@ function editar_usuario($conexion, $usuario) {
     $cadena .= "<label class=\"col-sm-2 control-label\">DNI</label>";
     $cadena .= "<div class=\"col-sm-10\">";
     $cadena .= "<input name=\"editar_dni\" class=\"form-control\" placeholder=\"DNI\" value=\"" . $reg['dni'] . "\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Rol</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_rol\" class=\"form-control\" placeholder=\"Rol\" value=\"" . $reg['rol'] . "\">";
     $cadena .= "</div>";
     $cadena .= "</div>";
     $cadena .= "<div class=\"form-group\">";
