@@ -138,7 +138,7 @@ function mostrar_perfil($conexion) {
     echo $cadena;
 }
 
-function mostrar_perfil_administracion($conexion) {
+function mostrar_perfil_administracion($conexion, $rol) {
     /**
      * Muestra el perfil del usuario
      */
@@ -151,7 +151,9 @@ function mostrar_perfil_administracion($conexion) {
     $cadena .= "<th>Nombre</th>";
     $cadena .= "<th>Apellidos</th>";
     $cadena .= "<th>DNI</th>";
-    $cadena .= "<th>Rol</th>";
+    if($rol != "2") {
+        $cadena .= "<th>Rol</th>";
+    }
     $cadena .= "<th>Opciones</th>";
     $cadena .= "</tr>";
     $cadena .= "</thead>";
@@ -163,7 +165,11 @@ function mostrar_perfil_administracion($conexion) {
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td>".$reg["rol"]."</td><td><span onclick='editar_perfil_administracion()' class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td>";
+            if($rol != "2") {
+                $cadena .= "<td>" . $reg["rol"] . "</td>";
+            }
+            $cadena .= "<td><span onclick='editar_perfil_administracion()' class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }
@@ -295,7 +301,7 @@ function mostrar_usuarios($conexion) {
     echo $cadena;
 }
 
-function editar_usuario($conexion, $usuario) {
+function editar_usuario($conexion, $usuario, $rol) {
     /**
      * Muestra un formulario que permite editar los datos del usuario
      *
@@ -309,7 +315,7 @@ function editar_usuario($conexion, $usuario) {
         $reg=$conexion->extraer_registro();
     }
 
-    $cadena = "<form class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
+    $cadena = "<form name='form_editar_perfil' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\" onsubmit='return validarEditarPerfil()'>";
     $cadena .= "<div class=\"form-group\">";
     $cadena .= "<label class=\"col-sm-2 control-label\">Nick</label>";
     $cadena .= "<div class=\"col-sm-10\">";
@@ -346,12 +352,14 @@ function editar_usuario($conexion, $usuario) {
     $cadena .= "<input name=\"editar_dni\" class=\"form-control\" placeholder=\"DNI\" value=\"" . $reg['dni'] . "\">";
     $cadena .= "</div>";
     $cadena .= "</div>";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<label class=\"col-sm-2 control-label\">Rol</label>";
-    $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"editar_rol\" class=\"form-control\" placeholder=\"Rol\" value=\"" . $reg['rol'] . "\">";
-    $cadena .= "</div>";
-    $cadena .= "</div>";
+    if($rol != "2") {
+        $cadena .= "<div class=\"form-group\">";
+        $cadena .= "<label class=\"col-sm-2 control-label\">Rol</label>";
+        $cadena .= "<div class=\"col-sm-10\">";
+        $cadena .= "<input name=\"editar_rol\" class=\"form-control\" placeholder=\"Rol\" value=\"" . $reg['rol'] . "\">";
+        $cadena .= "</div>";
+        $cadena .= "</div>";
+    }
     $cadena .= "<div class=\"form-group\">";
     $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
     $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Editar</button>";
@@ -374,6 +382,21 @@ function update_usuarios($conexion, $nick, $password, $nombre, $apellidos, $dni,
     $passwordmd5 = md5($password);
     $sql = "UPDATE usuarios
             SET password=\"" . $passwordmd5 . "\", nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\", rol=\"" . $rol . "\"
+            WHERE nick=\"" . $nick . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Editado con éxito.\")</script>";
+}
+
+function update_usuarios_profesional($conexion, $nick, $password, $nombre, $apellidos, $dni) {
+    /**
+     * Modifica un usuario para profesional
+     *
+     * in:
+     *    Datos a modificar sin rol
+     */
+    $passwordmd5 = md5($password);
+    $sql = "UPDATE usuarios
+            SET password=\"" . $passwordmd5 . "\", nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\"
             WHERE nick=\"" . $nick . "\"";
     $conexion->consulta($sql);
     echo "<script>alert(\"Editado con éxito.\")</script>";

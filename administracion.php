@@ -22,7 +22,12 @@ else {
     }
 }
 if (isset($_POST['editar_nick']) && !empty($_POST['editar_nick'])) {
-    update_usuarios($conexion, $_POST['editar_nick'], $_POST['editar_password'], $_POST['editar_nombre'], $_POST['editar_apellidos'], $_POST['editar_dni'], $_POST['editar_rol']);
+    if($rol != 2) {
+        update_usuarios($conexion, $_POST['editar_nick'], $_POST['editar_password'], $_POST['editar_nombre'], $_POST['editar_apellidos'], $_POST['editar_dni'], $_POST['editar_rol']);
+    }
+    else{
+        update_usuarios_profesional($conexion, $_POST['editar_nick'], $_POST['editar_password'], $_POST['editar_nombre'], $_POST['editar_apellidos'], $_POST['editar_dni']);
+    }
 }
 if(isset($_POST['editar_permiso']) && !empty($_POST['editar_permiso'])) {
     update_permisos($conexion, $_POST['editar_permiso'], $_POST['editar_permiso_descripcion']);
@@ -58,10 +63,10 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
     switch($action) {
         case 'mostrar_perfil' :
-            echo mostrar_perfil_administracion($conexion);
+            echo mostrar_perfil_administracion($conexion, $rol);
             break;
         case 'editar_perfil' :
-            echo editar_usuario($conexion, $_SESSION[usuario]);
+            echo editar_usuario($conexion, $_SESSION[usuario], $rol);
             break;
         case 'mostrar_usuarios' :
             mostrar_usuarios($conexion);
