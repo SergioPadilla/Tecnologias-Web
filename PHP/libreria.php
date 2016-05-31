@@ -636,6 +636,45 @@ function mostrar_recursos_admin($conexion, $rol, $nick) {
     echo $cadena;
 }
 
+function mostrar_recursos_profesional($conexion, $nick) {
+    /**
+     * Muestra todos los recursos del profesional para gestionarlos
+     */
+    $cadena = "<h2 class=\"sub-header\">Gestionar recursos</h2>";
+    $cadena .= "<div class=\"table-responsive\">";
+    $cadena .= "<table class=\"table table-striped\">";
+    $cadena .= "<thead>";
+    $cadena .= "<tr>";
+    $cadena .= "<th>Código</th>";
+    $cadena .= "<th>Nombre</th>";
+    $cadena .= "<th>Descripción</th>";
+    $cadena .= "<th>Lugar</th>";
+    $cadena .= "<th>Hora de comienzo</th>";
+    $cadena .= "<th>Creador</th>";
+    $cadena .= "<th>Opciones</th>";
+    $cadena .= "</tr>";
+    $cadena .= "</thead>";
+    $cadena .= "<tbody>";
+
+    $sql = 'SELECT * FROM recursos WHERE nick ="'. $nick.'"';
+    $conexion->consulta($sql);
+    if($conexion->numero_filas() != 0){
+        while($reg=$conexion->extraer_registro()) {
+            $codigo = $reg["codigo"];
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$codigo."</td><td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td>".$reg["nick"]."</td><td><button onclick='gestionar_recurso(\"$codigo\");' class='button'>Gestionar</button></td>";
+            $cadena .= "</tr>\n";
+        }
+    }
+    $cadena .= "</tbody>";
+    $cadena .= "</table>";
+    $cadena .= "</div>";
+
+    $cadena .= "<button class='crear_nuevo' onclick='crear_recurso()'>Crear nuevo recurso</button>";
+
+    echo $cadena;
+}
+
 function editar_recurso($conexion, $recurso) {
     /**
      * Muestra un formulario para editar un recurso
@@ -764,6 +803,12 @@ function crear_recurso($conexion, $nombre, $descripcion, $lugar, $hora, $nick) {
     }
     else
         echo "<script>alert(\"Error al registrar el recurso\")</script>";
+}
+
+function gestionar_recurso($conexion, $codigo_recurso) {
+    //Ver como mostrar la cola de usuarios en el recurso
+    $sql = "SELECT * FROM recursos WHERE codigo = \"" . $codigo_recurso . "\" ";
+    $conexion->consulta($sql);
 }
 
 

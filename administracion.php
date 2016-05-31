@@ -91,6 +91,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'mostrar_recursos_admin' :
             mostrar_recursos_admin($conexion, $rol, $_SESSION[USUARIO]);
             break;
+        case 'mostrar_recursos_profesional' :
+            mostrar_recursos_profesional($conexion, $_SESSION[USUARIO]);
+            break;
         case 'editar_recurso' :
             editar_recurso($conexion, $recurso);
             break;
@@ -106,6 +109,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             break;
         case 'pantalla_turnos' :
             echo pantalla_turnos();
+            break;
+        case 'gestionar_recurso' :
+            echo gestionar_recurso($conexion, $_POST[codigo_recurso]);
             break;
     }
 }
@@ -176,7 +182,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
                 <?php
                 if ($rol == "2")
-                    echo "<li><a href=\"#\">Colas</a></li>";
+                    echo "<li><a onclick='mostrar_recursos_profesional() href=\"#\">Gestionar recursos</a></li>";
                 ?>
             </ul>
         </div>

@@ -158,6 +158,12 @@ function mostrar_recursos_admin() {
     });
 }
 
+function mostrar_recursos_admin() {
+    $.post( "administracion.php", { action: "mostrar_recursos_profesional"} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
 function editar_recurso(recurso) {
     $.post( "administracion.php", { action: "editar_recurso", recurso:recurso} ,function( data ) {
         $("#tabla").html("");
@@ -252,4 +258,10 @@ function cargar_mensaje_pantalla_turnos() {
         .fail(function() {
             alert( "error" );
         })
+}
+
+function gestionar_recurso(codigo_recurso) {
+    $.post( "administracion.php", { action: "gestionar_recurso", codigo_recurso: codigo_recurso} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
 }
