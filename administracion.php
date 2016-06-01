@@ -182,7 +182,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
                 <?php
                 if ($rol == "2")
-                    echo "<li><a onclick='mostrar_recursos_profesional() href=\"#\">Gestionar recursos</a></li>";
+                    echo "<li> onclick='mostrar_recursos_profesional() <a href=\"#\">Gestionar recursos</a></li>";
                 ?>
             </ul>
         </div>
