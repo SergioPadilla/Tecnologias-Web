@@ -1,3 +1,17 @@
+<?php
+    require_once("Configuracion/config.php");
+    require_once('PHP/libreria.php');
+
+    /**
+     * Establecemos la conexion con la base de datos
+     */
+    $ser=NOMBRE_SERVIDOR;
+    $usu=USUARIO_BD;
+    $pass=PASS_BD;
+    $base=NOMBRE_BD;
+
+    $conexion = new Servidor_Base_Datos($ser,$usu,$pass,$base);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +23,13 @@
     <meta name="author" content="">
     <link rel="icon" href="imagenes/logo.png">
 
-    <title>Sticky Footer Navbar Template for Bootstrap</title>
+    <title><?php echo TITULO_VENTANA?></title>
+
+    <!-- JS -->
+    <script type="text/javascript" src="JS/ejercicio.js"></script>
+
+    <!-- CSS -->
+    <link href="CSS/estilo.css" rel="stylesheet">
 
     <!-- Bootstrap core CSS -->
     <link href="CSS/bootstrap.min.css" rel="stylesheet">
@@ -43,42 +63,56 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand" href="#"><?php echo TITULO_INDEX ?></a>
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li class="dropdown-header">Nav header</li>
-                        <li><a href="#">Separated link</a></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div><!--/.nav-collapse -->
     </div>
 </nav>
 
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header">
-        <h1>Sticky footer with fixed navbar</h1>
+        <h1>¡APÚNTATE A LOS RECURSOS QUE TENEMOS DISPONIBLES!</h1>
     </div>
-    <p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body > .container</code>.</p>
-    <p>Back to <a href="../sticky-footer">the default sticky footer</a> minus the navbar.</p>
+        <?php
+            /**
+             * Muestra todos los recursos disponibles
+             */
+            $cadena .= "<div class=\"table-responsive\">";
+            $cadena .= "<table class=\"table table-striped\">";
+            $cadena .= "<thead>";
+            $cadena .= "<tr>";
+            $cadena .= "<th>Nombre</th>";
+            $cadena .= "<th>Descripción</th>";
+            $cadena .= "<th>Lugar</th>";
+            $cadena .= "<th>Hora de comienzo</th>";
+            $cadena .= "<th>Opciones</th>";
+            $cadena .= "</tr>";
+            $cadena .= "</thead>";
+            $cadena .= "<tbody>";
+
+            $sql = 'SELECT * FROM recursos';
+            $conexion->consulta($sql);
+            if($conexion->numero_filas() != 0){
+                while($reg=$conexion->extraer_registro()) {
+                    $cadena .= "<tr>";
+                    $cadena .= "<td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><button onclick='cargarLogin()' class='button'>Solicitar turno</button></td>";
+                    $cadena .= "</tr>\n";
+                }
+            }
+            $cadena .= "</tbody>";
+            $cadena .= "</table>";
+            $cadena .= "</div>";
+
+            echo $cadena;
+        ?>
 </div>
 
 <footer class="footer">
     <div class="container">
-        <p class="text-muted">Place sticky footer content here.</p>
+        <ul class="autores">
+            <li>&copy; Sergio Padilla López</li>
+            <li>&copy; Javier Álvarez Castillo</li>
+        </ul>
     </div>
 </footer>
 

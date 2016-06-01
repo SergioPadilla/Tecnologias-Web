@@ -265,3 +265,7 @@ function gestionar_recurso(codigo_recurso) {
         $( "#tabla" ).html(data);
     });
 }
+
+function cargarLogin() {
+    location.href='login.php'
+}
