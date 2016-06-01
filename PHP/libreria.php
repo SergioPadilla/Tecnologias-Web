@@ -99,6 +99,9 @@ function mostrarColas(){
 
         echo $cadena;
     }
+    else{
+        echo "<h2>No hay turnos pendientes</h2>";
+    }
 }
 
 function mostrar_perfil($conexion) {
