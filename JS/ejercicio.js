@@ -158,7 +158,7 @@ function mostrar_recursos_admin() {
     });
 }
 
-function mostrar_recursos_admin() {
+function mostrar_recursos_profesional() {
     $.post( "administracion.php", { action: "mostrar_recursos_profesional"} ,function( data ) {
         $( "#tabla" ).html(data);
     });

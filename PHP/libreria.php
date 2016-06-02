@@ -735,6 +735,18 @@ function update_recursos($conexion, $codigo, $nombre, $descripcion, $lugar, $hor
     echo "<script>alert(\"Editado con éxito.\")</script>";
 }
 
+function cargar_mensaje($conexion, $codigo, $mensaje) {
+    /**
+     * Modifica un recuso
+     *
+     * in:
+     *    datos a modificar
+     */
+    $sql = "UPDATE recursos SET mensaje=\"" . $mensaje . "\" WHERE codigo=\"" . $codigo . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Editado con éxito.\")</script>";
+}
+
 function eliminar_recurso($conexion, $recurso) {
     /**
      * Elimina recuso
@@ -912,12 +924,12 @@ function solicitar_turno($conexion, $codigo_recurso, $nick){
 
 }
 
-function pantalla_turnos(){
+function pantalla_turnos_form(){
     /**
      * Muestra un formulario para cargar un mensaje en la pantalla de turnos
      */
     $cadena = "<h2 class=\"sub-header\">Escribe el mensaje para mostrar en la pantalla de turnos</h2>";
-    $cadena .= "<form name='form_pantalla_turnos' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\" onsubmit='cargar_mensaje_pantalla_turnos()'>";
+    $cadena .= "<form name='form_pantalla_turnos' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
     $cadena .= "<div class=\"form-group\">";
     $cadena .= "<label class=\"col-sm-2 control-label\">Mensaje</label>";
     $cadena .= "<div class=\"col-sm-10\">";

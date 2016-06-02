@@ -44,6 +44,10 @@ if (isset($_POST['crear_recurso_nombre'])) {
 if (isset($_POST['crear_nick'])) {
     crear_usuario($conexion, $_POST['crear_nick'], $_POST['crear_password'], $_POST['crear_nombre'], $_POST['crear_apellidos'], $_POST['crear_dni'], $_POST['crear_rol']);
 }
+if(isset($_POST['mensaje_pantalla_turnos']) && !empty($_POST['mensaje_pantalla_turnos'])) {
+    // Hay que ver como coger el codigo recurso
+    cargar_mensaje($conexion, $codigo_recurso, $_POST['mensaje_pantalla_turnos']);
+}
 
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
@@ -108,7 +112,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             echo crear_usuario_form();
             break;
         case 'pantalla_turnos' :
-            echo pantalla_turnos();
+            echo pantalla_turnos_form();
             break;
         case 'gestionar_recurso' :
             echo gestionar_recurso($conexion, $_POST[codigo_recurso]);
@@ -178,11 +182,13 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
                 }
                 ?>
                 <li onclick='mostrar_recursos_admin()'><a href="#">Recursos</a></li>
+
+                <!-- Este ira fuera de aqui -->
                 <li onclick='pantalla_turnos()'><a href="#">Pantalla de turnos</a></li>
 
                 <?php
                 if ($rol == "2")
-                    echo "<li> onclick='mostrar_recursos_profesional() <a href=\"#\">Gestionar recursos</a></li>";
+                    echo "<li onclick='mostrar_recursos_profesional()' ><a href=\"#\">Gestionar recursos</a></li>";
                 ?>
             </ul>
         </div>
