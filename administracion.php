@@ -36,7 +36,8 @@ if(isset($_POST['editar_rol']) && !empty($_POST['editar_rol'])) {
     update_roles($conexion, $_POST['editar_rol'], $_POST['editar_rol_descripcion']);
 }
 if (isset($_POST['editar_recurso_nombre']) && !empty($_POST['editar_recurso_nombre'])) {
-    update_recursos($conexion, $_POST['editar_recurso_nombre'], $_POST['editar_recurso_descripcion'], $_POST['editar_recurso_lugar'], $_POST['editar_recurso_hora'], $_POST['editar_recurso_nick']);
+    // TODO: Hay que ver como coger el codigo recurso
+    update_recursos($conexion, $codigo_recurso, $_POST['editar_recurso_nombre'], $_POST['editar_recurso_descripcion'], $_POST['editar_recurso_lugar'], $_POST['editar_recurso_hora'], $_POST['editar_recurso_nick']);
 }
 if (isset($_POST['crear_recurso_nombre'])) {
     crear_recurso($conexion, $_POST['crear_recurso_nombre'], $_POST['crear_recurso_descripcion'], $_POST['crear_recurso_lugar'], $_POST['crear_recurso_hora'], $_SESSION[USUARIO]);
@@ -45,7 +46,7 @@ if (isset($_POST['crear_nick'])) {
     crear_usuario($conexion, $_POST['crear_nick'], $_POST['crear_password'], $_POST['crear_nombre'], $_POST['crear_apellidos'], $_POST['crear_dni'], $_POST['crear_rol']);
 }
 if(isset($_POST['mensaje_pantalla_turnos']) && !empty($_POST['mensaje_pantalla_turnos'])) {
-    // Hay que ver como coger el codigo recurso
+    // TODO: Hay que ver como coger el codigo recurso
     cargar_mensaje($conexion, $codigo_recurso, $_POST['mensaje_pantalla_turnos']);
 }
 
@@ -67,16 +68,16 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
     switch($action) {
         case 'mostrar_perfil' :
-            echo mostrar_perfil_administracion($conexion, $rol);
+            mostrar_perfil_administracion($conexion, $rol);
             break;
         case 'editar_perfil' :
-            echo editar_usuario($conexion, $_SESSION[usuario], $rol);
+            editar_usuario($conexion, $_SESSION[USUARIO], $rol);
             break;
         case 'mostrar_usuarios' :
             mostrar_usuarios($conexion);
             break;
         case 'editar_usuario' :
-            editar_usuario($conexion, $usuario);
+            editar_usuario($conexion, $usuario, $rol);
             break;
         case 'eliminar_usuario' :
             eliminar_usuario($conexion, $usuario);
@@ -106,16 +107,16 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             mostrar_recursos($conexion);
             break;
         case 'crear_recurso' :
-            echo crear_recurso_form();
+            crear_recurso_form();
             break;
         case 'crear_usuario' :
-            echo crear_usuario_form();
+            crear_usuario_form();
             break;
         case 'pantalla_turnos' :
-            echo pantalla_turnos_form();
+            pantalla_turnos_form();
             break;
         case 'gestionar_recurso' :
-            echo gestionar_recurso($conexion, $_POST[codigo_recurso]);
+            gestionar_recurso($conexion, $_POST["codigo_recurso"]);
             break;
     }
 }
