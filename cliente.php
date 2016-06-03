@@ -36,19 +36,19 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
     switch($action) {
         case 'mostrar_perfil' :
-            echo mostrar_perfil($conexion);
+            mostrar_perfil($conexion);
             break;
         case 'mostrar_recursos' :
-            echo mostrar_recursos($conexion);
+            mostrar_recursos($conexion);
             break;
         case 'mostrar_colas' :
-            echo mostrar_colas($conexion);
+            mostrar_colas($conexion);
             break;
         case 'editar_perfil' :
-            echo editar_perfil($conexion, $_SESSION[usuario]);
+            editar_perfil($conexion, $_SESSION[USUARIO]);
             break;
         case 'solicitar_turno' :
-            echo solicitar_turno($conexion, $_POST[codigo_recurso], $_SESSION[usuario]);
+            solicitar_turno($conexion, $_POST['codigo_recurso'], $_SESSION[USUARIO]);
             break;
     }
 }

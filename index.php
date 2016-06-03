@@ -65,13 +65,18 @@
             </button>
             <a class="navbar-brand" href="#"><?php echo TITULO_INDEX ?></a>
         </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="login.php">Iniciar Sesión</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
 
 <!-- Begin page content -->
 <div class="container">
     <div class="page-header">
-        <h1>¡APÚNTATE A LOS RECURSOS QUE TENEMOS DISPONIBLES!</h1>
+        <h1>¡ACCEDE A LOS RECURSOS QUE TENEMOS DISPONIBLES!</h1>
     </div>
         <?php
             /**
@@ -115,7 +120,6 @@
         </ul>
     </div>
 </footer>
-
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
