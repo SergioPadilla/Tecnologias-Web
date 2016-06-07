@@ -28,8 +28,8 @@ else {
     }
 }
 
-if (isset($_POST['editar_nick']) && !empty($_POST['editar_nick'])) {
-    update_usuarios($conexion, $_POST['editar_nick'], $_POST['editar_password'], $_POST['editar_nombre'], $_POST['editar_apellidos'], $_POST['editar_dni']);
+if (isset($_POST['editar_nombre']) && !empty($_POST['editar_nombre'])) {
+    update_perfil_usuario($conexion, $_SESSION[USUARIO], $_POST['editar_nombre'], $_POST['editar_apellidos'], $_POST['editar_dni']);
 }
 
 if(isset($_POST['action']) && !empty($_POST['action'])) {

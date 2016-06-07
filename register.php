@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $dni = $_POST['dni'];
     $apellidos = $_POST['apellidos'];
 
-    $sql="INSERT INTO usuarios (nick, password, nombre, apellidos, dni, rol) VALUES ('".$nick."','".$password."','".$nombre."','".$apellidos."','".$dni."',1)";
+    $sql="INSERT INTO usuarios (nick, password, nombre, apellidos, dni) VALUES ('".$nick."','".$password."','".$nombre."','".$apellidos."','".$dni."')";
     $exito = $conexion->ejecuta($sql);
 
     if($exito)
