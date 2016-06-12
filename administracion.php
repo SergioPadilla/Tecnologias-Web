@@ -49,6 +49,9 @@ if(isset($_POST['mensaje_pantalla_turnos']) && !empty($_POST['mensaje_pantalla_t
     // TODO: Hay que ver como coger el codigo recurso
     cargar_mensaje($conexion, $codigo_recurso, $_POST['mensaje_pantalla_turnos']);
 }
+if(isset($_POST['editar_prioridad']) && !empty($_POST['editar_prioridad'])) {
+    update_prioridad($conexion, $_POST['editar_prioridad'], $_POST['editar_nick'], $_POST['editar_codigo_recurso']);
+}
 
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
@@ -119,10 +122,10 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             gestionar_recurso($conexion, $_POST["codigo_recurso"]);
             break;
         case 'editar_estado' :
-            editar_estado($conexion, $_POST['nick']);
+            editar_estado($conexion, $_POST['nick'], $_POST['estado'], $_POST['codigo_recurso']);
             break;
         case 'editar_prioridad' :
-            editar_prioridad($conexion, $_POST['nick']);
+            editar_prioridad($conexion, $_POST['nick'], $_POST['prioridad'], $_POST['codigo_recurso']);
             break;
     }
 }

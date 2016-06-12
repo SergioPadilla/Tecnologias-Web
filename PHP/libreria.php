@@ -855,7 +855,7 @@ function gestionar_recurso($conexion, $codigo_recurso) {
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["estado"]." <span  onclick=\"  editar_estado('" . $reg["nick"] . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span> </td><td>".$reg["prioridad"]."  <span  onclick=\"  editar_prioridad('" . $reg["nick"] . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["estado"]." <span  onclick=\"  editar_estado('" . $reg["nick"] . "','" . $reg["estado"] . "','" . $codigo_recurso . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span> </td><td>".$reg["prioridad"]."  <span  onclick=\"  editar_prioridad('" . $reg["nick"] . "','" . $reg["prioridad"] . "','" . $codigo_recurso . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }
@@ -967,43 +967,74 @@ function pantalla_turnos_form(){
     echo $cadena;
 }
 
-function editar_estado($conexion, $nick) {
-    $cadena = "<div class=\"dropdown\">";
-    $cadena .= "<button class=\"btn btn-default dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">";
-    $cadena .= "Estado";
-    $cadena .= "<span class=\"caret\"></span>";
-    $cadena .= "</button>";
-    $cadena .= "<ul class=\"dropdown-menu\">";
-    $cadena .= "<li><a href=\"#\">1</a></li>";
-    $cadena .= "<li><a href=\"#\">2</a></li>";
-    $cadena .= "<li><a href=\"#\">3</a></li>";
-    $cadena .= "</ul>";
+function editar_estado($conexion, $nick, $estado, $codigo_recurso) {
+
+    $cadena = "<form name='form_editar_estado' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Estado</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<label class=\"radio-inline\">";
+    $cadena .= "<input type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio1\" value=\"option1\"> 1";
+    $cadena .= "</label>";
+    $cadena .= "<label class=\"radio-inline\">";
+    $cadena .= "<input type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\"> 2";
+    $cadena .= "</label>";
+    $cadena .= "<label class=\"radio-inline\">";
+    $cadena .= "<input type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio3\" value=\"option3\"> 3";
+    $cadena .= "</label>";
+
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Editar</button>";
     $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "</form>";
 
     echo $cadena;
 }
 
-function editar_prioridad($conexion, $nick) {
-    $cadena = "<div class=\"dropdown\">";
-    $cadena .= "<button class=\"btn btn-default dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">";
-    $cadena .= "Prioridad";
-    $cadena .= "<span class=\"caret\"></span>";
-    $cadena .= "</button>";
-    $cadena .= "<ul class=\"dropdown-menu\">";
-    $cadena .= "<li><a href=\"#\">1</a></li>";
-    $cadena .= "<li><a href=\"#\">2</a></li>";
-    $cadena .= "<li><a href=\"#\">3</a></li>";
-    $cadena .= "<li><a href=\"#\">4</a></li>";
-    $cadena .= "<li><a href=\"#\">5</a></li>";
-    $cadena .= "<li><a href=\"#\">6</a></li>";
-    $cadena .= "<li><a href=\"#\">7</a></li>";
-    $cadena .= "<li><a href=\"#\">8</a></li>";
-    $cadena .= "<li><a href=\"#\">9</a></li>";
-    $cadena .= "<li><a href=\"#\">10</a></li>";
-    $cadena .= "</ul>";
+function editar_prioridad($conexion, $nick, $prioridad, $codigo_recurso) {
+    $cadena = "<form name='form_editar_prioridad' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Prioridad</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<select name='editar_prioridad' class=\"form-control\">";
+    $cadena .= "<option>1</option>";
+    $cadena .= "<option>2</option>";
+    $cadena .= "<option>3</option>";
+    $cadena .= "<option>4</option>";
+    $cadena .= "<option>5</option>";
+    $cadena .= "<option>6</option>";
+    $cadena .= "<option>7</option>";
+    $cadena .= "<option>8</option>";
+    $cadena .= "<option>9</option>";
+    $cadena .= "<option>10</option>";
+    $cadena .= "</select>";
+    $cadena .= "<input type=\"hidden\" name=\"editar_nick\" value=\"" . $nick . " >";
+    $cadena .= "<input type=\"hidden\" name=\"editar_codigo_recurso\" value=\"" . $codigo_recurso . " >";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Editar</button>";
     $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "</form>";
 
     echo $cadena;
+}
+
+function update_prioridad($conexion, $prioridad, $nick, $codigo_recurso) {
+    /**
+     * Modifica la prioridad de un usuario en un recurso
+     *
+     * in:
+     *    datos a modificar
+     */
+    $sql = "UPDATE colas
+            SET prioridad=\"" . $prioridad . "\"
+            WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $nick . "\"";
+    echo $sql;
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Editado con éxito.\")</script>";
 }
 
 ?>
