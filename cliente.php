@@ -50,6 +50,11 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'solicitar_turno' :
             solicitar_turno($conexion, $_POST['codigo_recurso'], $_SESSION[USUARIO]);
             break;
+        case 'dar_de_baja' :
+            eliminar_usuario($conexion, $_SESSION[USUARIO]);
+            echo("<script>location.href='index.php'</script>");
+            exit();
+            break;
     }
 }
 ?>

@@ -134,9 +134,10 @@ function mostrar_perfil($conexion) {
     }
     $cadena .= "</tbody>";
     $cadena .= "</table>";
-    $cadena .= "<p id=\"prueba\"></p>";
     $cadena .= "</div>";
 
+    $cadena .= "<button class='dar_de_baja' onclick='dar_de_baja()'>Dar de baja</button>";
+    
     echo $cadena;
 }
 
@@ -177,8 +178,9 @@ function mostrar_perfil_administracion($conexion, $rol) {
     }
     $cadena .= "</tbody>";
     $cadena .= "</table>";
-    $cadena .= "<p id=\"prueba\"></p>";
     $cadena .= "</div>";
+
+    $cadena .= "<button class='dar_de_baja' onclick='dar_de_baja_administracion()'>Dar de baja</button>";
 
     echo $cadena;
 }
@@ -213,7 +215,6 @@ function mostrar_colas($conexion) {
 
         $cadena .= "</tbody>";
         $cadena .= "</table>";
-        $cadena .= "<p id=\"prueba\"></p>";
         $cadena .= "</div>";
 
         echo $cadena;

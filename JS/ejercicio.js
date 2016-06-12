@@ -210,6 +210,18 @@ function editar_perfil() {
     });
 }
 
+function dar_de_baja() {
+    $.post( "cliente.php", { action: "dar_de_baja"} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function dar_de_baja_administracion() {
+    $.post( "administracion.php", { action: "dar_de_baja"} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
 function editar_perfil_administracion() {
     $.post( "administracion.php", { action: "editar_perfil"} ,function( data ) {
         $( "#tabla" ).html(data);

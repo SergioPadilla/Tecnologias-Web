@@ -124,6 +124,11 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'editar_prioridad' :
             editar_prioridad($conexion, $_POST['nick']);
             break;
+        case 'dar_de_baja' :
+            eliminar_usuario($conexion, $_SESSION[USUARIO]);
+            echo("<script>location.href='index.php'</script>");
+            exit();
+            break;
     }
 }
 ?>
