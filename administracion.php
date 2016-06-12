@@ -118,6 +118,12 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'gestionar_recurso' :
             gestionar_recurso($conexion, $_POST["codigo_recurso"]);
             break;
+        case 'editar_estado' :
+            editar_estado($conexion, $_POST['nick']);
+            break;
+        case 'editar_prioridad' :
+            editar_prioridad($conexion, $_POST['nick']);
+            break;
     }
 }
 ?>
@@ -145,6 +151,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script type="text/javascript" src="JS/ejercicio.js"></script>
+    <script type="text/javascript" src="JS/dropdown.js"></script>
    
 
 </head>

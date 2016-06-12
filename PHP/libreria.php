@@ -834,9 +834,37 @@ function crear_recurso($conexion, $nombre, $descripcion, $lugar, $hora, $nick) {
 }
 
 function gestionar_recurso($conexion, $codigo_recurso) {
-    //Ver como mostrar la cola de usuarios en el recurso
-    $sql = "SELECT * FROM recursos WHERE codigo = \"" . $codigo_recurso . "\" ";
+
+    /**
+     * Muestra todos los recursos del profesional para gestionarlos
+     */
+    $cadena = "<h2 class=\"sub-header\">Gestionar recurso</h2>";
+    $cadena .= "<div class=\"table-responsive\">";
+    $cadena .= "<table class=\"table table-striped\">";
+    $cadena .= "<thead>";
+    $cadena .= "<tr>";
+    $cadena .= "<th>Usuario</th>";
+    $cadena .= "<th>Estado</th>";
+    $cadena .= "<th>Prioridad</th>";
+    $cadena .= "</tr>";
+    $cadena .= "</thead>";
+    $cadena .= "<tbody>";
+
+    $sql = "SELECT nick, estado, prioridad FROM colas WHERE codigo_recurso = \"" . $codigo_recurso . "\" ORDER BY id ";
     $conexion->consulta($sql);
+    if($conexion->numero_filas() != 0){
+        while($reg=$conexion->extraer_registro()) {
+            $cadena .= "<tr>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["estado"]." <span  onclick=\"  editar_estado('" . $reg["nick"] . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span> </td><td>".$reg["prioridad"]."  <span  onclick=\"  editar_prioridad('" . $reg["nick"] . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "</tr>\n";
+        }
+    }
+    $cadena .= "</tbody>";
+    $cadena .= "</table>";
+    $cadena .= "</div>";
+
+    echo $cadena;
+
 }
 
 
@@ -938,4 +966,44 @@ function pantalla_turnos_form(){
     
     echo $cadena;
 }
+
+function editar_estado($conexion, $nick) {
+    $cadena = "<div class=\"dropdown\">";
+    $cadena .= "<button class=\"btn btn-default dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">";
+    $cadena .= "Estado";
+    $cadena .= "<span class=\"caret\"></span>";
+    $cadena .= "</button>";
+    $cadena .= "<ul class=\"dropdown-menu\">";
+    $cadena .= "<li><a href=\"#\">1</a></li>";
+    $cadena .= "<li><a href=\"#\">2</a></li>";
+    $cadena .= "<li><a href=\"#\">3</a></li>";
+    $cadena .= "</ul>";
+    $cadena .= "</div>";
+
+    echo $cadena;
+}
+
+function editar_prioridad($conexion, $nick) {
+    $cadena = "<div class=\"dropdown\">";
+    $cadena .= "<button class=\"btn btn-default dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">";
+    $cadena .= "Prioridad";
+    $cadena .= "<span class=\"caret\"></span>";
+    $cadena .= "</button>";
+    $cadena .= "<ul class=\"dropdown-menu\">";
+    $cadena .= "<li><a href=\"#\">1</a></li>";
+    $cadena .= "<li><a href=\"#\">2</a></li>";
+    $cadena .= "<li><a href=\"#\">3</a></li>";
+    $cadena .= "<li><a href=\"#\">4</a></li>";
+    $cadena .= "<li><a href=\"#\">5</a></li>";
+    $cadena .= "<li><a href=\"#\">6</a></li>";
+    $cadena .= "<li><a href=\"#\">7</a></li>";
+    $cadena .= "<li><a href=\"#\">8</a></li>";
+    $cadena .= "<li><a href=\"#\">9</a></li>";
+    $cadena .= "<li><a href=\"#\">10</a></li>";
+    $cadena .= "</ul>";
+    $cadena .= "</div>";
+
+    echo $cadena;
+}
+
 ?>
