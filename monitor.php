@@ -48,7 +48,7 @@
                 /**
                  * Muestra los mensajes de los recursos si los hay
                  */
-                $cadena .= "<div class=\"table-responsive\">";
+                $cadena = "<div class=\"table-responsive\">";
                 $cadena .= "<table class=\"table table-striped\">";
                 $cadena .= "<tbody>";
 

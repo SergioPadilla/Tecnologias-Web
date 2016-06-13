@@ -266,8 +266,8 @@ function crear_usuario() {
     });
 }
 
-function pantalla_turnos() {
-    $.post( "administracion.php", { action: "pantalla_turnos"}, function( data ) {
+function pantalla_turnos(codigo_recurso) {
+    $.post( "administracion.php", { action: "pantalla_turnos", codigo_recurso:codigo_recurso}, function( data ) {
         $( "#tabla" ).html(data);
     });
 }
@@ -327,6 +327,12 @@ function modificar_password_cliente() {
 
 function info(codigo_recurso) {
     $.post( "cliente.php", { action: "info", codigo_recurso: codigo_recurso} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function avanza_turno(codigo_recurso) {
+    $.post( "administracion.php", { action: "avanza_turno", codigo_recurso:codigo_recurso}, function( data ) {
         $( "#tabla" ).html(data);
     });
 }

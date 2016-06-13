@@ -82,7 +82,7 @@
             /**
              * Muestra todos los recursos disponibles
              */
-            $cadena .= "<div class=\"table-responsive\">";
+            $cadena = "<div class=\"table-responsive\">";
             $cadena .= "<table class=\"table table-striped\">";
             $cadena .= "<thead>";
             $cadena .= "<tr>";

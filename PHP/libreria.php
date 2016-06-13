@@ -919,7 +919,7 @@ function crear_recurso_form() {
     $cadena .= "<div class=\"form-group\">";
     $cadena .= "<label class=\"col-sm-2 control-label\">Fecha y Hora de comienzo</label>";
     $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"crear_recurso_hora\" class=\"form-control\" placeholder=\"Formato: YYYY-MM-DD hh-mm-ss\" >";
+    $cadena .= "<input name=\"crear_recurso_hora\" class=\"form-control\" placeholder=\"Formato: YYYY-MM-DD hh:mm:ss\" >";
     $cadena .= "</div>";
     $cadena .= "</div>";
     $cadena .= "<div class=\"form-group\">";
@@ -938,7 +938,6 @@ function crear_recurso($conexion, $nombre, $descripcion, $lugar, $hora, $nick) {
      */
     $sql = "INSERT INTO recursos (nombre, descripcion, lugar, hora_comienzo, nick) VALUES ('" . $nombre . "','" . $descripcion . "','" . $lugar . "','" . $hora . "','" . $nick . "')";
     $exito = $conexion->ejecuta($sql);
-
     if ($exito) {
         $codigo = "";
         $sql = "SELECT codigo FROM recursos WHERE nick = \"" . $nick . "\" AND nombre = \"" . $nombre . "\" AND descripcion = \"" . $descripcion . "\" AND lugar = \"" . $lugar . "\"";
@@ -970,7 +969,7 @@ function gestionar_recurso($conexion, $codigo_recurso) {
     $cadena .= "</thead>";
     $cadena .= "<tbody>";
 
-    $sql = "SELECT nick, estado, prioridad FROM colas WHERE codigo_recurso = \"" . $codigo_recurso . "\" ORDER BY id ";
+    $sql = "SELECT nick, estado, prioridad FROM colas WHERE codigo_recurso = \"" . $codigo_recurso . "\" AND estado != \"3\" ORDER BY estado DESC, prioridad DESC";
     $conexion->consulta($sql);
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
@@ -981,10 +980,11 @@ function gestionar_recurso($conexion, $codigo_recurso) {
     }
     $cadena .= "</tbody>";
     $cadena .= "</table>";
+    $cadena .= "<button class=\"crear_nuevo\"  onclick=\"pantalla_turnos('" . $codigo_recurso . "')\">Pantalla de turnos</button>";
+    $cadena .= "<button class=\"crear_nuevo\"  onclick=\"avanza_turno('" . $codigo_recurso . "')\">Avanza turno</button>";
     $cadena .= "</div>";
 
     echo $cadena;
-
 }
 
 function editar_perfil($conexion, $usuario) {
@@ -1075,7 +1075,7 @@ function dar_baja_recurso($conexion, $codigo_recurso, $nick) {
     echo "<script>alert(\"Eliminado con éxito.\")</script>";
 }
 
-function pantalla_turnos_form(){
+function pantalla_turnos_form($codigo_recurso){
     /**
      * Muestra un formulario para cargar un mensaje en la pantalla de turnos
      */
@@ -1083,6 +1083,7 @@ function pantalla_turnos_form(){
     $cadena .= "<form name='form_pantalla_turnos' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
     $cadena .= "<div class=\"form-group\">";
     $cadena .= "<label class=\"col-sm-2 control-label\">Mensaje</label>";
+    $cadena .= "<input type=\"hidden\" name=\"mensaje_pantalla_turnos_codigo_recurso\" value=\"" . $codigo_recurso . "\">";
     $cadena .= "<div class=\"col-sm-10\">";
     $cadena .= "<input name=\"mensaje_pantalla_turnos\" class=\"form-control\" placeholder=\"Mensaje\">";
     $cadena .= "<div class=\"form-group\">";
@@ -1203,6 +1204,48 @@ function update_password($conexion, $password, $nick) {
     else{
         echo "<script>alert(\"Error al editar.\")</script>";
     }
+}
+
+function avanza_turno($conexion, $conexion2, $codigo_recurso) {
+    /**
+     * Avanza a los usuarios de un recurso del profesional
+     *
+     * in:
+     *    datos a modificar
+     */
+    $sql = "SELECT nick, estado, prioridad FROM colas WHERE codigo_recurso = \"" . $codigo_recurso . "\" ORDER BY estado DESC, prioridad DESC";
+    $conexion->consulta($sql);
+    $primero = true;
+    $siguiente = false;
+    $dt = new DateTime("now", new DateTimeZone('Europe/Madrid'));
+    $dt = $dt->format('Y-m-d H:i:s');
+
+    while($reg=$conexion->extraer_registro()) {
+        if ($siguiente && $reg["estado"] == "1") {
+            $sql = "UPDATE colas
+                    SET estado=\"2\" ,hora=\"" . $dt . "\" 
+                    WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
+            $conexion2->consulta($sql);
+            $siguiente = false;
+        }
+        if ($reg["estado"] == "2") {
+            $sql = "UPDATE colas
+                    SET estado=\"3\"
+                    WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
+            $conexion2->consulta($sql);
+            $siguiente = true;
+            $primero = false;
+        }
+
+        if ($primero) {
+            $sql = "UPDATE colas
+                    SET estado=\"2\" ,hora=\"" . $dt . "\" 
+                    WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
+            $conexion2->consulta($sql);
+            $primero = false;
+        }
+    }
+    gestionar_recurso($conexion, $codigo_recurso);
 }
 
 ?>
