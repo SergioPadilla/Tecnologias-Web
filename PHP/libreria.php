@@ -500,10 +500,15 @@ function eliminar_usuario($conexion, $nick) {
      * in:
      *   $nick = nick del usuario a borrar
      */
-    $sql = "DELETE FROM usuarios
-            WHERE nick=\"" . $nick . "\"";
-    $conexion->consulta($sql);
-    echo "<script>alert(\"Eliminado con éxito.\")</script>";
+    $sql = "DELETE FROM usuarios WHERE nick=\"" . $nick . "\"";
+    $exito = $conexion->ejecuta($sql);
+
+    if($exito) {
+        echo "<script>alert(\"Editado con éxito.\")</script>";
+    }
+    else{
+        echo "<script>alert(\"Error al editar.\")</script>";
+    }
 }
 
 function crear_usuario_form() {
@@ -584,9 +589,10 @@ function crear_usuario($conexion, $nick, $password, $nombre, $apellidos, $dni, $
 
 
 /**
+ * 
  * Gestión roles
+ * 
  */
-
 function mostrar_roles($conexion) {
     /**
      * Muestra una tabla con todos los roles
@@ -664,11 +670,15 @@ function update_roles($conexion, $rol, $descripcion) {
      *    $rol = rol que modifica
      *    $descripcion = nueva descripcion
      */
-    $sql = "UPDATE roles
-            SET descripcion=\"" . $descripcion . "\"
-            WHERE rol=\"" . $rol . "\"";
-    $conexion->consulta($sql);
-    echo "<script>alert(\"Editado con éxito.\")</script>";
+    $sql = "UPDATE roles SET descripcion=\"" . $descripcion . "\" WHERE rol=\"" . $rol . "\"";
+    $exito = $conexion->ejecuta($sql);
+
+    if($exito) {
+        echo "<script>alert(\"Editado con éxito.\")</script>";
+    }
+    else{
+        echo "<script>alert(\"Error al editar.\")</script>";
+    }
 }
 
 function eliminar_rol($conexion, $rol) {
@@ -818,11 +828,15 @@ function update_recursos($conexion, $codigo, $nombre, $descripcion, $lugar, $hor
      * in:
      *    datos a modificar
      */
-    $sql = "UPDATE recursos
-            SET nombre=\"" . $nombre . "\", descripcion=\"" . $descripcion . "\", lugar=\"" . $lugar . "\", hora_comienzo=\"" . $hora . "\"
-            WHERE codigo=\"" . $codigo . "\"";
-    $conexion->consulta($sql);
-    echo "<script>alert(\"Editado con éxito.\")</script>";
+    $sql = "UPDATE recursos SET nombre=\"" . $nombre . "\", descripcion=\"" . $descripcion . "\", lugar=\"" . $lugar . "\", hora_comienzo=\"" . $hora . "\" WHERE codigo=\"" . $codigo . "\"";
+    $exito = $conexion->ejecuta($sql);
+
+    if($exito) {
+        echo "<script>alert(\"Editado con éxito.\")</script>";
+    }
+    else{
+        echo "<script>alert(\"Error al editar.\")</script>";
+    }
 }
 
 function cargar_mensaje($conexion, $codigo, $mensaje) {
@@ -830,11 +844,17 @@ function cargar_mensaje($conexion, $codigo, $mensaje) {
      * Modifica un recuso
      *
      * in:
-     *    datos a modificar
+     *    mensaje
      */
     $sql = "UPDATE recursos SET mensaje=\"" . $mensaje . "\" WHERE codigo=\"" . $codigo . "\"";
-    $conexion->consulta($sql);
-    echo "<script>alert(\"Editado con éxito.\")</script>";
+    $exito = $conexion->ejecuta($sql);
+
+    if($exito) {
+        echo "<script>alert(\"Editado con éxito.\")</script>";
+    }
+    else{
+        echo "<script>alert(\"Error al editar.\")</script>";
+    }
 }
 
 function eliminar_recurso($conexion, $recurso) {
@@ -844,10 +864,15 @@ function eliminar_recurso($conexion, $recurso) {
      * in:
      *    $recurso = codigo de recurso
      */
-    $sql = "DELETE FROM recursos
-            WHERE codigo=\"" . $recurso . "\"";
-    $conexion->consulta($sql);
-    echo "<script>alert(\"Eliminado con éxito.\")</script>";
+    $sql = "DELETE FROM recursos WHERE codigo=\"" . $recurso . "\"";
+    $exito = $conexion->ejecuta($sql);
+
+    if($exito) {
+        echo "<script>alert(\"Editado con éxito.\")</script>";
+    }
+    else{
+        echo "<script>alert(\"Error al editar.\")</script>";
+    }
 }
 
 function crear_recurso_form() {
