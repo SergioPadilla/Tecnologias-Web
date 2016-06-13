@@ -128,7 +128,7 @@ function mostrar_perfil($conexion, $nick) {
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td><span onclick='editar_perfil()' class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["nombre"]."</td><td>".$reg["apellidos"]."</td><td>".$reg["dni"]."</td><td><span onclick='editar_perfil()' id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }
@@ -172,7 +172,7 @@ function mostrar_perfil_administracion($conexion, $rol) {
             if($rol != "2") {
                 $cadena .= "<td>" . $reg["rol"] . "</td>";
             }
-            $cadena .= "<td><span onclick='editar_perfil_administracion()' class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td><span onclick='editar_perfil_administracion()' id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }
@@ -319,7 +319,7 @@ function editar_usuario($conexion, $usuario, $rol) {
         $reg=$conexion->extraer_registro();
     }
 
-    $cadena = "<form name='form_editar_perfil' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\" onsubmit='return validarEditarPerfil()'>";
+    $cadena = "<form name='form_editar_perfil' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\" onsubmit='return validarEditarPerfilUsuario()'>";
     $cadena .= "<div class=\"form-group\">";
     $cadena .= "<label class=\"col-sm-2 control-label\">Nick</label>";
     $cadena .= "<div class=\"col-sm-10\">";
@@ -372,13 +372,15 @@ function update_usuarios($conexion, $nick, $nombre, $apellidos, $dni, $rol) {
      * in:
      *    Datos a modificar
      */
-    //La contraseña no tiene que modificar aqui, va por separado
-    //$passwordmd5 = md5($password);
-    $sql = "UPDATE usuarios
-            SET nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\", rol=\"" . $rol . "\"
-            WHERE nick=\"" . $nick . "\"";
-    $conexion->consulta($sql);
-    echo "<script>alert(\"Editado con éxito.\")</script>";
+    $sql = "UPDATE usuarios SET nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\", rol=\"" . $rol . "\" WHERE nick=\"" . $nick . "\"";
+    $exito = $conexion->ejecuta($sql);
+    
+    if($exito) {
+        echo "<script>alert(\"Editado con éxito.\")</script>";
+    }
+    else{
+        echo "<script>alert(\"Error al editar.\")</script>";
+    }
 }
 
 function update_perfil_usuario($conexion, $nick, $nombre, $apellidos, $dni) {
@@ -388,10 +390,15 @@ function update_perfil_usuario($conexion, $nick, $nombre, $apellidos, $dni) {
      * in:
      *    Datos a modificar
      */
-    $sql = "UPDATE usuarios SET nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\"
-            WHERE nick=\"" . $nick . "\"";
-    $conexion->consulta($sql);
-    echo "<script>alert(\"Editado con éxito.\")</script>";
+    $sql = "UPDATE usuarios SET nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\" WHERE nick=\"" . $nick . "\"";
+    $exito = $conexion->ejecuta($sql);
+
+    if($exito) {
+        echo "<script>alert(\"Editado con éxito.\")</script>";
+    }
+    else{
+        echo "<script>alert(\"Error al editar.\")</script>";
+    }
 }
 
 function update_usuarios_profesional($conexion, $nick, $nombre, $apellidos, $dni) {
@@ -402,11 +409,15 @@ function update_usuarios_profesional($conexion, $nick, $nombre, $apellidos, $dni
      *    Datos a modificar sin rol
      */
     //$passwordmd5 = md5($password);
-    $sql = "UPDATE usuarios
-            SET nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\"
-            WHERE nick=\"" . $nick . "\"";
-    $conexion->consulta($sql);
-    echo "<script>alert(\"Editado con éxito.\")</script>";
+    $sql = "UPDATE usuarios SET nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\" WHERE nick=\"" . $nick . "\"";
+    $exito = $conexion->ejecuta($sql);
+
+    if($exito) {
+        echo "<script>alert(\"Editado con éxito.\")</script>";
+    }
+    else{
+        echo "<script>alert(\"Error al editar.\")</script>";
+    }
 }
 
 function eliminar_usuario($conexion, $nick) {
@@ -860,10 +871,6 @@ function gestionar_recurso($conexion, $codigo_recurso) {
 
 }
 
-
-/**
- *
- */
 function editar_perfil($conexion, $usuario) {
     /**
      * Muestra un formulario que permite editar los datos del usuario
