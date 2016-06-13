@@ -877,7 +877,7 @@ function editar_perfil($conexion, $usuario) {
     if($conexion->numero_filas() != 0) {
         $reg = $conexion->extraer_registro();
 
-        $cadena = "<form name=\"form_editar_perfil\" class=\"form-horizontal\" action=\"cliente.php\" method=\"post\" onsubmit=\"return validarEditarPerfil()\">";
+        $cadena = "<form name=\"form_editar_perfil\" class=\"form-horizontal\" action=\"cliente.php\" method=\"post\" onsubmit=\"return validarEditarPerfilUsuario()\">";
         $cadena .= "<div class=\"form-group\">";
         $cadena .= "<label class=\"col-sm-2 control-label\">Nombre</label>";
         $cadena .= "<div class=\"col-sm-10\">";

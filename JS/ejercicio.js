@@ -33,6 +33,11 @@ function validarEditarPerfil() {
     }
 }
 
+function validarEditarPerfilUsuario() {
+    var dni = document.forms["form_editar_perfil"]["editar_dni"].value;
+    return validarDNI(dni);
+}
+
 function validarCrearUsuario() {
     var pass = document.forms["form_crear_usuario"]["crear_password"].value;
     var pass2 = document.forms["form_crear_usuario"]["crear_password_2"].value;
