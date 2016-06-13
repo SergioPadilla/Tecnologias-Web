@@ -36,13 +36,13 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
     switch($action) {
         case 'mostrar_perfil' :
-            mostrar_perfil($conexion);
+            mostrar_perfil($conexion, $_SESSION[USUARIO]);
             break;
         case 'mostrar_recursos' :
             mostrar_recursos($conexion);
             break;
         case 'mostrar_colas' :
-            mostrar_colas($conexion);
+            mostrar_colas($conexion, $_SESSION[USUARIO]);
             break;
         case 'editar_perfil' :
             editar_perfil($conexion, $_SESSION[USUARIO]);
@@ -54,6 +54,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             eliminar_usuario($conexion, $_SESSION[USUARIO]);
             echo("<script>location.href='index.php'</script>");
             exit();
+            break;
+        case 'dar_baja_recurso' :
+            dar_baja_recurso($conexion, $_POST["codigo_recurso"], $_SESSION[USUARIO]);
             break;
     }
 }

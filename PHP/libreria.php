@@ -104,7 +104,7 @@ function mostrarColas(){
     }
 }
 
-function mostrar_perfil($conexion) {
+function mostrar_perfil($conexion, $nick) {
     /**
      * Muestra el perfil del usuario
      */
@@ -122,7 +122,7 @@ function mostrar_perfil($conexion) {
     $cadena .= "</thead>";
     $cadena .= "<tbody>";
 
-    $sql = 'SELECT * FROM usuarios WHERE nick="'. $_SESSION[USUARIO].'"';
+    $sql = 'SELECT * FROM usuarios WHERE nick="'. $nick.'"';
     $conexion->consulta($sql);
 
     if($conexion->numero_filas() != 0){
@@ -186,38 +186,39 @@ function mostrar_perfil_administracion($conexion, $rol) {
 }
 
 
-function mostrar_colas($conexion) {
+function mostrar_colas($conexion, $nick) {
     /**
      * Muestra colas del usuario
      */
-    $sql = 'SELECT * FROM colas WHERE nick='.$_SESSION[USUARIO];
+    $sql='SELECT * FROM colas c, recursos r WHERE r.codigo = c.codigo_recurso AND c.nick="'.$nick. '"';
     $conexion->consulta($sql);
 
     if($conexion->numero_filas() != 0){
-        $cadena = "<h2 class=\"sub-header\">Colas</h2>";
-        $cadena .= "<div class=\"table-responsive\">";
-        $cadena .= "<table class=\"table table-striped\">";
-        $cadena .= "<thead>";
-        $cadena .= "<tr>";
-        $cadena .= "<th>Nombre</th>";
-        $cadena .= "<th>Descripción</th>";
-        $cadena .= "<th>Lugar</th>";
-        $cadena .= "<th>Hora de comienzo</th>";
-        $cadena .= "</tr>";
-        $cadena .= "</thead>";
-        $cadena .= "<tbody>";
 
-        while($reg=$conexion->extraer_registro()) {
+            $cadena = "<h2 class=\"sub-header\">Colas</h2>";
+            $cadena .= "<div class=\"table-responsive\">";
+            $cadena .= "<table class=\"table table-striped\">";
+            $cadena .= "<thead>";
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nombre"]."</td><td>".$reg["descripcion"]."</td><td>".$reg["lugar"]."</td><td>".$reg["hora_comienzo"]."</td><td><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>    <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td>";
-            $cadena .= "</tr>\n";
-        }
+            $cadena .= "<th>Nombre</th>";
+            $cadena .= "<th>Descripción</th>";
+            $cadena .= "<th>Lugar</th>";
+            $cadena .= "<th>Hora de comienzo</th>";
+            $cadena .= "</tr>";
+            $cadena .= "</thead>";
+            $cadena .= "<tbody>";
 
-        $cadena .= "</tbody>";
-        $cadena .= "</table>";
-        $cadena .= "</div>";
+            while ($reg = $conexion->extraer_registro()) {
+                $cadena .= "<tr>";
+                $cadena .= "<td>" . $reg["nombre"] . "</td><td>" . $reg["descripcion"] . "</td><td>" . $reg["lugar"] . "</td><td>" . $reg["hora_comienzo"] . "</td><td><button onclick='dar_baja_recurso(".$reg["codigo"].")' class='button'>Dar de baja</button></td>";
+                $cadena .= "</tr>\n";
+            }
 
-        echo $cadena;
+            $cadena .= "</tbody>";
+            $cadena .= "</table>";
+            $cadena .= "</div>";
+
+            echo $cadena;
     } else {
         echo "<h1>NO ESTAS APUNTADO A NINGÚN RECURSO</h1>";
     }
@@ -935,17 +936,26 @@ function solicitar_turno($conexion, $codigo_recurso, $nick){
             $reg = $conexion->extraer_registro();
             $dni = $reg["dni"];
             $codigo .= substr($dni,4);
+        
+            $sql = "INSERT INTO colas (codigo_recurso, nick, codigo_usuario) VALUES ('" . $codigo_recurso . "','" . $nick . "','" . $codigo . "')";
+            $exito = $conexion->ejecuta($sql);
+        
+            if ($exito) {
+                echo "<script>alert(\"Registro realizado con exito. Sú código es: ".$codigo." \")</script>";
+            }
+            else
+                echo "<script>alert(\"No puedes apuntarte a este recurso.\")</script>";
         }
     }
-    $sql = "INSERT INTO colas (codigo_recurso, nick, codigo_usuario) VALUES ('" . $codigo_recurso . "','" . $nick . "','" . $codigo . "')";
-    $exito = $conexion->ejecuta($sql);
+}
 
-    if ($exito) {
-        echo "<script>alert(\"Registro realizado con exito. Sú código es: ".$codigo." \")</script>";
-    }
-    else
-        echo "<script>alert(\"No puedes apuntarte a este recurso.\")</script>";
-
+function dar_baja_recurso($conexion, $codigo_recurso, $nick) {
+    /**
+     * Función para eliminar una fila de las colas
+     */
+    $sql = "DELETE FROM colas WHERE nick=\"" . $nick . "\" AND codigo_recurso=\"" . $codigo_recurso . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Eliminado con éxito.\")</script>";
 }
 
 function pantalla_turnos_form(){

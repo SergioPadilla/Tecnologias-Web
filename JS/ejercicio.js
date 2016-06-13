@@ -259,8 +259,6 @@ function pantalla_turnos() {
     });
 }
 
-
-
 function cargar_mensaje_pantalla_turnos() {
     var mensaje = document.forms["form_pantalla_turnos"]["mensaje_pantalla_turnos"].value;
     $.post( "index.php", { actualizar_mensaje: "PRUEBA"},function() {
@@ -292,6 +290,12 @@ function editar_estado(nick) {
 
 function editar_prioridad(nick) {
     $.post( "administracion.php", { action: "editar_prioridad", nick: nick} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function dar_baja_recurso(codigo_recurso, nick) {
+    $.post( "cliente.php", { action: "dar_baja_recurso", codigo_recurso: codigo_recurso, nick: nick} ,function( data ) {
         $( "#tabla" ).html(data);
     });
 }
