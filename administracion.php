@@ -172,7 +172,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Rowhard</a>
+            <a class="navbar-brand" href="administracion.php">Rowhard</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
