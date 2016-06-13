@@ -33,6 +33,19 @@ function validarEditarPerfil() {
     }
 }
 
+function validarPassword() {
+    var pass = document.forms["form_editar_password"]["editar_password"].value;
+    var pass2 = document.forms["form_editar_password"]["editar_password_2"].value;
+
+    if (pass != pass2) {
+        document.getElementById("mensaje_error").innerHTML = "Las contraseñas no coinciden";
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
 function validarEditarPerfilUsuario() {
     var dni = document.forms["form_editar_perfil"]["editar_dni"].value;
     return validarDNI(dni);
@@ -153,10 +166,6 @@ function eliminar_rol(rol) {
     }
 }
 
-//
-
-// Gestión recursos
-
 function mostrar_recursos_admin() {
     $.post( "administracion.php", { action: "mostrar_recursos_admin"} ,function( data ) {
         $( "#tabla" ).html(data);
@@ -186,7 +195,6 @@ function eliminar_recurso(recurso) {
     }
 }
 
-//
 
 function mostrar_recursos() {
     $.post( "cliente.php", { action: "mostrar_recursos"} ,function( data ) {
@@ -301,6 +309,18 @@ function editar_prioridad(nick, prioridad, codigo_recurso) {
 
 function dar_baja_recurso(codigo_recurso, nick) {
     $.post( "cliente.php", { action: "dar_baja_recurso", codigo_recurso: codigo_recurso, nick: nick} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function modificar_password() {
+    $.post( "administracion.php", { action: "modificar_password"} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function modificar_password_cliente() {
+    $.post( "cliente.php", { action: "modificar_password"} ,function( data ) {
         $( "#tabla" ).html(data);
     });
 }

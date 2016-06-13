@@ -136,8 +136,82 @@ function mostrar_perfil($conexion, $nick) {
     $cadena .= "</table>";
     $cadena .= "</div>";
 
-    $cadena .= "<button class='dar_de_baja' onclick='dar_de_baja()'>Dar de baja</button>";
+    $cadena .= "<button class='dar_de_baja' onclick='dar_de_baja()'>Dar de baja</button><button class='modificar_password' onclick='modificar_password_cliente()' style='margin-left: 10px'>Modificar Contraseña</button>";
     
+    echo $cadena;
+}
+
+function modificar_password(){
+    /**
+     * Muestra un formulario modificar contraseña
+     */
+    $mensaje = "";
+
+    $cadena = "<form name='form_editar_password' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\" onsubmit='return validarPassword()'>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Contraseña actual</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"password_actual\" class=\"form-control\" placeholder=\"Contraseña actual\" maxlength=\"20\" required >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Contraseña</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_password\" class=\"form-control\" placeholder=\"Contraseña\" maxlength=\"20\" required >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Repite contraseña</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_password_2\" class=\"form-control\" placeholder=\"Contraseña\" required maxlength=\"20\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Modificar</button>";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+
+    $cadena .= "<label id=\"mensaje_error\">" . $mensaje . "</label>"; // Para mostrar mensajes de error
+    $cadena .= "</form>";
+
+    echo $cadena;
+}
+
+function modificar_password_cliente(){
+    /**
+     * Muestra un formulario modificar contraseña
+     */
+    $mensaje = "";
+
+    $cadena = "<form name='form_editar_password' class=\"form-horizontal\" action=\"cliente.php\" method=\"post\" onsubmit='return validarPassword()'>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Contraseña actual</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"password_actual\" class=\"form-control\" placeholder=\"Contraseña actual\" maxlength=\"20\" required >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Contraseña</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_password\" class=\"form-control\" placeholder=\"Contraseña\" maxlength=\"20\" required >";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Repite contraseña</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<input name=\"editar_password_2\" class=\"form-control\" placeholder=\"Contraseña\" required maxlength=\"20\">";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Modificar</button>";
+    $cadena .= "</div>";
+    $cadena .= "</div>";
+
+    $cadena .= "<label id=\"mensaje_error\">" . $mensaje . "</label>"; // Para mostrar mensajes de error
+    $cadena .= "</form>";
+
     echo $cadena;
 }
 
@@ -180,7 +254,7 @@ function mostrar_perfil_administracion($conexion, $rol) {
     $cadena .= "</table>";
     $cadena .= "</div>";
 
-    $cadena .= "<button class='dar_de_baja' onclick='dar_de_baja_administracion()'>Dar de baja</button>";
+    $cadena .= "<button class='dar_de_baja' onclick='dar_de_baja_administracion()'>Dar de baja</button><button class='modificar_password' onclick='modificar_password()' style='margin-left: 10px'>Modificar Contraseña</button>";
 
     echo $cadena;
 }
@@ -408,7 +482,6 @@ function update_usuarios_profesional($conexion, $nick, $nombre, $apellidos, $dni
      * in:
      *    Datos a modificar sin rol
      */
-    //$passwordmd5 = md5($password);
     $sql = "UPDATE usuarios SET nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\" WHERE nick=\"" . $nick . "\"";
     $exito = $conexion->ejecuta($sql);
 
@@ -1042,12 +1115,15 @@ function update_prioridad($conexion, $prioridad, $nick, $codigo_recurso) {
      * in:
      *    datos a modificar
      */
-    $sql = "UPDATE colas
-            SET prioridad=\"" . $prioridad . "\"
-            WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $nick . "\"";
-    $conexion->consulta($sql);
-    
-    echo "<script>alert(\"Editado con éxito.\")</script>";
+    $sql = "UPDATE colas SET prioridad=\"" . $prioridad . "\" WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $nick . "\"";
+    $exito = $conexion->ejecuta($sql);
+
+    if($exito) {
+        echo "<script>alert(\"Editado con éxito.\")</script>";
+    }
+    else{
+        echo "<script>alert(\"Error al editar.\")</script>";
+    }
 }
 
 function update_estado($conexion, $estado, $nick, $codigo_recurso) {
@@ -1057,11 +1133,33 @@ function update_estado($conexion, $estado, $nick, $codigo_recurso) {
      * in:
      *    datos a modificar
      */
-    $sql = "UPDATE colas
-            SET estado=\"" . $estado . "\"
-            WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $nick . "\"";
-    $conexion->consulta($sql);
-    echo "<script>alert(\"Editado con éxito.\")</script>";
+    $sql = "UPDATE colas SET estado=\"" . $estado . "\" WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $nick . "\"";
+    $exito = $conexion->ejecuta($sql);
+
+    if($exito) {
+        echo "<script>alert(\"Editado con éxito.\")</script>";
+    }
+    else{
+        echo "<script>alert(\"Error al editar.\")</script>";
+    }
+}
+
+function update_password($conexion, $password, $nick) {
+    /**
+     * Modifica la contraseña de un usuario
+     *
+     * in:
+     *    Datos a modificar
+     */
+    $sql = "UPDATE usuarios SET password=\"" . $password . "\" WHERE nick=\"" . $nick . "\"";
+    $exito = $conexion->ejecuta($sql);
+
+    if($exito) {
+        echo "<script>alert(\"Editado con éxito.\")</script>";
+    }
+    else{
+        echo "<script>alert(\"Error al editar.\")</script>";
+    }
 }
 
 ?>

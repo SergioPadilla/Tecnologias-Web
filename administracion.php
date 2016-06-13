@@ -52,6 +52,21 @@ if(isset($_POST['editar_prioridad']) && !empty($_POST['editar_prioridad'])) {
 if(isset($_POST['editar_estado']) && !empty($_POST['editar_estado'])) {
     update_estado($conexion, $_POST['editar_estado'], $_POST['editar_estado_nick'], $_POST['editar_estado_codigo_recurso']);
 }
+if(isset($_POST['password_actual']) && !empty($_POST['password_actual'])) {
+    $sql = 'SELECT password FROM usuarios WHERE nick="'. $_SESSION[USUARIO] .'"';
+    $conexion->consulta($sql);
+
+    if($conexion->numero_filas() != 0) {
+        $reg = $conexion->extraer_registro();
+        if(md5($_POST['password_actual']) == $reg['password']) {
+            $password_md5 = md5($_POST['editar_password']);
+            update_password($conexion, $password_md5, $_SESSION[USUARIO]);
+        }
+        else{
+            echo "<script>alert(\"La contraseña actual es erronea\")</script>";
+        }
+    }
+}
 
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
@@ -131,6 +146,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             eliminar_usuario($conexion, $_SESSION[USUARIO]);
             echo("<script>location.href='index.php'</script>");
             exit();
+            break;
+        case 'modificar_password' :
+            modificar_password();
             break;
     }
 }
