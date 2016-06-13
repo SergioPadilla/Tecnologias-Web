@@ -253,8 +253,8 @@ function crear_usuario() {
     });
 }
 
-function pantalla_turnos() {
-    $.post( "administracion.php", { action: "pantalla_turnos"}, function( data ) {
+function pantalla_turnos(codigo_recurso) {
+    $.post( "administracion.php", { action: "pantalla_turnos", codigo_recurso:codigo_recurso}, function( data ) {
         $( "#tabla" ).html(data);
     });
 }
@@ -296,6 +296,12 @@ function editar_prioridad(nick, prioridad, codigo_recurso) {
 
 function dar_baja_recurso(codigo_recurso, nick) {
     $.post( "cliente.php", { action: "dar_baja_recurso", codigo_recurso: codigo_recurso, nick: nick} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function avanza_turno(codigo_recurso) {
+    $.post( "administracion.php", { action: "avanza_turno", codigo_recurso:codigo_recurso}, function( data ) {
         $( "#tabla" ).html(data);
     });
 }
