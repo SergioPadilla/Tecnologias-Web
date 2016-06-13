@@ -307,8 +307,8 @@ function editar_prioridad(nick, prioridad, codigo_recurso) {
     });
 }
 
-function dar_baja_recurso(codigo_recurso, nick) {
-    $.post( "cliente.php", { action: "dar_baja_recurso", codigo_recurso: codigo_recurso, nick: nick} ,function( data ) {
+function dar_baja_recurso(codigo_recurso) {
+    $.post( "cliente.php", { action: "dar_baja_recurso", codigo_recurso: codigo_recurso} ,function( data ) {
         $( "#tabla" ).html(data);
     });
 }
@@ -321,6 +321,12 @@ function modificar_password() {
 
 function modificar_password_cliente() {
     $.post( "cliente.php", { action: "modificar_password"} ,function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function info(codigo_recurso) {
+    $.post( "cliente.php", { action: "info", codigo_recurso: codigo_recurso} ,function( data ) {
         $( "#tabla" ).html(data);
     });
 }

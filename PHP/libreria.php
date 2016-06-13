@@ -284,7 +284,7 @@ function mostrar_colas($conexion, $nick) {
 
             while ($reg = $conexion->extraer_registro()) {
                 $cadena .= "<tr>";
-                $cadena .= "<td>" . $reg["nombre"] . "</td><td>" . $reg["descripcion"] . "</td><td>" . $reg["lugar"] . "</td><td>" . $reg["hora_comienzo"] . "</td><td><button onclick='dar_baja_recurso(".$reg["codigo"].")' class='button'>Dar de baja</button></td>";
+                $cadena .= "<td>" . $reg["nombre"] . "</td><td>" . $reg["descripcion"] . "</td><td>" . $reg["lugar"] . "</td><td>" . $reg["hora_comienzo"] . "</td><td><button onclick='dar_baja_recurso(".$reg["codigo"].")' class='button'>Dar de baja</button><button onclick='info(".$reg["codigo"].")' class='button'>Información</button></td>";
                 $cadena .= "</tr>\n";
             }
 
@@ -296,9 +296,27 @@ function mostrar_colas($conexion, $nick) {
     } else {
         echo "<h1>NO ESTAS APUNTADO A NINGÚN RECURSO</h1>";
     }
-
 }
 
+function info($conexion, $codigo_recurso, $nick){
+    /**
+     * Muestra al usuario su posición en la cola
+     */
+    $sql='SELECT * FROM colas WHERE codigo_recurso ="'.$codigo_recurso.'" AND estado="1" ORDER BY prioridad, id';
+    $conexion->consulta($sql);
+    $n = 0;
+
+    if($conexion->numero_filas() != 0){
+        while ($reg = $conexion->extraer_registro()) {
+            if($reg['nick'] == $nick){
+                echo "<script>alert(\"Quedan: ".$n." usuarios delante\")</script>";
+            }
+            else{
+                $n++;
+            }
+        }
+    }
+}
 
 function mostrar_recursos($conexion) {
     /**

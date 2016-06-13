@@ -76,6 +76,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'modificar_password' :
             modificar_password_cliente();
             break;
+        case 'info' :
+            info($conexion, $_POST["codigo_recurso"], $_SESSION[USUARIO]);
+            break;
     }
 }
 ?>
