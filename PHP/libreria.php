@@ -941,7 +941,10 @@ function solicitar_turno($conexion, $codigo_recurso, $nick){
             $exito = $conexion->ejecuta($sql);
         
             if ($exito) {
-                echo "<script>alert(\"Registro realizado con exito. Sú código es: ".$codigo." \")</script>";
+                $sql = 'SELECT id FROM colas WHERE codigo_recurso="'.$codigo_recurso.'" ORDER BY id';
+                $conexion->consulta($sql);
+                $personas_delante = $conexion->numero_filas() - 1;
+                echo "<script>alert(\"Registro realizado con exito. Sú código es: ".$codigo.". Tiene, ".$personas_delante." personas delante de usted.\")</script>";
             }
             else
                 echo "<script>alert(\"No puedes apuntarte a este recurso.\")</script>";
