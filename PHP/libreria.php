@@ -323,19 +323,8 @@ function editar_usuario($conexion, $usuario, $rol) {
     $cadena .= "<div class=\"form-group\">";
     $cadena .= "<label class=\"col-sm-2 control-label\">Nick</label>";
     $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"editar_nick\" class=\"form-control\" placeholder=\"Nick\" value=\"" . $reg['nick'] . "\" maxlength=\"20\">";
-    $cadena .= "</div>";
-    $cadena .= "</div>";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<label class=\"col-sm-2 control-label\">Contraseña</label>";
-    $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"editar_password\" class=\"form-control\" placeholder=\"Contraseña\" value=\"" . $reg['password'] . "\" maxlength=\"20\">";
-    $cadena .= "</div>";
-    $cadena .= "</div>";
-    $cadena .= "<div class=\"form-group\">";
-    $cadena .= "<label class=\"col-sm-2 control-label\">Repite contraseña</label>";
-    $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"editar_password_2\" class=\"form-control\" placeholder=\"Contraseña\" value=\"" . $reg['password'] . "\" maxlength=\"20\">";
+    $cadena .= "<p class=\"form-control-static\">" . $reg['nick'] . "</p>";
+    $cadena .= "<input type=\"hidden\" name=\"editar_nick\" value=\"" . $reg['nick'] . "\">";
     $cadena .= "</div>";
     $cadena .= "</div>";
     $cadena .= "<div class=\"form-group\">";
@@ -376,7 +365,7 @@ function editar_usuario($conexion, $usuario, $rol) {
     echo $cadena;
 }
 
-function update_usuarios($conexion, $nick, $password, $nombre, $apellidos, $dni, $rol) {
+function update_usuarios($conexion, $nick, $nombre, $apellidos, $dni, $rol) {
     /**
      * Modifica un usuario
      *
@@ -384,9 +373,9 @@ function update_usuarios($conexion, $nick, $password, $nombre, $apellidos, $dni,
      *    Datos a modificar
      */
     //La contraseña no tiene que modificar aqui, va por separado
-    $passwordmd5 = md5($password);
+    //$passwordmd5 = md5($password);
     $sql = "UPDATE usuarios
-            SET password=\"" . $passwordmd5 . "\", nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\", rol=\"" . $rol . "\"
+            SET nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\", rol=\"" . $rol . "\"
             WHERE nick=\"" . $nick . "\"";
     $conexion->consulta($sql);
     echo "<script>alert(\"Editado con éxito.\")</script>";
@@ -405,16 +394,16 @@ function update_perfil_usuario($conexion, $nick, $nombre, $apellidos, $dni) {
     echo "<script>alert(\"Editado con éxito.\")</script>";
 }
 
-function update_usuarios_profesional($conexion, $nick, $password, $nombre, $apellidos, $dni) {
+function update_usuarios_profesional($conexion, $nick, $nombre, $apellidos, $dni) {
     /**
      * Modifica un usuario para profesional
      *
      * in:
      *    Datos a modificar sin rol
      */
-    $passwordmd5 = md5($password);
+    //$passwordmd5 = md5($password);
     $sql = "UPDATE usuarios
-            SET password=\"" . $passwordmd5 . "\", nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\"
+            SET nombre=\"" . $nombre . "\", apellidos=\"" . $apellidos . "\", dni=\"" . $dni . "\"
             WHERE nick=\"" . $nick . "\"";
     $conexion->consulta($sql);
     echo "<script>alert(\"Editado con éxito.\")</script>";
@@ -563,7 +552,8 @@ function editar_rol($conexion, $rol) {
     $cadena .= "<div class=\"form-group\">";
     $cadena .= "<label class=\"col-sm-2 control-label\">Rol</label>";
     $cadena .= "<div class=\"col-sm-10\">";
-    $cadena .= "<input name=\"editar_rol\" class=\"form-control\" placeholder=\"Rol\" value=\"". $reg['rol'] ."\">";
+    $cadena .= "<p class=\"form-control-static\">" . $reg['rol'] . "</p>";
+    $cadena .= "<input type=\"hidden\" name=\"editar_rol_id\" value=\"" . $reg['rol'] . "\">";
     $cadena .= "</div>";
     $cadena .= "</div>";
     $cadena .= "<div class=\"form-group\">";
@@ -708,6 +698,7 @@ function editar_recurso($conexion, $recurso) {
     $cadena .= "<label class=\"col-sm-2 control-label\">Nombre</label>";
     $cadena .= "<div class=\"col-sm-10\">";
     $cadena .= "<input name=\"editar_recurso_nombre\" class=\"form-control\" placeholder=\"Nombre\" value=\"". $reg['nombre'] ."\">";
+    $cadena .= "<input type=\"hidden\" name=\"editar_recurso_codigo_recurso\" value=\"" . $recurso . "\">";
     $cadena .= "</div>";
     $cadena .= "</div>";
     $cadena .= "<div class=\"form-group\">";
@@ -736,7 +727,7 @@ function editar_recurso($conexion, $recurso) {
     echo $cadena;
 }
 
-function update_recursos($conexion, $codigo, $nombre, $descripcion, $lugar, $hora, $nick) {
+function update_recursos($conexion, $codigo, $nombre, $descripcion, $lugar, $hora) {
     /**
      * Modifica un recuso
      *
@@ -744,7 +735,7 @@ function update_recursos($conexion, $codigo, $nombre, $descripcion, $lugar, $hor
      *    datos a modificar
      */
     $sql = "UPDATE recursos
-            SET nombre=\"" . $nombre . "\", descripcion=\"" . $descripcion . "\", lugar=\"" . $lugar . "\", hora_comienzo=\"" . $hora . "\", nick=\"" . $nick . "\"
+            SET nombre=\"" . $nombre . "\", descripcion=\"" . $descripcion . "\", lugar=\"" . $lugar . "\", hora_comienzo=\"" . $hora . "\"
             WHERE codigo=\"" . $codigo . "\"";
     $conexion->consulta($sql);
     echo "<script>alert(\"Editado con éxito.\")</script>";
@@ -857,7 +848,7 @@ function gestionar_recurso($conexion, $codigo_recurso) {
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["estado"]." <span  onclick=\"  editar_estado('" . $reg["nick"] . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span> </td><td>".$reg["prioridad"]."  <span  onclick=\"  editar_prioridad('" . $reg["nick"] . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["estado"]." <span  onclick=\"  editar_estado('" . $reg["nick"] . "','" . $reg["estado"] . "','" . $codigo_recurso . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span> </td><td>".$reg["prioridad"]."  <span  onclick=\"  editar_prioridad('" . $reg["nick"] . "','" . $reg["prioridad"] . "','" . $codigo_recurso . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }
@@ -981,43 +972,89 @@ function pantalla_turnos_form(){
     echo $cadena;
 }
 
-function editar_estado($conexion, $nick) {
-    $cadena = "<div class=\"dropdown\">";
-    $cadena .= "<button class=\"btn btn-default dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">";
-    $cadena .= "Estado";
-    $cadena .= "<span class=\"caret\"></span>";
-    $cadena .= "</button>";
-    $cadena .= "<ul class=\"dropdown-menu\">";
-    $cadena .= "<li><a href=\"#\">1</a></li>";
-    $cadena .= "<li><a href=\"#\">2</a></li>";
-    $cadena .= "<li><a href=\"#\">3</a></li>";
-    $cadena .= "</ul>";
+function editar_estado($conexion, $nick, $estado, $codigo_recurso) {
+
+    $cadena = "<form name='form_editar_estado' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Estado</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<label class=\"radio-inline\">";
+    $cadena .= "<input type=\"radio\" name=\"editar_estado\" id=\"inlineRadio1\" value=\"1\"> En espera";
+    $cadena .= "</label>";
+    $cadena .= "<label class=\"radio-inline\">";
+    $cadena .= "<input type=\"radio\" name=\"editar_estado\" id=\"inlineRadio2\" value=\"2\"> Siendo atendido";
+    $cadena .= "</label>";
+    $cadena .= "<label class=\"radio-inline\">";
+    $cadena .= "<input type=\"radio\" name=\"editar_estado\" id=\"inlineRadio3\" value=\"3\"> Atendido";
+    $cadena .= "</label>";
+    $cadena .= "<input type=\"hidden\" name=\"editar_estado_nick\" value=\"" . $nick . "\">";
+    $cadena .= "<input type=\"hidden\" name=\"editar_estado_codigo_recurso\" value=\"" . $codigo_recurso . "\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Editar</button>";
     $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "</form>";
 
     echo $cadena;
 }
 
-function editar_prioridad($conexion, $nick) {
-    $cadena = "<div class=\"dropdown\">";
-    $cadena .= "<button class=\"btn btn-default dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">";
-    $cadena .= "Prioridad";
-    $cadena .= "<span class=\"caret\"></span>";
-    $cadena .= "</button>";
-    $cadena .= "<ul class=\"dropdown-menu\">";
-    $cadena .= "<li><a href=\"#\">1</a></li>";
-    $cadena .= "<li><a href=\"#\">2</a></li>";
-    $cadena .= "<li><a href=\"#\">3</a></li>";
-    $cadena .= "<li><a href=\"#\">4</a></li>";
-    $cadena .= "<li><a href=\"#\">5</a></li>";
-    $cadena .= "<li><a href=\"#\">6</a></li>";
-    $cadena .= "<li><a href=\"#\">7</a></li>";
-    $cadena .= "<li><a href=\"#\">8</a></li>";
-    $cadena .= "<li><a href=\"#\">9</a></li>";
-    $cadena .= "<li><a href=\"#\">10</a></li>";
-    $cadena .= "</ul>";
+function editar_prioridad($conexion, $nick, $prioridad, $codigo_recurso) {
+    $cadena = "<form name='form_editar_prioridad' class=\"form-horizontal\" action=\"administracion.php\" method=\"post\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<label class=\"col-sm-2 control-label\">Prioridad</label>";
+    $cadena .= "<div class=\"col-sm-10\">";
+    $cadena .= "<select name='editar_prioridad' class=\"form-control\">";
+    $cadena .= "<option>1</option>";
+    $cadena .= "<option>2</option>";
+    $cadena .= "<option>3</option>";
+    $cadena .= "<option>4</option>";
+    $cadena .= "<option>5</option>";
+    $cadena .= "<option>6</option>";
+    $cadena .= "<option>7</option>";
+    $cadena .= "<option>8</option>";
+    $cadena .= "<option>9</option>";
+    $cadena .= "<option>10</option>";
+    $cadena .= "</select>";
+    $cadena .= "<input type=\"hidden\" name=\"editar_prioridad_nick\" value=\"" . $nick . "\">";
+    $cadena .= "<input type=\"hidden\" name=\"editar_prioridad_codigo_recurso\" value=\"" . $codigo_recurso . "\">";
+    $cadena .= "<div class=\"form-group\">";
+    $cadena .= "<div class=\"col-sm-offset-2 col-sm-10\">";
+    $cadena .= "<button type=\"submit\" class=\"btn btn-default\">Editar</button>";
     $cadena .= "</div>";
+    $cadena .= "</div>";
+    $cadena .= "</form>";
 
     echo $cadena;
+}
+
+function update_prioridad($conexion, $prioridad, $nick, $codigo_recurso) {
+    /**
+     * Modifica la prioridad de un usuario en un recurso
+     *
+     * in:
+     *    datos a modificar
+     */
+    $sql = "UPDATE colas
+            SET prioridad=\"" . $prioridad . "\"
+            WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $nick . "\"";
+    $conexion->consulta($sql);
+    
+    echo "<script>alert(\"Editado con éxito.\")</script>";
+}
+
+function update_estado($conexion, $estado, $nick, $codigo_recurso) {
+    /**
+     * Modifica el estado de un usuario en un recurso
+     *
+     * in:
+     *    datos a modificar
+     */
+    $sql = "UPDATE colas
+            SET estado=\"" . $estado . "\"
+            WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $nick . "\"";
+    $conexion->consulta($sql);
+    echo "<script>alert(\"Editado con éxito.\")</script>";
 }
 
 ?>

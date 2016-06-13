@@ -282,14 +282,14 @@ function cargarLogin() {
     location.href='login.php'
 }
 
-function editar_estado(nick) {
-    $.post( "administracion.php", { action: "editar_estado", nick: nick} ,function( data ) {
+function editar_estado(nick, estado, codigo_recurso) {
+    $.post( "administracion.php", { action: "editar_estado", nick: nick, estado: estado, codigo_recurso:codigo_recurso} ,function( data ) {
         $( "#tabla" ).html(data);
     });
 }
 
-function editar_prioridad(nick) {
-    $.post( "administracion.php", { action: "editar_prioridad", nick: nick} ,function( data ) {
+function editar_prioridad(nick, prioridad, codigo_recurso) {
+    $.post( "administracion.php", { action: "editar_prioridad", nick: nick, prioridad: prioridad, codigo_recurso:codigo_recurso} ,function( data ) {
         $( "#tabla" ).html(data);
     });
 }

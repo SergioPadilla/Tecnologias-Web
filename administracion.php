@@ -23,21 +23,18 @@ else {
 }
 if (isset($_POST['editar_nick']) && !empty($_POST['editar_nick'])) {
     if($rol != 2) {
-        update_usuarios($conexion, $_POST['editar_nick'], $_POST['editar_password'], $_POST['editar_nombre'], $_POST['editar_apellidos'], $_POST['editar_dni'], $_POST['editar_rol']);
+        update_usuarios($conexion, $_POST['editar_nick'], $_POST['editar_nombre'], $_POST['editar_apellidos'], $_POST['editar_dni'], $_POST['editar_rol']);
     }
     else{
-        update_usuarios_profesional($conexion, $_POST['editar_nick'], $_POST['editar_password'], $_POST['editar_nombre'], $_POST['editar_apellidos'], $_POST['editar_dni']);
+        update_usuarios_profesional($conexion, $_POST['editar_nick'], $_POST['editar_nombre'], $_POST['editar_apellidos'], $_POST['editar_dni']);
     }
 }
-if(isset($_POST['editar_permiso']) && !empty($_POST['editar_permiso'])) {
-    update_permisos($conexion, $_POST['editar_permiso'], $_POST['editar_permiso_descripcion']);
-}
-if(isset($_POST['editar_rol']) && !empty($_POST['editar_rol'])) {
-    update_roles($conexion, $_POST['editar_rol'], $_POST['editar_rol_descripcion']);
+if(isset($_POST['editar_rol_id']) && !empty($_POST['editar_rol_id'])) {
+    update_roles($conexion, $_POST['editar_rol_id'], $_POST['editar_rol_descripcion']);
 }
 if (isset($_POST['editar_recurso_nombre']) && !empty($_POST['editar_recurso_nombre'])) {
     // TODO: Hay que ver como coger el codigo recurso
-    update_recursos($conexion, $codigo_recurso, $_POST['editar_recurso_nombre'], $_POST['editar_recurso_descripcion'], $_POST['editar_recurso_lugar'], $_POST['editar_recurso_hora'], $_POST['editar_recurso_nick']);
+    update_recursos($conexion, $_POST['editar_recurso_codigo_recurso'], $_POST['editar_recurso_nombre'], $_POST['editar_recurso_descripcion'], $_POST['editar_recurso_lugar'], $_POST['editar_recurso_hora']);
 }
 if (isset($_POST['crear_recurso_nombre'])) {
     crear_recurso($conexion, $_POST['crear_recurso_nombre'], $_POST['crear_recurso_descripcion'], $_POST['crear_recurso_lugar'], $_POST['crear_recurso_hora'], $_SESSION[USUARIO]);
@@ -48,6 +45,12 @@ if (isset($_POST['crear_nick'])) {
 if(isset($_POST['mensaje_pantalla_turnos']) && !empty($_POST['mensaje_pantalla_turnos'])) {
     // TODO: Hay que ver como coger el codigo recurso
     cargar_mensaje($conexion, $codigo_recurso, $_POST['mensaje_pantalla_turnos']);
+}
+if(isset($_POST['editar_prioridad']) && !empty($_POST['editar_prioridad'])) {
+    update_prioridad($conexion, $_POST['editar_prioridad'], $_POST['editar_prioridad_nick'], $_POST['editar_prioridad_codigo_recurso']);
+}
+if(isset($_POST['editar_estado']) && !empty($_POST['editar_estado'])) {
+    update_estado($conexion, $_POST['editar_estado'], $_POST['editar_estado_nick'], $_POST['editar_estado_codigo_recurso']);
 }
 
 if(isset($_POST['action']) && !empty($_POST['action'])) {
@@ -119,10 +122,10 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             gestionar_recurso($conexion, $_POST["codigo_recurso"]);
             break;
         case 'editar_estado' :
-            editar_estado($conexion, $_POST['nick']);
+            editar_estado($conexion, $_POST['nick'], $_POST['estado'], $_POST['codigo_recurso']);
             break;
         case 'editar_prioridad' :
-            editar_prioridad($conexion, $_POST['nick']);
+            editar_prioridad($conexion, $_POST['nick'], $_POST['prioridad'], $_POST['codigo_recurso']);
             break;
         case 'dar_de_baja' :
             eliminar_usuario($conexion, $_SESSION[USUARIO]);
