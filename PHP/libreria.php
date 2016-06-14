@@ -973,8 +973,15 @@ function gestionar_recurso($conexion, $codigo_recurso) {
     $conexion->consulta($sql);
     if($conexion->numero_filas() != 0){
         while($reg=$conexion->extraer_registro()) {
+            if ($reg["estado"] == "1")
+                $estado = "En espera";
+            else if ($reg["estado"] == "2")
+                $estado = "Siendo atendido";
+            else
+                $estado = "Atendido";
+
             $cadena .= "<tr>";
-            $cadena .= "<td>".$reg["nick"]."</td><td>".$reg["estado"]." <span  onclick=\"  editar_estado('" . $reg["nick"] . "','" . $reg["estado"] . "','" . $codigo_recurso . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span> </td><td>".$reg["prioridad"]."  <span  onclick=\"  editar_prioridad('" . $reg["nick"] . "','" . $reg["prioridad"] . "','" . $codigo_recurso . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
+            $cadena .= "<td>".$reg["nick"]."</td><td>".$estado." <span  onclick=\"  editar_estado('" . $reg["nick"] . "','" . $reg["estado"] . "','" . $codigo_recurso . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span> </td><td>".$reg["prioridad"]."  <span  onclick=\"  editar_prioridad('" . $reg["nick"] . "','" . $reg["prioridad"] . "','" . $codigo_recurso . "'); \" id=\"glyphicon\" class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></td>";
             $cadena .= "</tr>\n";
         }
     }

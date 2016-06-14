@@ -65,7 +65,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         <form class="form-signin" method="post" action="login.php" >
             <h2 class="form-signin-heading">Inicio Sesión</h2>
             <input name = "user" type="text" id="inputEmail" class="form-control" placeholder="Usuario"
-                   required autofocus maxlength="20" value="<?php echo $_COOKIE['remember_me']; ?>">
+                   required autofocus maxlength="20">
             <input name = "password" type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required maxlength="20">
             <div class="checkbox">
                 <a id="registro" href="register.php" style="margin-bottom: 10px"> Crear cuenta </a> <!-- Opcion para registrarse -->
