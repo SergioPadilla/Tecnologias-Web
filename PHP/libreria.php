@@ -988,7 +988,8 @@ function gestionar_recurso($conexion, $codigo_recurso) {
     $cadena .= "</tbody>";
     $cadena .= "</table>";
     $cadena .= "<button class=\"crear_nuevo\"  onclick=\"pantalla_turnos('" . $codigo_recurso . "')\">Pantalla de turnos</button>";
-    $cadena .= "<button class=\"crear_nuevo\"  onclick=\"avanza_turno('" . $codigo_recurso . "')\">Avanza turno</button>";
+    $cadena .= "<button class=\"crear_nuevo\"  onclick=\"siguiente('" . $codigo_recurso . "')\">Siguiente</button>";
+    $cadena .= "<button class=\"crear_nuevo\"  onclick=\"terminar('" . $codigo_recurso . "')\">Terminar</button>";
     $cadena .= "</div>";
 
     echo $cadena;
@@ -1226,7 +1227,7 @@ function update_password($conexion, $password, $nick) {
     }
 }
 
-function avanza_turno($conexion, $conexion2, $codigo_recurso) {
+function terminar($conexion, $conexion2, $codigo_recurso) {
     /**
      * Avanza a los usuarios de un recurso del profesional
      *
@@ -1242,30 +1243,63 @@ function avanza_turno($conexion, $conexion2, $codigo_recurso) {
 
     while($reg=$conexion->extraer_registro()) {
         if ($siguiente && $reg["estado"] == "1") {
-            $sql = "UPDATE colas
-                    SET estado=\"2\" ,hora=\"" . $dt . "\" 
-                    WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
+            $sql = "UPDATE colas SET estado=\"2\" ,hora=\"" . $dt . "\" WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
             $conexion2->consulta($sql);
             $siguiente = false;
         }
         if ($reg["estado"] == "2") {
-            $sql = "UPDATE colas
-                    SET estado=\"3\"
-                    WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
+            $sql = "UPDATE colas SET estado=\"3\" WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
             $conexion2->consulta($sql);
             $siguiente = true;
             $primero = false;
         }
 
         if ($primero) {
-            $sql = "UPDATE colas
-                    SET estado=\"2\" ,hora=\"" . $dt . "\" 
-                    WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
+            $sql = "UPDATE colas SET estado=\"2\" ,hora=\"" . $dt . "\"  WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
             $conexion2->consulta($sql);
             $primero = false;
         }
     }
     gestionar_recurso($conexion, $codigo_recurso);
+}
+
+function siguiente($conexion, $conexion2, $codigo_recurso) {
+    /**
+     * Avanza a los usuarios de un recurso del profesional
+     *
+     * in:
+     *    datos a modificar
+     */
+    $sql = "SELECT nick, estado, prioridad FROM colas WHERE codigo_recurso = \"" . $codigo_recurso . "\" ORDER BY estado DESC, prioridad DESC";
+    $conexion->consulta($sql);
+    $cambiado = false;
+    $dt = new DateTime("now", new DateTimeZone('Europe/Madrid'));
+    $dt = $dt->format('Y-m-d H:i:s');
+
+    if($conexion->numero_filas() != 0) {
+        $reg = $conexion->extraer_registro();
+
+        if ($reg["estado"] == "2") {
+            $sql = "UPDATE colas SET estado=\"1\", prioridad=\"5\" WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
+            $conexion2->consulta($sql);
+            $cambiado = true;
+        } else if ($reg["estado"] == "1") {
+            $sql = "UPDATE colas SET estado=\"2\" ,hora=\"" . $dt . "\" WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
+            $conexion2->consulta($sql);
+        }
+
+        if ($cambiado) {
+            if($conexion->numero_filas() != 0) {
+                $reg = $conexion->extraer_registro();
+                if ($reg["estado"] == "1") {
+                    $sql = "UPDATE colas SET estado=\"2\" ,hora=\"" . $dt . "\" WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
+                    $conexion2->consulta($sql);
+                }
+            }
+        }
+
+        gestionar_recurso($conexion, $codigo_recurso);
+    }
 }
 
 ?>

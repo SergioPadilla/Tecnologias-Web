@@ -331,8 +331,14 @@ function info(codigo_recurso) {
     });
 }
 
-function avanza_turno(codigo_recurso) {
-    $.post( "administracion.php", { action: "avanza_turno", codigo_recurso:codigo_recurso}, function( data ) {
+function terminar(codigo_recurso) {
+    $.post( "administracion.php", { action: "terminar", codigo_recurso:codigo_recurso}, function( data ) {
+        $( "#tabla" ).html(data);
+    });
+}
+
+function siguiente(codigo_recurso) {
+    $.post( "administracion.php", { action: "siguiente", codigo_recurso:codigo_recurso}, function( data ) {
         $( "#tabla" ).html(data);
     });
 }

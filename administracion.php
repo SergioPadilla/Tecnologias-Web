@@ -148,9 +148,13 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'modificar_password' :
             modificar_password();
             break;
-        case 'avanza_turno' :
+        case 'terminar' :
             $conexion2 = new Servidor_Base_Datos($ser,$usu,$pass,$base);
-            avanza_turno($conexion, $conexion2, $_POST["codigo_recurso"]);
+            terminar($conexion, $conexion2, $_POST["codigo_recurso"]);
+            break;
+        case 'siguiente' :
+            $conexion2 = new Servidor_Base_Datos($ser,$usu,$pass,$base);
+            siguiente($conexion, $conexion2, $_POST["codigo_recurso"]);
             break;
     }
 }
