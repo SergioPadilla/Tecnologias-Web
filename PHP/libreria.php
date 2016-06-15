@@ -264,7 +264,7 @@ function mostrar_colas($conexion, $nick) {
     /**
      * Muestra colas del usuario
      */
-    $sql='SELECT * FROM colas c, recursos r WHERE r.codigo = c.codigo_recurso AND c.nick="'.$nick. '"';
+    $sql='SELECT * FROM colas c, recursos r WHERE c.estado != "3" AND r.codigo = c.codigo_recurso AND c.nick="'.$nick. '"';
     $conexion->consulta($sql);
 
     if($conexion->numero_filas() != 0){
@@ -1234,7 +1234,7 @@ function terminar($conexion, $conexion2, $codigo_recurso) {
      * in:
      *    datos a modificar
      */
-    $sql = "SELECT nick, estado, prioridad FROM colas WHERE codigo_recurso = \"" . $codigo_recurso . "\" ORDER BY estado DESC, prioridad DESC";
+    $sql = "SELECT nick, estado, prioridad FROM colas WHERE codigo_recurso = \"" . $codigo_recurso . "\" AND estado != \"3\" ORDER BY estado DESC, prioridad DESC";
     $conexion->consulta($sql);
     $primero = true;
     $siguiente = false;
@@ -1270,7 +1270,7 @@ function siguiente($conexion, $conexion2, $codigo_recurso) {
      * in:
      *    datos a modificar
      */
-    $sql = "SELECT nick, estado, prioridad FROM colas WHERE codigo_recurso = \"" . $codigo_recurso . "\" ORDER BY estado DESC, prioridad DESC";
+    $sql = "SELECT nick, estado, prioridad FROM colas WHERE codigo_recurso = \"" . $codigo_recurso . "\" AND estado != \"3\" ORDER BY estado DESC, prioridad DESC";
     $conexion->consulta($sql);
     $cambiado = false;
     $dt = new DateTime("now", new DateTimeZone('Europe/Madrid'));
@@ -1279,8 +1279,13 @@ function siguiente($conexion, $conexion2, $codigo_recurso) {
     if($conexion->numero_filas() != 0) {
         $reg = $conexion->extraer_registro();
 
+        $sql = "SELECT prioridad FROM  colas WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
+        $conexion2->consulta($sql);
+        $reg2 = $conexion2->extraer_registro();
+        $prioridad = $reg2["prioridad"] + 1;
+
         if ($reg["estado"] == "2") {
-            $sql = "UPDATE colas SET estado=\"1\", prioridad=\"5\" WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
+            $sql = "UPDATE colas SET estado=\"1\", prioridad=\"" . $prioridad . "\" WHERE codigo_recurso=\"" . $codigo_recurso . "\" AND nick=\"" . $reg["nick"] . "\"";
             $conexion2->consulta($sql);
             $cambiado = true;
         } else if ($reg["estado"] == "1") {
